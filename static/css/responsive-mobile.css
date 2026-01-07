@@ -1,0 +1,291 @@
+/**
+ * DISEÑO RESPONSIVE PARA MÓVILES
+ * Optimizado para pantallas pequeñas y táctiles
+ */
+
+/* ================================================
+   BREAKPOINTS PRINCIPALES
+   ================================================ */
+
+/* Tablets y móviles grandes (hasta 1024px) */
+@media (max-width: 1024px) {
+    .navbar-content {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .nav-links {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .nav-link {
+        width: 100%;
+        text-align: center;
+        padding: 0.8rem 1rem;
+    }
+    
+    .module-card {
+        padding: 1.5rem;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Móviles (hasta 768px) */
+@media (max-width: 768px) {
+    /* Textos más grandes para legibilidad */
+    body {
+        font-size: 16px;
+    }
+    
+    h1 {
+        font-size: 1.8rem !important;
+    }
+    
+    h2 {
+        font-size: 1.4rem !important;
+    }
+    
+    h3 {
+        font-size: 1.1rem !important;
+    }
+    
+    /* Navbar compacta */
+    .navbar {
+        padding: 0.8rem 1rem;
+    }
+    
+    .logo {
+        font-size: 1.2rem !important;
+    }
+    
+    /* Botones touch-friendly (mínimo 44x44px) */
+    button, .btn, .nav-link {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 0.8rem 1.2rem;
+        font-size: 1rem;
+    }
+    
+    /* Formularios más grandes */
+    input, textarea, select {
+        min-height: 44px;
+        font-size: 16px; /* Evita zoom en iOS */
+        padding: 0.8rem;
+    }
+    
+    /* Cards en columna única */
+    .dashboard-grid,
+    .features-grid,
+    .comparison-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem;
+    }
+    
+    /* Module cards optimizados */
+    .module-card {
+        padding: 1rem;
+        margin: 0.5rem;
+    }
+    
+    .module-header {
+        padding: 1rem !important;
+    }
+    
+    /* Tablas scrollables */
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    table {
+        min-width: 600px;
+    }
+    
+    /* Gráficas responsive */
+    canvas, svg {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* Espaciado reducido */
+    .container {
+        padding: 0.5rem;
+    }
+    
+    /* Botón de tema ajustado */
+    .theme-toggle {
+        bottom: 10px;
+        right: 10px;
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Móviles pequeños (hasta 480px) */
+@media (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
+    
+    h1 {
+        font-size: 1.5rem !important;
+    }
+    
+    h2 {
+        font-size: 1.2rem !important;
+    }
+    
+    h3 {
+        font-size: 1rem !important;
+    }
+    
+    .navbar {
+        padding: 0.6rem 0.8rem;
+    }
+    
+    .logo {
+        font-size: 1rem !important;
+    }
+    
+    .module-card {
+        padding: 0.8rem;
+        margin: 0.3rem;
+    }
+    
+    .module-header {
+        padding: 0.8rem !important;
+    }
+    
+    button, .btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Reducir espacios en formularios */
+    .form-group {
+        margin-bottom: 0.8rem;
+    }
+    
+    .form-help {
+        font-size: 0.75rem;
+    }
+}
+
+/* ================================================
+   MEJORAS TOUCH
+   ================================================ */
+
+/* Eliminar hover en dispositivos táctiles */
+@media (hover: none) {
+    .btn:hover,
+    .nav-link:hover,
+    button:hover {
+        transform: none;
+    }
+    
+    /* Agregar efecto active */
+    .btn:active,
+    .nav-link:active,
+    button:active {
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
+}
+
+/* ================================================
+   ORIENTACIÓN
+   ================================================ */
+
+/* Landscape en móviles */
+@media (max-width: 768px) and (orientation: landscape) {
+    .navbar {
+        padding: 0.5rem 1rem;
+    }
+    
+    .module-header {
+        padding: 0.8rem !important;
+    }
+    
+    h1 {
+        font-size: 1.3rem !important;
+    }
+}
+
+/* ================================================
+   FIX PARA PROBLEMAS COMUNES EN MÓVIL
+   ================================================ */
+
+/* Prevenir zoom accidental */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="tel"],
+textarea {
+    font-size: 16px !important; /* iOS no hace zoom si es >= 16px */
+}
+
+/* Mejorar scrolling en iOS */
+body {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Fix para overflow horizontal */
+* {
+    max-width: 100%;
+}
+
+/* Prevenir selección de texto no deseada */
+.btn, button, .nav-link {
+    -webkit-tap-highlight-color: rgba(255, 215, 0, 0.2);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Mejorar rendimiento de animaciones en móvil */
+@media (max-width: 768px) {
+    * {
+        animation-duration: 0.3s !important;
+        transition-duration: 0.3s !important;
+    }
+    
+    /* Reducir complejidad de animaciones de fondo */
+    .star, .cloud, .bird, .sand-particle {
+        will-change: auto !important;
+    }
+    
+    /* Limitar partículas en móvil */
+    .star:nth-child(n+50),
+    .sand-particle:nth-child(n+20) {
+        display: none;
+    }
+}
+
+/* ================================================
+   ACCESIBILIDAD
+   ================================================ */
+
+/* Aumentar contraste en móvil */
+@media (max-width: 768px) {
+    body {
+        color: #ffffff;
+    }
+    
+    .form-label {
+        color: #fff;
+        font-weight: 600;
+    }
+    
+    .form-help {
+        color: #ddd;
+    }
+}
+
+/* Focus visible para teclados externos */
+*:focus-visible {
+    outline: 2px solid var(--oro-neon);
+    outline-offset: 2px;
+}
