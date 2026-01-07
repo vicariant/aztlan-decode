@@ -17,3 +17,5 @@ SQLAlchemy==2.0.23
 pytest==7.4.3
 matplotlib==3.8.2
 flask-cors==4.0.0
+plotly==5.18.0
+kaleido==0.2.1
