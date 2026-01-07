@@ -116,15 +116,18 @@ Respuestas concisas (3-4 líneas) con datos reales cuando sea posible."""
     def _initialize_groq(self) -> bool:
         """Inicializa el cliente de Groq"""
         try:
-            if not self.groq_api_key:
+            if not self.groq_api_key or self.groq_api_key == '':
                 logger.warning("⚠️ GROQ_API_KEY no configurada")
                 return False
             
             from groq import Groq
             self.client = Groq(api_key=self.groq_api_key)
-            logger.info("🤖 Groq AI inicializado")
+            logger.info("🤖 Groq AI inicializado correctamente")
             return True
             
+        except ImportError:
+            logger.error("❌ Error: Módulo 'groq' no instalado. Ejecuta: pip install groq")
+            return False
         except Exception as e:
             logger.error(f"❌ Error inicializando Groq: {str(e)}")
             return False

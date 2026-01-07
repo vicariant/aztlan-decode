@@ -7,12 +7,16 @@ Predice resultados completos de un torneo: ranking, alianzas, ganadores
 """
 
 import os
+import logging
 from typing import Dict, List, Optional, Tuple
 from groq import Groq
 from dotenv import load_dotenv
 import random
 
 load_dotenv()
+
+# Configurar logger
+logger = logging.getLogger(__name__)
 
 class RegionalPredictor:
     """Predictor de resultados completos de torneos FTC"""

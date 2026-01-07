@@ -179,6 +179,39 @@ def load_enterprise_systems():
         traceback.print_exc()
         return False
 
+def initialize_app():
+    """Inicializa todos los sistemas de la aplicación"""
+    print("\n" + "="*60)
+    print("🏛️  AZTLÁN DECODE - Iniciando sistemas...")
+    print("="*60 + "\n")
+    
+    # Verificar API keys críticas
+    groq_key = os.getenv('GROQ_API_KEY', '')
+    first_key = os.getenv('FIRST_API_KEY', '')
+    
+    if not groq_key:
+        print("⚠️  [ADVERTENCIA] GROQ_API_KEY no configurada - Chatbot deshabilitado")
+    
+    if not first_key:
+        print("⚠️  [ADVERTENCIA] FIRST_API_KEY no configurada - TRIDENTE limitado")
+    
+    # Cargar modelos IA
+    print("\n1️⃣  Cargando modelos de IA...")
+    load_ai_models()
+    
+    # Cargar sistema TRIDENTE
+    print("\n2️⃣  Cargando sistema TRIDENTE...")
+    load_trident_system()
+    
+    # Cargar sistemas empresariales
+    print("\n3️⃣  Cargando sistemas empresariales...")
+    load_enterprise_systems()
+    
+    print("\n" + "="*60)
+    print("✅ AZTLÁN DECODE - Sistemas inicializados")
+    print(f"🌐 Servidor listo en http://0.0.0.0:{os.getenv('PORT', 5000)}")
+    print("="*60 + "\n")
+
 def predict_exoplanet(koi_prad, koi_srad, koi_period, koi_steff):
     if model is None or scaler is None:
         return {'error': model_error or 'Modelos IA no disponibles'}
@@ -593,6 +626,15 @@ def api_health():
 def chat():
     """Endpoint del chatbot IA"""
     try:
+        # Verificar que Groq API esté configurada
+        groq_key = os.getenv('GROQ_API_KEY', '')
+        if not groq_key:
+            return jsonify({
+                'success': False,
+                'error': 'Chatbot no disponible. GROQ_API_KEY no configurada.',
+                'response': '⚠️ El chatbot no está configurado. Contacta al administrador para configurar GROQ_API_KEY.'
+            }), 503
+        
         data = request.get_json()
         if not data:
             return jsonify({
@@ -624,10 +666,12 @@ def chat():
         
     except Exception as e:
         logger.error(f"Error en chatbot: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({
             'success': False,
             'error': 'Error interno del servidor',
-            'response': 'Error procesando tu mensaje. Intenta de nuevo.'
+            'response': f'Error procesando tu mensaje: {str(e)}'
         }), 500
 
 @app.route('/api/search/team/<int:team_num>')
@@ -1551,44 +1595,6 @@ def not_found(error):
 def handle_exception(e):
     logger.error(f"Error: {e}")
     return f"<h1>Error</h1><p>{str(e)}</p>", 500
-
-def initialize_app():
-    print("\n[*] INICIANDO AZTLAN DECODE...")
-    print("=" * 50)
-    
-    print("[*] Cargando modelos IA...")
-    models_loaded = load_ai_models()
-    print(f"   [{'OK' if models_loaded else 'ERROR'}] Modelos: {'OK' if models_loaded else 'NO DISPONIBLES'}")
-    
-    print("[*] Cargando TRIDENTE...")
-    trident_loaded = load_trident_system()
-    print(f"   [{'OK' if trident_loaded else 'ERROR'}] TRIDENTE: {'OK' if trident_loaded else 'NO DISPONIBLE'}")
-    
-    print("[*] Cargando sistemas empresariales...")
-    enterprise_loaded = load_enterprise_systems()
-    if enterprise_loaded:
-        print("   [OK] Base de datos SQLite persistente")
-        print("   [OK] Sistema de proteccion de menores (UK/CA/USA/EU)")
-        print("   [OK] Exportacion PDF/Excel profesional")
-        print("   [OK] Dashboard con estadisticas globales")
-    else:
-        print("   [ERROR] Algunos sistemas empresariales fallaron")
-    
-    # Obtener IP local
-    import socket
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8", 80))
-        local_ip = s.getsockname()[0]
-        s.close()
-    except:
-        local_ip = "localhost"
-    
-    print(f"\n[*] SERVIDOR ACCESIBLE EN:")
-    print(f"   - Local:  http://localhost:5000")
-    print(f"   - Red:    http://{local_ip}:5000")
-    print("=" * 50)
-    print()
 
 # ========================================
 # 🧪 RUTA DE PRUEBA/SIMULACIÓN COMPLETA
