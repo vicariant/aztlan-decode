@@ -1,0 +1,140 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container" style="padding-top: 100px; max-width: 1200px;">
+    <div class="module-card">
+        <h1 style="text-align: center; color: var(--oro-neon); margin-bottom: 2rem;">
+            🧪 Simulación Completa de Sistemas IA
+        </h1>
+        
+        <!-- Resumen General -->
+        <div style="background: linear-gradient(135deg, rgba(0, 168, 107, 0.2), rgba(0, 243, 255, 0.2)); 
+                    border: 2px solid {{ 'var(--jade-azteca)' if results.summary.status == 'OPERATIVO' else 'var(--oro-neon)' if results.summary.status == 'PARCIAL' else '#ff4444' }}; 
+                    border-radius: 15px; 
+                    padding: 2rem; 
+                    margin-bottom: 2rem;
+                    text-align: center;">
+            <h2 style="color: var(--oro-neon); font-size: 2rem; margin-bottom: 1rem;">
+                Estado: {{ results.summary.status }}
+            </h2>
+            <p style="font-size: 1.5rem; margin-bottom: 0.5rem;">
+                {{ results.summary.working }} / {{ results.summary.total }} sistemas funcionando
+            </p>
+            <div style="background: rgba(0, 0, 0, 0.3); border-radius: 10px; padding: 1rem; margin-top: 1rem;">
+                <div style="background: linear-gradient(90deg, 
+                            var(--jade-azteca) 0%, 
+                            var(--jade-azteca) {{ results.summary.percentage }}%, 
+                            rgba(255, 255, 255, 0.1) {{ results.summary.percentage }}%, 
+                            rgba(255, 255, 255, 0.1) 100%);
+                            height: 30px; 
+                            border-radius: 5px; 
+                            display: flex; 
+                            align-items: center; 
+                            justify-content: center; 
+                            font-weight: bold;">
+                    {{ results.summary.percentage }}%
+                </div>
+            </div>
+            <p style="margin-top: 1rem; opacity: 0.8;">
+                Timestamp: {{ results.timestamp }}
+            </p>
+        </div>
+        
+        <!-- Sistemas Individuales -->
+        <div class="systems-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem;">
+            
+            <!-- TRIDENTE -->
+            <div class="system-card" style="background: rgba(138, 43, 226, 0.1); border: 2px solid {{ '#00A86B' if results.systems.trident.status == 'OK' else '#ff4444' }}; border-radius: 10px; padding: 1.5rem;">
+                <h3 style="color: var(--oro-neon); margin-bottom: 1rem;">
+                    {% if results.systems.trident.status == 'OK' %}✅{% else %}❌{% endif %}
+                    Sistema TRIDENTE
+                </h3>
+                <p><strong>Estado:</strong> {{ results.systems.trident.status }}</p>
+                <p style="opacity: 0.9;">{{ results.systems.trident.message }}</p>
+            </div>
+            
+            <!-- Match Oracle -->
+            <div class="system-card" style="background: rgba(138, 43, 226, 0.1); border: 2px solid {{ '#00A86B' if results.systems.match_oracle.status == 'OK' else '#ff4444' }}; border-radius: 10px; padding: 1.5rem;">
+                <h3 style="color: var(--oro-neon); margin-bottom: 1rem;">
+                    {% if results.systems.match_oracle.status == 'OK' %}✅{% else %}❌{% endif %}
+                    Match Oracle
+                </h3>
+                <p><strong>Estado:</strong> {{ results.systems.match_oracle.status }}</p>
+                <p style="opacity: 0.9;">{{ results.systems.match_oracle.message }}</p>
+                {% if results.systems.match_oracle.sample %}
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--turquesa-neon);">Ver simulación</summary>
+                    <pre style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 5px; overflow-x: auto; font-size: 0.8rem;">{{ results.systems.match_oracle.sample | tojson(indent=2) }}</pre>
+                </details>
+                {% endif %}
+            </div>
+            
+            <!-- Spider Charts -->
+            <div class="system-card" style="background: rgba(138, 43, 226, 0.1); border: 2px solid {{ '#00A86B' if results.systems.spider_charts.status == 'OK' else '#ff4444' }}; border-radius: 10px; padding: 1.5rem;">
+                <h3 style="color: var(--oro-neon); margin-bottom: 1rem;">
+                    {% if results.systems.spider_charts.status == 'OK' %}✅{% else %}❌{% endif %}
+                    Spider Charts
+                </h3>
+                <p><strong>Estado:</strong> {{ results.systems.spider_charts.status }}</p>
+                <p style="opacity: 0.9;">{{ results.systems.spider_charts.message }}</p>
+            </div>
+            
+            <!-- Quetzal Bot -->
+            <div class="system-card" style="background: rgba(138, 43, 226, 0.1); border: 2px solid {{ '#00A86B' if results.systems.quetzal_bot.status == 'OK' else '#ff4444' }}; border-radius: 10px; padding: 1.5rem;">
+                <h3 style="color: var(--oro-neon); margin-bottom: 1rem;">
+                    {% if results.systems.quetzal_bot.status == 'OK' %}✅{% else %}❌{% endif %}
+                    Quetzal Bot (IA)
+                </h3>
+                <p><strong>Estado:</strong> {{ results.systems.quetzal_bot.status }}</p>
+                <p style="opacity: 0.9;">{{ results.systems.quetzal_bot.message }}</p>
+                {% if results.systems.quetzal_bot.sample %}
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--turquesa-neon);">Ver respuesta</summary>
+                    <p style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 5px; margin-top: 0.5rem; font-size: 0.9rem;">{{ results.systems.quetzal_bot.sample }}</p>
+                </details>
+                {% endif %}
+            </div>
+            
+            <!-- Exoplanet AI -->
+            <div class="system-card" style="background: rgba(138, 43, 226, 0.1); border: 2px solid {{ '#00A86B' if results.systems.exoplanet_ai.status == 'OK' else '#ff4444' }}; border-radius: 10px; padding: 1.5rem;">
+                <h3 style="color: var(--oro-neon); margin-bottom: 1rem;">
+                    {% if results.systems.exoplanet_ai.status == 'OK' %}✅{% else %}❌{% endif %}
+                    Modelos IA Astronomía
+                </h3>
+                <p><strong>Estado:</strong> {{ results.systems.exoplanet_ai.status }}</p>
+                <p style="opacity: 0.9;">{{ results.systems.exoplanet_ai.message }}</p>
+                {% if results.systems.exoplanet_ai.sample %}
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--turquesa-neon);">Ver predicción</summary>
+                    <pre style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 5px; overflow-x: auto; font-size: 0.8rem;">{{ results.systems.exoplanet_ai.sample | tojson(indent=2) }}</pre>
+                </details>
+                {% endif %}
+            </div>
+            
+            <!-- Advanced Exporter -->
+            <div class="system-card" style="background: rgba(138, 43, 226, 0.1); border: 2px solid {{ '#00A86B' if results.systems.advanced_exporter.status == 'OK' else '#ff4444' }}; border-radius: 10px; padding: 1.5rem;">
+                <h3 style="color: var(--oro-neon); margin-bottom: 1rem;">
+                    {% if results.systems.advanced_exporter.status == 'OK' %}✅{% else %}❌{% endif %}
+                    Advanced Exporter
+                </h3>
+                <p><strong>Estado:</strong> {{ results.systems.advanced_exporter.status }}</p>
+                <p style="opacity: 0.9;">{{ results.systems.advanced_exporter.message }}</p>
+            </div>
+            
+        </div>
+        
+        <!-- Botones de Acción -->
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="/test-simulation?format=json" target="_blank" class="btn" style="background: var(--turquesa-neon); color: #000; padding: 1rem 2rem; text-decoration: none; border-radius: 10px; display: inline-block; margin: 0.5rem; font-weight: bold;">
+                📄 Ver JSON
+            </a>
+            <a href="/" class="btn" style="background: var(--oro-neon); color: #000; padding: 1rem 2rem; text-decoration: none; border-radius: 10px; display: inline-block; margin: 0.5rem; font-weight: bold;">
+                🏠 Volver al Dashboard
+            </a>
+            <button onclick="location.reload()" class="btn" style="background: var(--jade-azteca); color: #fff; padding: 1rem 2rem; border: none; border-radius: 10px; cursor: pointer; margin: 0.5rem; font-weight: bold;">
+                🔄 Recargar Prueba
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

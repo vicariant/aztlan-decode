@@ -1590,6 +1590,114 @@ def initialize_app():
     print("=" * 50)
     print()
 
+# ========================================
+# 🧪 RUTA DE PRUEBA/SIMULACIÓN COMPLETA
+# ========================================
+@app.route('/test-simulation')
+def test_simulation():
+    """Prueba completa de todos los sistemas de IA"""
+    results = {
+        'timestamp': datetime.now().isoformat(),
+        'systems': {}
+    }
+    
+    # 1. Probar TRIDENTE
+    try:
+        if trident:
+            test_team = trident.get_validated_report(6929)
+            results['systems']['trident'] = {
+                'status': 'OK' if test_team else 'ERROR',
+                'message': 'Sistema TRIDENTE funcionando' if test_team else 'Sin datos'
+            }
+        else:
+            results['systems']['trident'] = {'status': 'NOT_LOADED', 'message': 'TRIDENTE no cargado'}
+    except Exception as e:
+        results['systems']['trident'] = {'status': 'ERROR', 'message': str(e)}
+    
+    # 2. Probar Match Oracle
+    try:
+        if match_oracle:
+            simulation = match_oracle.simulate_match([6929, 16236], [18221, 19771])
+            results['systems']['match_oracle'] = {
+                'status': 'OK',
+                'message': 'Simulación exitosa',
+                'sample': simulation
+            }
+        else:
+            results['systems']['match_oracle'] = {'status': 'NOT_LOADED', 'message': 'Match Oracle no cargado'}
+    except Exception as e:
+        results['systems']['match_oracle'] = {'status': 'ERROR', 'message': str(e)}
+    
+    # 3. Probar Spider Charts
+    try:
+        if spider_charts:
+            test_data = {
+                'auto': 25, 'teleop': 80, 'endgame': 15, 
+                'reliability': 90, 'defense': 60
+            }
+            chart = spider_charts.create_single_team_radar(6929, test_data)
+            results['systems']['spider_charts'] = {
+                'status': 'OK' if chart else 'ERROR',
+                'message': 'Gráficas radar funcionando'
+            }
+        else:
+            results['systems']['spider_charts'] = {'status': 'NOT_LOADED', 'message': 'Spider Charts no cargado'}
+    except Exception as e:
+        results['systems']['spider_charts'] = {'status': 'ERROR', 'message': str(e)}
+    
+    # 4. Probar Quetzal Bot
+    try:
+        if quetzal_bot:
+            response = quetzal_bot.ask("¿Cuál es la regla G01?")
+            results['systems']['quetzal_bot'] = {
+                'status': 'OK' if response else 'ERROR',
+                'message': 'Chatbot IA funcionando',
+                'sample': response[:100] if response else None
+            }
+        else:
+            results['systems']['quetzal_bot'] = {'status': 'NOT_LOADED', 'message': 'Quetzal Bot no cargado'}
+    except Exception as e:
+        results['systems']['quetzal_bot'] = {'status': 'ERROR', 'message': str(e)}
+    
+    # 5. Probar modelos IA de exoplanetas
+    try:
+        if model and scaler:
+            prediction = predict_exoplanet(1.2, 1.0, 365, 5700)
+            results['systems']['exoplanet_ai'] = {
+                'status': 'OK' if not prediction.get('error') else 'ERROR',
+                'message': 'Modelos IA de astronomía funcionando',
+                'sample': prediction
+            }
+        else:
+            results['systems']['exoplanet_ai'] = {'status': 'NOT_LOADED', 'message': 'Modelos IA no cargados'}
+    except Exception as e:
+        results['systems']['exoplanet_ai'] = {'status': 'ERROR', 'message': str(e)}
+    
+    # 6. Probar Advanced Exporter
+    try:
+        if advanced_exporter:
+            results['systems']['advanced_exporter'] = {
+                'status': 'OK',
+                'message': 'Sistema de exportación PDF/Excel disponible'
+            }
+        else:
+            results['systems']['advanced_exporter'] = {'status': 'NOT_LOADED', 'message': 'Exporter no cargado'}
+    except Exception as e:
+        results['systems']['advanced_exporter'] = {'status': 'ERROR', 'message': str(e)}
+    
+    # Resumen
+    total_systems = len(results['systems'])
+    ok_systems = sum(1 for s in results['systems'].values() if s['status'] == 'OK')
+    
+    results['summary'] = {
+        'total': total_systems,
+        'working': ok_systems,
+        'percentage': round((ok_systems / total_systems) * 100, 2) if total_systems > 0 else 0,
+        'status': 'OPERATIVO' if ok_systems >= total_systems * 0.7 else 'PARCIAL' if ok_systems > 0 else 'CRÍTICO'
+    }
+    
+    return render_template('test_simulation.html', results=results) if request.args.get('format') != 'json' else jsonify(results)
+
 if __name__ == '__main__':
     try:
         initialize_app()
