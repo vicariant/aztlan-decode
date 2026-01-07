@@ -92,6 +92,16 @@ def track_visitor():
     except Exception as e:
         logger.error(f"Error tracking visitor: {e}")
 
+# Decorador para proteger rutas con contraseña
+def require_analytics_password(f):
+    """Decorador que requiere autenticación para acceder a analíticas"""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get('analytics_authenticated'):
+            return redirect(url_for('analytics_login', next=request.url))
+        return f(*args, **kwargs)
+    return decorated_function
+
 def get_chatbot_handler():
     global _chatbot_handler
     if _chatbot_handler is None:
@@ -1524,9 +1534,34 @@ def quetzal_analyze_match():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 # --- DASHBOARD AVANZADO ---
+@app.route('/analytics/login', methods=['GET', 'POST'])
+def analytics_login():
+    """Página de login para analíticas"""
+    if request.method == 'POST':
+        password = request.form.get('password', '')
+        from config.settings import ANALYTICS_PASSWORD
+        
+        if password == ANALYTICS_PASSWORD:
+            session['analytics_authenticated'] = True
+            session.permanent = True
+            next_url = request.args.get('next', url_for('analytics_page'))
+            return redirect(next_url)
+        else:
+            flash('Contraseña incorrecta', 'error')
+    
+    return render_template('analytics_login.html')
+
+@app.route('/analytics/logout')
+def analytics_logout():
+    """Cerrar sesión de analíticas"""
+    session.pop('analytics_authenticated', None)
+    flash('Sesión cerrada', 'success')
+    return redirect(url_for('index'))
+
 @app.route('/analytics')
+@require_analytics_password
 def analytics_page():
-    """Página de analíticas de visitantes"""
+    """Página de analíticas de visitantes (protegida con contraseña)"""
     try:
         # Obtener analytics
         from utils.visitor_analytics import get_analytics
@@ -1551,8 +1586,9 @@ def analytics_page():
         return f"<h1>Error</h1><p>{str(e)}</p>", 500
 
 @app.route('/api/analytics/stats')
+@require_analytics_password
 def api_analytics_stats():
-    """API endpoint para obtener estadísticas de visitantes"""
+    """API endpoint para obtener estadísticas de visitantes (protegido)"""
     try:
         from utils.visitor_analytics import get_analytics
         analytics = get_analytics()
@@ -1569,8 +1605,9 @@ def api_analytics_stats():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/api/analytics/realtime')
+@require_analytics_password
 def api_analytics_realtime():
-    """API endpoint para estadísticas en tiempo real"""
+    """API endpoint para estadísticas en tiempo real (protegido)"""
     try:
         from utils.visitor_analytics import get_analytics
         analytics = get_analytics()

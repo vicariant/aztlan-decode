@@ -124,3 +124,7 @@ SESSION_COOKIE_SAMESITE = 'Lax'
 # Protección de menores (COPPA/UK/CA/EU)
 MINOR_PROTECTION_ENABLED = True
 MINOR_AGE_LIMIT = 13  # COPPA compliance
+
+# Admin/Analytics Password
+ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD', 'aztlan2025')  # Cambiar en producción
+ANALYTICS_PASSWORD = os.getenv('ANALYTICS_PASSWORD', ADMIN_PASSWORD)

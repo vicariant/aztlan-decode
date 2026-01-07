@@ -217,10 +217,15 @@
 
 {% block content %}
 <div class="analytics-container">
-    <h1 style="color: #1e3a8a; margin-bottom: 30px;">
-        <span class="realtime-indicator"></span>
-        📊 Analíticas de Visitantes
-    </h1>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h1 style="color: #1e3a8a; margin: 0;">
+            <span class="realtime-indicator"></span>
+            📊 Analíticas de Visitantes
+        </h1>
+        <a href="{{ url_for('analytics_logout') }}" style="background: #ef4444; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold;">
+            🚪 Cerrar Sesión
+        </a>
+    </div>
     
     <!-- Estadísticas Principales -->
     <div class="stats-grid">
