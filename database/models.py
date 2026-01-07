@@ -95,6 +95,33 @@ class UserFavorite(Base):
     added_date = Column(DateTime, default=datetime.utcnow)
     notes = Column(Text)
 
+class Visitor(Base):
+    """Registro de visitantes únicos"""
+    __tablename__ = 'visitors'
+    
+    id = Column(Integer, primary_key=True)
+    visitor_id = Column(String(100), unique=True, index=True)  # Hash de IP + User Agent
+    first_visit = Column(DateTime, default=datetime.utcnow)
+    last_visit = Column(DateTime, default=datetime.utcnow)
+    total_visits = Column(Integer, default=1)
+    user_ip = Column(String(50))
+    user_agent = Column(String(500))
+    country = Column(String(100))
+    city = Column(String(100))
+
+class PageView(Base):
+    """Registro de vistas de páginas"""
+    __tablename__ = 'page_views'
+    
+    id = Column(Integer, primary_key=True)
+    visitor_id = Column(String(100), index=True)
+    page_url = Column(String(500))
+    page_title = Column(String(200))
+    visit_date = Column(DateTime, default=datetime.utcnow)
+    session_id = Column(String(100))
+    referrer = Column(String(500))
+    duration_seconds = Column(Integer, default=0)
+
 class MatchPrediction(Base):
     """Predicciones de matches guardadas"""
     __tablename__ = 'match_predictions'

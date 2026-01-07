@@ -67,9 +67,30 @@ spider_charts = None
 advanced_exporter = None
 quetzal_bot = None
 
+# SISTEMA DE ANALÍTICAS
+visitor_analytics = None
+
 # Lazy imports para reducir tiempo de inicio
 _chatbot_handler = None
 _regional_predictor = None
+
+# Middleware para tracking de visitantes
+@app.before_request
+def track_visitor():
+    """Registra cada visita automáticamente"""
+    try:
+        # Inicializar analytics si no existe
+        global visitor_analytics
+        if visitor_analytics is None:
+            from utils.visitor_analytics import get_analytics
+            visitor_analytics = get_analytics()
+        
+        # Solo trackear páginas HTML (no assets estáticos)
+        if not request.path.startswith('/static/') and not request.path.startswith('/api/'):
+            page_title = request.endpoint or 'Unknown'
+            visitor_analytics.track_visit(request.path, page_title)
+    except Exception as e:
+        logger.error(f"Error tracking visitor: {e}")
 
 def get_chatbot_handler():
     global _chatbot_handler
@@ -1503,6 +1524,67 @@ def quetzal_analyze_match():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 # --- DASHBOARD AVANZADO ---
+@app.route('/analytics')
+def analytics_page():
+    """Página de analíticas de visitantes"""
+    try:
+        # Obtener analytics
+        from utils.visitor_analytics import get_analytics
+        analytics = get_analytics()
+        
+        # Obtener estadísticas
+        stats = analytics.get_stats(days=30)
+        visitors = analytics.get_visitor_details()
+        realtime = analytics.get_realtime_stats()
+        
+        if not stats or not realtime:
+            return "<h1>Error cargando analíticas</h1>", 500
+        
+        return render_template('analytics.html',
+                             stats=stats,
+                             visitors=visitors,
+                             realtime=realtime,
+                             page_title="Analíticas",
+                             current_page="analytics")
+    except Exception as e:
+        logger.error(f"Error en analytics page: {e}")
+        return f"<h1>Error</h1><p>{str(e)}</p>", 500
+
+@app.route('/api/analytics/stats')
+def api_analytics_stats():
+    """API endpoint para obtener estadísticas de visitantes"""
+    try:
+        from utils.visitor_analytics import get_analytics
+        analytics = get_analytics()
+        
+        days = request.args.get('days', 30, type=int)
+        stats = analytics.get_stats(days=days)
+        
+        if stats:
+            return jsonify({'success': True, 'data': stats})
+        else:
+            return jsonify({'success': False, 'error': 'No se pudieron obtener estadísticas'}), 500
+    except Exception as e:
+        logger.error(f"Error en API analytics: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/analytics/realtime')
+def api_analytics_realtime():
+    """API endpoint para estadísticas en tiempo real"""
+    try:
+        from utils.visitor_analytics import get_analytics
+        analytics = get_analytics()
+        
+        realtime = analytics.get_realtime_stats()
+        
+        if realtime:
+            return jsonify({'success': True, 'data': realtime})
+        else:
+            return jsonify({'success': False, 'error': 'No se pudieron obtener datos en tiempo real'}), 500
+    except Exception as e:
+        logger.error(f"Error en API realtime: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 @app.route('/api/dashboard/global')
 def dashboard_global():
     """Estadísticas globales de la plataforma"""
