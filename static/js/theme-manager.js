@@ -213,18 +213,6 @@ class ThemeManager {
         }
         return birdsHTML;
     }
-            
-            starsHTML += `
-                <div class="star" style="
-                    left: ${x}%;
-                    top: ${y}%;
-                    animation-delay: ${delay}s;
-                    animation-duration: ${duration}s;
-                "></div>
-            `;
-        }
-        return starsHTML;
-    }
 
     generateSandParticles(count) {
         let particlesHTML = '';
@@ -300,15 +288,6 @@ class ThemeManager {
 
         document.body.insertBefore(scene, document.body.firstChild);
     }
-            
-            <!-- Cometas -->
-            <div class="comet" style="animation-delay: 0s;"></div>
-            <div class="comet" style="animation-delay: 4s;"></div>
-            <div class="comet" style="animation-delay: 7s;"></div>
-        `;
-
-        document.body.insertBefore(scene, document.body.firstChild);
-    }
 
     generateCosmicStars(count) {
         let starsHTML = '';
@@ -356,12 +335,6 @@ class ThemeManager {
         }
         return starsHTML;
     }
-                    animation-duration: ${duration}s;
-                "></div>
-            `;
-        }
-        return starsHTML;
-    }
 
     // ==========================================
     // ESCENA DE BATALLA (COMPARISON)
@@ -373,14 +346,7 @@ class ThemeManager {
         scene.innerHTML = `
             <!-- Sol brillante con rayos (modo día) -->
             <div class="bright-sun">
-                <div class="sun-ray"></div>
-                <div class="sun-ray"></div>
-                <div class="sun-ray"></div>
-                <div class="sun-ray"></div>
-                <div class="sun-ray"></div>
-                <div class="sun-ray"></div>
-                <div class="sun-ray"></div>
-                <div class="sun-ray"></div>
+                ${this.generateSunRays(8)}
             </div>
             
             <!-- Luna de batalla (modo noche) -->
@@ -399,39 +365,15 @@ class ThemeManager {
             <!-- Banderas -->
             <div class="battle-flag" style="left: 15%; bottom: 45%;">
                 <div class="flag-pole"></div>
-                <div class="flag-cloth"></div>
+                <div class="flag red-flag"></div>
             </div>
-            <div class="battle-flag" style="right: 20%; bottom: 42%;">
+            <div class="battle-flag" style="right: 15%; bottom: 45%;">
                 <div class="flag-pole"></div>
-                <div class="flag-cloth"></div>
+                <div class="flag blue-flag"></div>
             </div>
-            
-            <!-- Nubes de polvo -->
-            ${this.generateDustClouds(5)}
         `;
 
         document.body.insertBefore(scene, document.body.firstChild);
-    }
-
-    generateDustClouds(count) {
-        let cloudsHTML = '';
-        for (let i = 0; i < count; i++) {
-            const x = Math.random() * 80 + 10;
-            const size = 100 + Math.random() * 150;
-            const delay = Math.random() * 10;
-            const duration = 8 + Math.random() * 6;
-            
-            cloudsHTML += `
-                <div class="dust-cloud" style="
-                    left: ${x}%;
-                    width: ${size}px;
-                    height: ${size}px;
-                    animation-delay: ${delay}s;
-                    animation-duration: ${duration}s;
-                "></div>
-            `;
-        }
-        return cloudsHTML;
     }
 
     // ==========================================
@@ -444,7 +386,7 @@ class ThemeManager {
             <span class="theme-toggle-icon">${this.isNightMode ? '●' : '○'}</span>
             <span class="theme-toggle-text">${this.isNightMode ? 'Modo Noche' : 'Modo Dia'}</span>
         `;
-
+        
         button.addEventListener('click', () => {
             this.toggleDayNight();
         });
@@ -495,35 +437,13 @@ class ThemeManager {
         // Guardar preferencia
         localStorage.setItem('aztlan-night-mode', this.isNightMode);
     }
-        } else if (this.currentPage === 'astronomy') {
-            scene = document.querySelector('.cosmic-scene');
-        } else if (this.currentPage === 'comparison') {
-            scene = document.querySelector('.battlefield-scene');
-        }
-        
-        if (scene) {
-            scene.classList.remove('day-mode', 'night-mode');
-            scene.classList.add(this.isNightMode ? 'night-mode' : 'day-mode');
-        }
-
-        // Actualizar boton
-        const button = document.querySelector('.theme-toggle');
-        if (button) {
-            button.innerHTML = `
-                <span class="theme-toggle-icon">${this.isNightMode ? '●' : '○'}</span>
-                <span class="theme-toggle-text">${this.isNightMode ? 'Modo Noche' : 'Modo Dia'}</span>
-            `;
-        }
-
-        // Guardar preferencia
-        localStorage.setItem('aztlan-night-mode', this.isNightMode);
-    }
 
     // Cargar preferencia guardada
     loadSavedPreference() {
         const saved = localStorage.getItem('aztlan-night-mode');
         if (saved !== null) {
             this.isNightMode = saved === 'true';
+            
             // Actualizar la escena con la preferencia guardada
             let scene;
             if (this.currentPage === 'scouting') {
