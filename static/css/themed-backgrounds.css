@@ -1030,6 +1030,7 @@ body[data-page="comparison"] {
     backdrop-filter: blur(12px);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     font-weight: 600;
+    font-family: Arial, sans-serif;
 }
 
 .theme-toggle:hover {
@@ -1041,6 +1042,17 @@ body[data-page="comparison"] {
 
 .theme-toggle:active {
     transform: scale(0.98);
+}
+
+.theme-toggle-icon {
+    font-size: 20px;
+    margin-right: 8px;
+    display: inline-block;
+}
+
+.theme-toggle-text {
+    font-size: 14px;
+    letter-spacing: 0.5px;
 }
 
 .theme-toggle-icon {

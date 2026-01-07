@@ -279,8 +279,8 @@ class ThemeManager {
         const button = document.createElement('button');
         button.className = 'theme-toggle';
         button.innerHTML = `
-            <span class="theme-toggle-icon">${this.isNightMode ? '🌙' : '☀️'}</span>
-            <span class="theme-toggle-text">${this.isNightMode ? 'Modo Noche' : 'Modo Día'}</span>
+            <span class="theme-toggle-icon">${this.isNightMode ? '●' : '○'}</span>
+            <span class="theme-toggle-text">${this.isNightMode ? 'Modo Noche' : 'Modo Dia'}</span>
         `;
 
         button.addEventListener('click', () => {
@@ -323,8 +323,8 @@ class ThemeManager {
             
             setTimeout(() => {
                 button.innerHTML = `
-                    <span class="theme-toggle-icon">${this.isNightMode ? '🌙' : '☀️'}</span>
-                    <span class="theme-toggle-text">${this.isNightMode ? 'Modo Noche' : 'Modo Día'}</span>
+                    <span class="theme-toggle-icon">${this.isNightMode ? '●' : '○'}</span>
+                    <span class="theme-toggle-text">${this.isNightMode ? 'Modo Noche' : 'Modo Dia'}</span>
                 `;
                 button.style.transform = 'scale(1)';
             }, 150);
@@ -344,12 +344,12 @@ class ThemeManager {
             scene.classList.add(this.isNightMode ? 'night-mode' : 'day-mode');
         }
 
-        // Actualizar botón
+        // Actualizar boton
         const button = document.querySelector('.theme-toggle');
         if (button) {
             button.innerHTML = `
-                <span class="theme-toggle-icon">${this.isNightMode ? '🌙' : '☀️'}</span>
-                <span class="theme-toggle-text">${this.isNightMode ? 'Modo Noche' : 'Modo Día'}</span>
+                <span class="theme-toggle-icon">${this.isNightMode ? '●' : '○'}</span>
+                <span class="theme-toggle-text">${this.isNightMode ? 'Modo Noche' : 'Modo Dia'}</span>
             `;
         }
 
@@ -377,12 +377,12 @@ class ThemeManager {
                 scene.classList.add(this.isNightMode ? 'night-mode' : 'day-mode');
             }
 
-            // Actualizar el botón
+            // Actualizar el boton
             const button = document.querySelector('.theme-toggle');
             if (button) {
                 button.innerHTML = `
-                    <span class="theme-toggle-icon">${this.isNightMode ? '🌙' : '☀️'}</span>
-                    <span class="theme-toggle-text">${this.isNightMode ? 'Modo Noche' : 'Modo Día'}</span>
+                    <span class="theme-toggle-icon">${this.isNightMode ? '●' : '○'}</span>
+                    <span class="theme-toggle-text">${this.isNightMode ? 'Modo Noche' : 'Modo Dia'}</span>
                 `;
             }
         }
