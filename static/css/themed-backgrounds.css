@@ -352,6 +352,285 @@ body[data-page="comparison"] > *:not(.battlefield-scene) {
 .palm-leaf:nth-child(4) { transform: rotate(30deg); left: -40px; }
 .palm-leaf:nth-child(5) { transform: rotate(60deg); left: -50px; }
 
+/* Animacion de palmeras con viento */
+.palm-tree.palm-1 {
+    left: 70%;
+    animation: palmSway1 4s ease-in-out infinite;
+}
+
+.palm-tree.palm-2 {
+    left: 78%;
+    bottom: 28%;
+    transform: scale(0.85);
+    animation: palmSway2 5s ease-in-out infinite;
+}
+
+@keyframes palmSway1 {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(2deg); }
+}
+
+@keyframes palmSway2 {
+    0%, 100% { transform: scale(0.85) rotate(0deg); }
+    50% { transform: scale(0.85) rotate(-2deg); }
+}
+
+.palm-leaves {
+    animation: leavesWave 3s ease-in-out infinite;
+}
+
+@keyframes leavesWave {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(5deg); }
+}
+
+/* Rayos del sol */
+.sun-rays {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    animation: raysRotate 30s linear infinite;
+}
+
+.sun-ray {
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    width: 3px;
+    height: 100px;
+    background: linear-gradient(to bottom, rgba(255, 247, 0, 0.4), transparent);
+    transform-origin: center 150px;
+    opacity: 0.6;
+}
+
+@keyframes raysRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Nubes realistas */
+.clouds {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.cloud {
+    position: absolute;
+    width: 120px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50px;
+    animation: cloudFloat 60s linear infinite;
+    filter: blur(2px);
+}
+
+.cloud::before,
+.cloud::after {
+    content: '';
+    position: absolute;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+}
+
+.cloud::before {
+    width: 50px;
+    height: 50px;
+    top: -25px;
+    left: 20px;
+}
+
+.cloud::after {
+    width: 60px;
+    height: 60px;
+    top: -30px;
+    right: 20px;
+}
+
+.archaeological-scene.night-mode .cloud {
+    background: rgba(100, 100, 120, 0.3);
+}
+
+.archaeological-scene.night-mode .cloud::before,
+.archaeological-scene.night-mode .cloud::after {
+    background: rgba(100, 100, 120, 0.3);
+}
+
+@keyframes cloudFloat {
+    0% {
+        left: -150px;
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.8;
+    }
+    90% {
+        opacity: 0.8;
+    }
+    100% {
+        left: 110%;
+        opacity: 0;
+    }
+}
+
+/* Pajaros volando */
+.birds {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.bird {
+    position: absolute;
+    width: 20px;
+    height: 10px;
+    animation: birdFly 30s linear infinite;
+}
+
+.bird-wing {
+    position: absolute;
+    width: 10px;
+    height: 2px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    animation: wingFlap 0.5s ease-in-out infinite;
+}
+
+.bird-wing-left {
+    left: 0;
+    transform-origin: right center;
+}
+
+.bird-wing-right {
+    right: 0;
+    transform-origin: left center;
+}
+
+@keyframes birdFly {
+    0% {
+        left: -50px;
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        left: 110%;
+        opacity: 0;
+    }
+}
+
+@keyframes wingFlap {
+    0%, 100% { transform: rotateY(0deg); }
+    50% { transform: rotateY(60deg); }
+}
+
+/* Mejoras en dunas con sombras */
+.dune-1 {
+    left: -10%;
+    width: 40%;
+    height: 80%;
+}
+
+.dune-2 {
+    left: 25%;
+    width: 50%;
+    height: 100%;
+}
+
+.dune-3 {
+    right: -5%;
+    width: 35%;
+    height: 70%;
+}
+
+.dune-shadow {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30%;
+    height: 100%;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.2), transparent);
+    border-radius: 0 0 0 50%;
+}
+
+/* Ruinas mejoradas */
+.pillar-1 {
+    left: 0;
+    width: 40px;
+    height: 120px;
+}
+
+.pillar-2 {
+    left: 60px;
+    width: 40px;
+    height: 90px;
+}
+
+.pillar-3 {
+    left: 120px;
+    width: 40px;
+    height: 100px;
+}
+
+.pillar-top {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(to bottom, #A0826D 0%, #8B7355 100%);
+    border-radius: 2px;
+}
+
+.pillar-cracks {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(90deg, transparent 48%, rgba(0, 0, 0, 0.1) 49%, rgba(0, 0, 0, 0.1) 51%, transparent 52%),
+        linear-gradient(90deg, transparent 68%, rgba(0, 0, 0, 0.1) 69%, rgba(0, 0, 0, 0.1) 71%, transparent 72%);
+}
+
+/* Oasis con reflejos de agua */
+.oasis {
+    position: absolute;
+    bottom: 22%;
+    right: 15%;
+    width: 150px;
+    height: 60px;
+    background: radial-gradient(ellipse, rgba(100, 149, 237, 0.4) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: waterShimmer 4s ease-in-out infinite;
+}
+
+.water-reflection {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse, rgba(255, 255, 255, 0.3) 0%, transparent 60%);
+    animation: reflectionMove 3s ease-in-out infinite;
+}
+
+@keyframes waterShimmer {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0.8; }
+}
+
+@keyframes reflectionMove {
+    0%, 100% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+}
+.palm-leaf:nth-child(3) { transform: rotate(0deg); left: -30px; }
+.palm-leaf:nth-child(4) { transform: rotate(30deg); left: -40px; }
+.palm-leaf:nth-child(5) { transform: rotate(60deg); left: -50px; }
+
 /* TORMENTA DE ARENA */
 .sandstorm {
     position: absolute;
@@ -496,6 +775,49 @@ body[data-page="astronomy"] {
     66% { transform: translate(-15px, -20px); }
 }
 
+/* Corona solar */
+.sun-corona {
+    position: absolute;
+    width: 120%;
+    height: 120%;
+    top: -10%;
+    left: -10%;
+    background: radial-gradient(circle, transparent 60%, rgba(255, 200, 0, 0.3) 70%, transparent 100%);
+    border-radius: 50%;
+    animation: coronaPulse 4s ease-in-out infinite;
+}
+
+@keyframes coronaPulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.1); opacity: 0.9; }
+}
+
+/* Llamaradas solares */
+.sun-flares {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.solar-flare {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    width: 5px;
+    height: 120px;
+    background: linear-gradient(to bottom, rgba(255, 150, 0, 0.6), transparent);
+    transform-origin: center 180px;
+    animation: flareWave 8s ease-in-out infinite;
+    filter: blur(3px);
+}
+
+@keyframes flareWave {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; transform: translateX(-10px); }
+}
+
 /* Luna llena grande (solo modo noche) */
 .cosmic-scene.night-mode .full-moon {
     display: block;
@@ -571,6 +893,156 @@ body[data-page="astronomy"] {
 .full-moon::before,
 .battle-moon::before {
     animation-delay: 1.5s;
+}
+
+/* Brillo lunar */
+.moon-glow {
+    position: absolute;
+    width: 110%;
+    height: 110%;
+    top: -5%;
+    left: -5%;
+    background: radial-gradient(circle, transparent 50%, rgba(200, 200, 255, 0.2) 60%, transparent 100%);
+    border-radius: 50%;
+    animation: moonGlowPulse 5s ease-in-out infinite;
+}
+
+@keyframes moonGlowPulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+/* Estrellas fugaces */
+.shooting-stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.shooting-star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 10px white;
+    animation: shootingStar 3s linear infinite;
+}
+
+.shooting-star::after {
+    content: '';
+    position: absolute;
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(to right, white, transparent);
+    left: -120px;
+    top: 1px;
+}
+
+@keyframes shootingStar {
+    0% {
+        top: -10%;
+        left: 110%;
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        top: 110%;
+        left: -10%;
+        opacity: 0;
+    }
+}
+
+/* Nebulosas mejoradas */
+.nebula-purple {
+    top: -150px;
+    left: -150px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(138, 43, 226, 0.4) 0%,
+        rgba(75, 0, 130, 0.3) 30%,
+        rgba(148, 0, 211, 0.2) 50%,
+        transparent 75%
+    );
+}
+
+.nebula-blue {
+    top: 20%;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(0, 100, 255, 0.3) 0%,
+        rgba(0, 50, 150, 0.2) 40%,
+        transparent 70%
+    );
+}
+
+/* Galaxia mejorada */
+.galaxy-core {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 200, 100, 0.4) 50%, transparent 100%);
+    border-radius: 50%;
+    animation: coreGlow 3s ease-in-out infinite;
+}
+
+@keyframes coreGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+    50% { box-shadow: 0 0 40px rgba(255, 255, 255, 1); }
+}
+
+.galaxy-arms {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(ellipse 80% 20% at 50% 50%, rgba(100, 149, 237, 0.2) 0%, transparent 50%),
+        radial-gradient(ellipse 20% 80% at 50% 50%, rgba(100, 149, 237, 0.2) 0%, transparent 50%);
+}
+
+/* Planetas */
+.planet {
+    position: absolute;
+    border-radius: 50%;
+    animation: planetFloat 20s ease-in-out infinite;
+}
+
+.planet-1 {
+    width: 80px;
+    height: 80px;
+    bottom: 20%;
+    right: 20%;
+    background: radial-gradient(circle at 30% 30%, #ff6b35 0%, #d64545 100%);
+    box-shadow: inset -10px -10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.planet-2 {
+    width: 60px;
+    height: 60px;
+    top: 30%;
+    left: 15%;
+    background: radial-gradient(circle at 30% 30%, #4a90e2 0%, #2e5c8a 100%);
+    box-shadow: inset -8px -8px 15px rgba(0, 0, 0, 0.3);
+    animation-delay: 5s;
+}
+
+@keyframes planetFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-30px); }
 }
 
 /* Estrellas del espacio profundo */

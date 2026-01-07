@@ -53,31 +53,61 @@ class ThemeManager {
         scene.innerHTML = `
             <div class="sky"></div>
             
-            <!-- Sol -->
-            <div class="sun"></div>
+            <!-- Sol con rayos -->
+            <div class="sun">
+                <div class="sun-rays">
+                    ${this.generateSunRays(12)}
+                </div>
+            </div>
             
             <!-- Luna con cráteres -->
-            <div class="moon"></div>
+            <div class="moon">
+                <div class="crater" style="width: 15px; height: 15px; top: 25%; left: 30%;"></div>
+                <div class="crater" style="width: 12px; height: 12px; top: 45%; left: 50%;"></div>
+                <div class="crater" style="width: 10px; height: 10px; top: 60%; left: 35%;"></div>
+                <div class="crater" style="width: 8px; height: 8px; top: 35%; left: 60%;"></div>
+            </div>
             
             <!-- Estrellas (solo noche) -->
-            <div class="stars">${this.generateStars(100)}</div>
+            <div class="stars">${this.generateStars(150)}</div>
             
-            <!-- Dunas de arena -->
+            <!-- Nubes -->
+            <div class="clouds">${this.generateClouds(6)}</div>
+            
+            <!-- Pajaros volando -->
+            <div class="birds">${this.generateBirds(5)}</div>
+            
+            <!-- Dunas de arena con sombras -->
             <div class="dunes">
-                <div class="dune"></div>
-                <div class="dune"></div>
-                <div class="dune"></div>
+                <div class="dune dune-1">
+                    <div class="dune-shadow"></div>
+                </div>
+                <div class="dune dune-2">
+                    <div class="dune-shadow"></div>
+                </div>
+                <div class="dune dune-3">
+                    <div class="dune-shadow"></div>
+                </div>
             </div>
             
-            <!-- Ruinas arqueológicas -->
+            <!-- Ruinas arqueológicas mejoradas -->
             <div class="ruins">
-                <div class="pillar"></div>
-                <div class="pillar"></div>
-                <div class="pillar"></div>
+                <div class="pillar pillar-1">
+                    <div class="pillar-top"></div>
+                    <div class="pillar-cracks"></div>
+                </div>
+                <div class="pillar pillar-2">
+                    <div class="pillar-top"></div>
+                    <div class="pillar-cracks"></div>
+                </div>
+                <div class="pillar pillar-3">
+                    <div class="pillar-top"></div>
+                    <div class="pillar-cracks"></div>
+                </div>
             </div>
             
-            <!-- Palmera -->
-            <div class="palm-tree">
+            <!-- Palmeras con movimiento -->
+            <div class="palm-tree palm-1">
                 <div class="palm-trunk"></div>
                 <div class="palm-leaves">
                     <div class="palm-leaf"></div>
@@ -88,8 +118,24 @@ class ThemeManager {
                 </div>
             </div>
             
-            <!-- Tormenta de arena -->
-            <div class="sandstorm">${this.generateSandParticles(30)}</div>
+            <div class="palm-tree palm-2">
+                <div class="palm-trunk"></div>
+                <div class="palm-leaves">
+                    <div class="palm-leaf"></div>
+                    <div class="palm-leaf"></div>
+                    <div class="palm-leaf"></div>
+                    <div class="palm-leaf"></div>
+                    <div class="palm-leaf"></div>
+                </div>
+            </div>
+            
+            <!-- Tormenta de arena suave -->
+            <div class="sandstorm">${this.generateSandParticles(40)}</div>
+            
+            <!-- Oasis con agua -->
+            <div class="oasis">
+                <div class="water-reflection"></div>
+            </div>
         `;
 
         document.body.insertBefore(scene, document.body.firstChild);
@@ -102,6 +148,71 @@ class ThemeManager {
             const y = Math.random() * 100;
             const delay = Math.random() * 3;
             const duration = 2 + Math.random() * 3;
+            const size = Math.random() > 0.7 ? 'large' : (Math.random() > 0.5 ? 'medium' : 'small');
+            
+            starsHTML += `
+                <div class="star star-${size}" style="
+                    left: ${x}%;
+                    top: ${y}%;
+                    animation-delay: ${delay}s;
+                    animation-duration: ${duration}s;
+                "></div>
+            `;
+        }
+        return starsHTML;
+    }
+
+    generateSunRays(count) {
+        let raysHTML = '';
+        for (let i = 0; i < count; i++) {
+            const rotation = (360 / count) * i;
+            raysHTML += `
+                <div class="sun-ray" style="transform: rotate(${rotation}deg);"></div>
+            `;
+        }
+        return raysHTML;
+    }
+
+    generateClouds(count) {
+        let cloudsHTML = '';
+        for (let i = 0; i < count; i++) {
+            const y = 10 + Math.random() * 30;
+            const delay = Math.random() * 20;
+            const duration = 40 + Math.random() * 40;
+            const scale = 0.6 + Math.random() * 0.8;
+            
+            cloudsHTML += `
+                <div class="cloud" style="
+                    top: ${y}%;
+                    animation-delay: ${delay}s;
+                    animation-duration: ${duration}s;
+                    transform: scale(${scale});
+                "></div>
+            `;
+        }
+        return cloudsHTML;
+    }
+
+    generateBirds(count) {
+        let birdsHTML = '';
+        for (let i = 0; i < count; i++) {
+            const y = 15 + Math.random() * 25;
+            const delay = Math.random() * 15;
+            const duration = 20 + Math.random() * 20;
+            
+            birdsHTML += `
+                <div class="bird" style="
+                    top: ${y}%;
+                    animation-delay: ${delay}s;
+                    animation-duration: ${duration}s;
+                ">
+                    <div class="bird-wing bird-wing-left"></div>
+                    <div class="bird-wing bird-wing-right"></div>
+                </div>
+            `;
+        }
+        return birdsHTML;
+    }
             
             starsHTML += `
                 <div class="star" style="
@@ -146,26 +257,49 @@ class ThemeManager {
         scene.className = `cosmic-scene ${this.isNightMode ? 'night-mode' : 'day-mode'}`;
         
         scene.innerHTML = `
-            <!-- Sol (modo día) -->
-            <div class="cosmic-sun"></div>
-            
-            <!-- Luna llena con cráteres (modo noche) -->
-            <div class="full-moon">
-                <div class="crater"></div>
-                <div class="crater"></div>
-                <div class="crater"></div>
-                <div class="crater"></div>
-                <div class="crater"></div>
+            <!-- Sol (modo dia) con corona -->
+            <div class="cosmic-sun">
+                <div class="sun-corona"></div>
+                <div class="sun-flares">${this.generateSolarFlares(8)}</div>
             </div>
             
-            <!-- Estrellas del cosmos -->
-            <div class="cosmic-stars">${this.generateCosmicStars(200)}</div>
+            <!-- Luna llena con crateres detallados (modo noche) -->
+            <div class="full-moon">
+                <div class="crater" style="width: 40px; height: 40px; top: 25%; left: 30%;"></div>
+                <div class="crater" style="width: 30px; height: 30px; top: 45%; left: 50%;"></div>
+                <div class="crater" style="width: 25px; height: 25px; top: 60%; left: 35%;"></div>
+                <div class="crater" style="width: 35px; height: 35px; top: 35%; left: 60%;"></div>
+                <div class="crater" style="width: 20px; height: 20px; top: 70%; left: 55%;"></div>
+                <div class="moon-glow"></div>
+            </div>
             
-            <!-- Nebulosa -->
-            <div class="nebula"></div>
+            <!-- Estrellas del cosmos con distintos tamanos -->
+            <div class="cosmic-stars">${this.generateCosmicStars(250)}</div>
             
-            <!-- Galaxia espiral -->
-            <div class="galaxy"></div>
+            <!-- Estrellas fugaces -->
+            <div class="shooting-stars">${this.generateShootingStars(4)}</div>
+            
+            <!-- Nebulosas multiples -->
+            <div class="nebula nebula-purple"></div>
+            <div class="nebula nebula-blue"></div>
+            
+            <!-- Galaxia espiral animada -->
+            <div class="galaxy">
+                <div class="galaxy-core"></div>
+                <div class="galaxy-arms"></div>
+            </div>
+            
+            <!-- Planetas en el fondo -->
+            <div class="planet planet-1"></div>
+            <div class="planet planet-2"></div>
+            
+            <!-- Cometas -->
+            <div class="comet"></div>
+            <div class="comet comet-2"></div>
+        `;
+
+        document.body.insertBefore(scene, document.body.firstChild);
+    }
             
             <!-- Cometas -->
             <div class="comet" style="animation-delay: 0s;"></div>
@@ -194,6 +328,34 @@ class ThemeManager {
                     left: ${x}%;
                     top: ${y}%;
                     animation-delay: ${delay}s;
+                    animation-duration: ${duration}s;
+                "></div>
+            `;
+        }
+        return starsHTML;
+    }
+
+    generateSolarFlares(count) {
+        let flaresHTML = '';
+        for (let i = 0; i < count; i++) {
+            const rotation = (360 / count) * i;
+            flaresHTML += `
+                <div class="solar-flare" style="transform: rotate(${rotation}deg);"></div>
+            `;
+        }
+        return flaresHTML;
+    }
+
+    generateShootingStars(count) {
+        let starsHTML = '';
+        for (let i = 0; i < count; i++) {
+            const delay = Math.random() * 10;
+            starsHTML += `
+                <div class="shooting-star" style="animation-delay: ${delay}s;"></div>
+            `;
+        }
+        return starsHTML;
+    }
                     animation-duration: ${duration}s;
                 "></div>
             `;
