@@ -61,6 +61,12 @@ minor_protection = None
 export_manager = None
 dashboard_manager = None
 
+# NUEVAS UTILIDADES AVANZADAS
+match_oracle = None
+spider_charts = None
+advanced_exporter = None
+quetzal_bot = None
+
 # Lazy imports para reducir tiempo de inicio
 _chatbot_handler = None
 _regional_predictor = None
@@ -123,6 +129,7 @@ def load_trident_system():
 def load_enterprise_systems():
     """Carga TODOS los sistemas empresariales nuevos"""
     global db_manager, minor_protection, export_manager, dashboard_manager
+    global match_oracle, spider_charts, advanced_exporter, quetzal_bot
     
     try:
         # 1. BASE DE DATOS
@@ -144,6 +151,26 @@ def load_enterprise_systems():
         from utils.dashboard_manager import AdvancedDashboard
         dashboard_manager = AdvancedDashboard(db_manager)
         print("[OK] Dashboard avanzado con estadísticas globales")
+        
+        # 5. MATCH ORACLE (Simulador de Partidos)
+        from utils.match_oracle import oracle
+        match_oracle = oracle
+        print("[OK] Match Oracle cargado - Simulaciones de partidos disponibles")
+        
+        # 6. SPIDER CHARTS (Gráficas Radar)
+        from utils.spider_charts import chart_generator
+        spider_charts = chart_generator
+        print("[OK] Spider Charts cargado - Visualizaciones radar disponibles")
+        
+        # 7. ADVANCED EXPORTER (PDF/Excel Profesional)
+        from utils.advanced_exporter import exporter
+        advanced_exporter = exporter
+        print("[OK] Advanced Exporter cargado - Exportación PDF/Excel profesional")
+        
+        # 8. QUETZAL BOT (Chatbot RAG)
+        from utils.quetzal_bot import quetzal
+        quetzal_bot = quetzal
+        print("[OK] Quetzal Bot cargado - Asistente IA con RAG")
         
         return True
     except Exception as e:
@@ -713,34 +740,32 @@ def quetzal_bot_suggestions():
 # ========================================
 @app.route('/api/oraculo/simulate', methods=['POST'])
 def oraculo_simulate():
-    """Endpoint para simular un match"""
+    """Endpoint para simular un match con predicción avanzada"""
     try:
-        from utils.match_simulator import create_oracle
-        
-        if not trident:
+        if not match_oracle:
             return jsonify({
                 'success': False,
-                'error': 'Sistema TRIDENTE no disponible'
+                'error': 'Match Oracle no disponible'
             }), 503
-        
-        # Crear instancia del oráculo con TRIDENTE
-        oracle = create_oracle(trident)
         
         data = request.json
         red_alliance = data.get('red_alliance', [])
         blue_alliance = data.get('blue_alliance', [])
         
-        # Validar alianzas
-        if len(red_alliance) != 2 or len(blue_alliance) != 2:
+        # Validar alianzas (2 o 3 equipos)
+        if len(red_alliance) < 2 or len(blue_alliance) < 2:
             return jsonify({
                 'success': False,
-                'error': 'Cada alianza debe tener exactamente 2 equipos'
+                'error': 'Cada alianza debe tener al menos 2 equipos'
             }), 400
         
-        # Simular match
-        result = oracle.simulate_match(red_alliance, blue_alliance)
+        # Simular match con el nuevo sistema
+        result = match_oracle.simulate_match(red_alliance, blue_alliance)
         
-        return jsonify(result)
+        return jsonify({
+            'success': True,
+            'prediction': result
+        })
         
     except Exception as e:
         logger.error(f"Error en El Oráculo: {e}")
@@ -749,58 +774,162 @@ def oraculo_simulate():
             'error': f'Error simulando match: {str(e)}'
         }), 500
 
-# ========================================
-# 🕸️ SPIDER CHARTS - DATOS PARA RADAR
-# ========================================
-@app.route('/api/spider-chart/compare', methods=['POST'])
-def spider_chart_compare():
-    """Endpoint para obtener datos de spider/radar chart"""
+@app.route('/api/oraculo/bracket', methods=['POST'])
+def oraculo_bracket():
+    """Simula un bracket completo de eliminación"""
     try:
-        if not trident:
-            return jsonify({
-                'success': False,
-                'error': 'Sistema TRIDENTE no disponible'
-            }), 503
+        if not match_oracle:
+            return jsonify({'success': False, 'error': 'Match Oracle no disponible'}), 503
         
         data = request.json
-        team1 = data.get('team1')
-        team2 = data.get('team2')
+        alliances = data.get('alliances', [])  # Lista de alianzas [[team1, team2], ...]
         
-        if not team1 or not team2:
-            return jsonify({
-                'success': False,
-                'error': 'Ambos equipos son requeridos'
-            }), 400
+        if len(alliances) < 4:
+            return jsonify({'success': False, 'error': 'Se requieren al menos 4 alianzas'}), 400
         
-        # Obtener datos de ambos equipos
-        team1_data = trident.get_validated_report(team1)
-        team2_data = trident.get_validated_report(team2)
-        
-        # Calcular métricas de 5 ejes
-        team1_metrics = _calculate_spider_metrics(team1_data)
-        team2_metrics = _calculate_spider_metrics(team2_data)
+        result = match_oracle.simulate_elimination_bracket(alliances)
         
         return jsonify({
             'success': True,
-            'team1': {
-                'number': team1,
-                'name': team1_data.get('identity', {}).get('team_name', f'Team {team1}'),
-                'metrics': team1_metrics
-            },
-            'team2': {
-                'number': team2,
-                'name': team2_data.get('identity', {}).get('team_name', f'Team {team2}'),
-                'metrics': team2_metrics
-            },
-            'axes': ['Autónomo', 'TeleOp', 'EndGame', 'Fiabilidad', 'Defensa']
+            'bracket': result
         })
         
     except Exception as e:
-        logger.error(f"Error en Spider Chart: {e}")
+        logger.error(f"Error simulando bracket: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/oraculo/rankings', methods=['POST'])
+def oraculo_rankings():
+    """Predice rankings finales de un evento"""
+    try:
+        if not match_oracle:
+            return jsonify({'success': False, 'error': 'Match Oracle no disponible'}), 503
+        
+        data = request.json
+        teams = data.get('teams', [])  # Lista de números de equipo
+        
+        if len(teams) < 4:
+            return jsonify({'success': False, 'error': 'Se requieren al menos 4 equipos'}), 400
+        
+        result = match_oracle.predict_event_rankings(teams)
+        
         return jsonify({
-            'success': False,
-            'error': f'Error generando comparación: {str(e)}'
-        }), 500
+            'success': True,
+            'rankings': result
+        })
+        
+    except Exception as e:
+        logger.error(f"Error prediciendo rankings: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+# ========================================
+# 🕸️ SPIDER CHARTS - GRÁFICAS RADAR
+# ========================================
+@app.route('/api/spider-chart/single', methods=['POST'])
+def spider_chart_single():
+    """Genera gráfica radar para un solo equipo"""
+    try:
+        if not spider_charts:
+            return jsonify({'success': False, 'error': 'Spider Charts no disponible'}), 503
+        
+        data = request.json
+        team_number = data.get('team')
+        team_data = data.get('stats', {})
+        
+        if not team_number:
+            return jsonify({'success': False, 'error': 'Número de equipo requerido'}), 400
+        
+        # Generar gráfica radar
+        chart_json = spider_charts.create_single_team_radar(team_number, team_data)
+        
+        return jsonify({
+            'success': True,
+            'chart': chart_json
+        })
+        
+    except Exception as e:
+        logger.error(f"Error en Spider Chart Single: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/spider-chart/compare', methods=['POST'])
+def spider_chart_compare():
+    """Compara múltiples equipos en gráfica radar"""
+    try:
+        if not spider_charts:
+            return jsonify({'success': False, 'error': 'Spider Charts no disponible'}), 503
+        
+        data = request.json
+        teams_data = data.get('teams', [])  # [{'team': 123, 'stats': {...}}, ...]
+        
+        if len(teams_data) < 2:
+            return jsonify({'success': False, 'error': 'Se requieren al menos 2 equipos'}), 400
+        
+        if len(teams_data) > 5:
+            return jsonify({'success': False, 'error': 'Máximo 5 equipos para comparación'}), 400
+        
+        # Generar gráfica de comparación
+        chart_json = spider_charts.create_comparison_radar(teams_data)
+        
+        return jsonify({
+            'success': True,
+            'chart': chart_json
+        })
+        
+    except Exception as e:
+        logger.error(f"Error en Spider Chart Compare: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/spider-chart/alliance', methods=['POST'])
+def spider_chart_alliance():
+    """Genera gráfica radar promediada de una alianza"""
+    try:
+        if not spider_charts:
+            return jsonify({'success': False, 'error': 'Spider Charts no disponible'}), 503
+        
+        data = request.json
+        alliance_name = data.get('alliance_name', 'Alianza')
+        teams_data = data.get('teams', [])
+        
+        if len(teams_data) < 2:
+            return jsonify({'success': False, 'error': 'Alianza debe tener al menos 2 equipos'}), 400
+        
+        # Generar gráfica de alianza
+        chart_json = spider_charts.create_alliance_radar(alliance_name, teams_data)
+        
+        return jsonify({
+            'success': True,
+            'chart': chart_json
+        })
+        
+    except Exception as e:
+        logger.error(f"Error en Spider Chart Alliance: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/spider-chart/historical', methods=['POST'])
+def spider_chart_historical():
+    """Genera gráfica radar de evolución histórica de un equipo"""
+    try:
+        if not spider_charts:
+            return jsonify({'success': False, 'error': 'Spider Charts no disponible'}), 503
+        
+        data = request.json
+        team_number = data.get('team')
+        events_data = data.get('events', [])  # [{'event': 'Regional 1', 'stats': {...}}, ...]
+        
+        if not team_number or len(events_data) < 2:
+            return jsonify({'success': False, 'error': 'Se requiere equipo y al menos 2 eventos'}), 400
+        
+        # Generar gráfica histórica
+        chart_json = spider_charts.create_historical_radar(team_number, events_data)
+        
+        return jsonify({
+            'success': True,
+            'chart': chart_json
+        })
+        
+    except Exception as e:
+        logger.error(f"Error en Spider Chart Historical: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 # ========================================
 # 🏆 PREDICTOR DE REGIONALES
@@ -1173,6 +1302,161 @@ def export_excel(team_number):
         return send_file(excel_path, as_attachment=True)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+# ========================================
+# 📄 EXPORTACIÓN AVANZADA - PDF/EXCEL PROFESIONAL
+# ========================================
+@app.route('/api/export/advanced/team-pdf', methods=['POST'])
+def export_advanced_team_pdf():
+    """Exporta análisis completo de equipo a PDF profesional con radar charts"""
+    try:
+        if not advanced_exporter:
+            return jsonify({'success': False, 'error': 'Advanced Exporter no disponible'}), 503
+        
+        data = request.json
+        team_number = data.get('team')
+        team_stats = data.get('stats', {})
+        
+        if not team_number:
+            return jsonify({'success': False, 'error': 'Número de equipo requerido'}), 400
+        
+        # Generar PDF profesional con gráficas
+        pdf_path = advanced_exporter.export_team_analysis_pdf(team_number, team_stats)
+        
+        # Registrar exportación en DB
+        if 'user_id' in session and db_manager:
+            db_manager.add_export(session['user_id'], 'advanced_pdf', f'team_{team_number}')
+        
+        return send_file(pdf_path, as_attachment=True, download_name=f'team_{team_number}_analysis.pdf')
+        
+    except Exception as e:
+        logger.error(f"Error exportando PDF avanzado: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/export/advanced/comparison-pdf', methods=['POST'])
+def export_advanced_comparison_pdf():
+    """Exporta comparación de equipos a PDF profesional"""
+    try:
+        if not advanced_exporter:
+            return jsonify({'success': False, 'error': 'Advanced Exporter no disponible'}), 503
+        
+        data = request.json
+        teams_data = data.get('teams', [])  # [{'team': 123, 'stats': {...}}, ...]
+        
+        if len(teams_data) < 2:
+            return jsonify({'success': False, 'error': 'Se requieren al menos 2 equipos'}), 400
+        
+        # Generar PDF de comparación
+        pdf_path = advanced_exporter.export_comparison_pdf(teams_data)
+        
+        # Registrar exportación en DB
+        if 'user_id' in session and db_manager:
+            team_ids = ','.join([str(t['team']) for t in teams_data])
+            db_manager.add_export(session['user_id'], 'comparison_pdf', f'teams_{team_ids}')
+        
+        return send_file(pdf_path, as_attachment=True, download_name=f'comparison_analysis.pdf')
+        
+    except Exception as e:
+        logger.error(f"Error exportando PDF de comparación: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/export/advanced/event-excel', methods=['POST'])
+def export_advanced_event_excel():
+    """Exporta análisis completo de evento a Excel multi-hoja"""
+    try:
+        if not advanced_exporter:
+            return jsonify({'success': False, 'error': 'Advanced Exporter no disponible'}), 503
+        
+        data = request.json
+        event_data = data.get('event', {})
+        teams_data = data.get('teams', [])
+        
+        if not event_data or not teams_data:
+            return jsonify({'success': False, 'error': 'Datos de evento y equipos requeridos'}), 400
+        
+        # Generar Excel multi-hoja
+        excel_path = advanced_exporter.export_event_to_excel(event_data, teams_data)
+        
+        # Registrar exportación en DB
+        if 'user_id' in session and db_manager:
+            event_name = event_data.get('name', 'event')
+            db_manager.add_export(session['user_id'], 'event_excel', event_name)
+        
+        return send_file(excel_path, as_attachment=True, download_name=f"{event_data.get('name', 'event')}_analysis.xlsx")
+        
+    except Exception as e:
+        logger.error(f"Error exportando Excel de evento: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+# ========================================
+# 🦅 QUETZAL BOT - ASISTENTE IA AVANZADO
+# ========================================
+@app.route('/api/quetzal/ask', methods=['POST'])
+def quetzal_ask():
+    """Consulta al asistente Quetzal con RAG"""
+    try:
+        if not quetzal_bot:
+            return jsonify({'success': False, 'error': 'Quetzal Bot no disponible'}), 503
+        
+        data = request.json
+        question = data.get('question', '')
+        
+        if not question:
+            return jsonify({'success': False, 'error': 'Pregunta requerida'}), 400
+        
+        # Consultar con RAG
+        response = quetzal_bot.ask(question)
+        
+        return jsonify({
+            'success': True,
+            'response': response
+        })
+        
+    except Exception as e:
+        logger.error(f"Error en Quetzal Bot: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/quetzal/quick-answer', methods=['POST'])
+def quetzal_quick_answer():
+    """Respuestas rápidas predefinidas de Quetzal"""
+    try:
+        if not quetzal_bot:
+            return jsonify({'success': False, 'error': 'Quetzal Bot no disponible'}), 503
+        
+        data = request.json
+        topic = data.get('topic', '')
+        
+        response = quetzal_bot.get_quick_answer(topic)
+        
+        return jsonify({
+            'success': True,
+            'response': response
+        })
+        
+    except Exception as e:
+        logger.error(f"Error en Quetzal Quick Answer: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/quetzal/analyze-match', methods=['POST'])
+def quetzal_analyze_match():
+    """Análisis de situación de partido en tiempo real"""
+    try:
+        if not quetzal_bot:
+            return jsonify({'success': False, 'error': 'Quetzal Bot no disponible'}), 503
+        
+        data = request.json
+        match_data = data.get('match_data', {})
+        
+        response = quetzal_bot.analyze_match_situation(match_data)
+        
+        return jsonify({
+            'success': True,
+            'analysis': response
+        })
+        
+    except Exception as e:
+        logger.error(f"Error analizando partido: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 # --- DASHBOARD AVANZADO ---
 @app.route('/api/dashboard/global')
