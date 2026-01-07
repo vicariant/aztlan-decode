@@ -1,0 +1,1169 @@
+﻿{% extends "layout.html" %}
+
+{% block content %}
+<div class="astronomy-module fade-in">
+    <div class="module-card">
+        <!-- ENCABEZADO PRINCIPAL DEL MÃ“DULO -->
+        <div class="module-header" style="background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(75, 0, 130, 0.2)); border: 2px solid #8a2be2; border-radius: 15px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);">
+            <h1 class="module-title" style="font-size: 2.5rem; margin-bottom: 1rem; text-shadow: 0 0 20px #8a2be2;">
+                ï¿½ MÃ“DULO 1: AstronomIA (PROYECTO AZTLÃN)
+            </h1>
+            <div style="background: rgba(0, 0, 0, 0.5); padding: 1.5rem; border-radius: 10px; border-left: 4px solid #ffd700;">
+                <h2 style="color: #ffd700; font-size: 1.3rem; margin-bottom: 0.8rem;">ðŸŽ¯ Objetivo:</h2>
+                <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1rem;">
+                    No solo decir "es un planeta", sino <strong>visualizarlo y entenderlo</strong>.
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                    <div style="background: rgba(138, 43, 226, 0.2); padding: 1rem; border-radius: 8px; border: 1px solid #8a2be2;">
+                        <h3 style="color: #00d4ff; font-size: 1rem; margin-bottom: 0.5rem;">ðŸª Renderizado Procedural</h3>
+                        <p style="font-size: 0.9rem; opacity: 0.9;">Visualiza el planeta segÃºn temperatura, radio y zona habitable</p>
+                    </div>
+                    <div style="background: rgba(138, 43, 226, 0.2); padding: 1rem; border-radius: 8px; border: 1px solid #8a2be2;">
+                        <h3 style="color: #00d4ff; font-size: 1rem; margin-bottom: 0.5rem;">ðŸ§¬ Ãndice de Habitabilidad</h3>
+                        <p style="font-size: 0.9rem; opacity: 0.9;">Calcula Earth Similarity Index (ESI) del 0 al 1</p>
+                    </div>
+                    <div style="background: rgba(138, 43, 226, 0.2); padding: 1rem; border-radius: 8px; border: 1px solid #8a2be2;">
+                        <h3 style="color: #00d4ff; font-size: 1rem; margin-bottom: 0.5rem;">ðŸ“‰ Curvas de Luz</h3>
+                        <p style="font-size: 0.9rem; opacity: 0.9;">Visualiza el mÃ©todo de trÃ¡nsito usado para detectar el planeta</p>
+                    </div>
+                </div>
+            </div>
+            <p class="module-description" style="margin-top: 1.5rem; font-size: 1rem; opacity: 0.9;">
+                Sistema de Inteligencia Artificial para anÃ¡lisis de seÃ±ales astronÃ³micas<br>
+                <strong style="color: #ffd700;">Basado en datos de las misiones Kepler/TESS + IA Predictiva</strong>
+            </p>
+        </div>
+        
+        {% if not show_results %}
+            <!-- FORMULARIO DE ENTRADA -->
+            <form method="POST" class="astronomy-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="koi_prad" class="form-label">
+                            ðŸª Radio del Planeta (Earth radii)
+                        </label>
+                        <input type="number" 
+                               id="koi_prad" 
+                               name="koi_prad" 
+                               class="form-input" 
+                               step="0.01" 
+                               min="0.1" 
+                               max="50" 
+                               placeholder="2.5" 
+                               required>
+                        <small class="form-help">Rango tÃ­pico: 0.5 - 10.0 (Tierra = 1.0)</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="koi_srad" class="form-label">
+                            â­ Radio de la Estrella (Solar radii)
+                        </label>
+                        <input type="number" 
+                               id="koi_srad" 
+                               name="koi_srad" 
+                               class="form-input" 
+                               step="0.01" 
+                               min="0.1" 
+                               max="5" 
+                               placeholder="1.1" 
+                               required>
+                        <small class="form-help">Rango tÃ­pico: 0.5 - 2.0 (Sol = 1.0)</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="koi_period" class="form-label">
+                            ðŸ”„ Periodo Orbital (dÃ­as)
+                        </label>
+                        <input type="number" 
+                               id="koi_period" 
+                               name="koi_period" 
+                               class="form-input" 
+                               step="0.01" 
+                               min="0.1" 
+                               max="5000" 
+                               placeholder="365.25" 
+                               required>
+                        <small class="form-help">Rango tÃ­pico: 1 - 1000 dÃ­as (Tierra = 365.25)</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="koi_steff" class="form-label">
+                            ðŸŒ¡ï¸ Temperatura Estelar (Kelvin)
+                        </label>
+                        <input type="number" 
+                               id="koi_steff" 
+                               name="koi_steff" 
+                               class="form-input" 
+                               step="1" 
+                               min="2000" 
+                               max="10000" 
+                               placeholder="5778" 
+                               required>
+                        <small class="form-help">Rango tÃ­pico: 3000 - 7000 K (Sol = 5778 K)</small>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-cyber btn-analyze" onclick="showAztecLoading(event)">
+                        ï¿½ CONSULTAR EL COSMOS
+                    </button>
+                    <button type="reset" class="btn-cyber btn-reset">
+                        ðŸ”„ LIMPIAR
+                    </button>
+                </div>
+                
+                <!-- LOADING MODAL ASCII RETRO -->
+                <div id="aztecLoadingModal" class="aztec-loading-modal" style="display: none;">
+                    <div class="aztec-loading-content">
+                        <!-- CHAMÁN ASCII -->
+                        <div class="aztec-shaman-loading">
+                            <pre class="shaman-body" style="text-align: center;">    ^
+   &lt;o&gt;
+   /|\
+   / \</pre>
+                            <pre class="mystic-fire" style="text-align: center;">  ^
+ ^*^
+^*^*^</pre>
+                        </div>
+                        
+                        <h2 class="loading-title">*** CONSULTANDO EL COSMOS ***</h2>
+                        <div id="loadingMessages" class="loading-message"></div>
+                        
+                        <div class="loading-bar">
+                            <div class="loading-fill"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ejemplos predefinidos -->
+                <div class="examples-section">
+                    <h3 class="examples-title">ðŸ“Š Ejemplos Predefinidos</h3>
+                    <div class="examples-grid">
+                        <button type="button" class="example-btn" onclick="loadExample('earth')">
+                            ðŸŒ Tipo Tierra
+                        </button>
+                        <button type="button" class="example-btn" onclick="loadExample('jupiter')">
+                            ðŸª Tipo JÃºpiter
+                        </button>
+                        <button type="button" class="example-btn" onclick="loadExample('super_earth')">
+                            ðŸŒŽ Super-Tierra
+                        </button>
+                        <button type="button" class="example-btn" onclick="loadExample('hot_jupiter')">
+                            ðŸ”¥ JÃºpiter Caliente
+                        </button>
+                    </div>
+                </div>
+            </form>
+            
+        {% else %}
+            <!-- RESULTADOS DE LA PREDICCIÃ“N -->
+            <div class="results-section fade-in">
+                <h2 class="results-title">ðŸ›ï¸ REVELACIÃ“N DE LOS ANCESTROS</h2>
+                <p style="text-align: center; color: #ffd700; margin-bottom: 1.5rem; font-style: italic;">
+                    "âœ¨ Los datos han hablado desde el espacio profundo..."
+                </p>
+                
+                <!-- Estado de la predicciÃ³n -->
+                <div class="prediction-card {{ 'confirmed-planet' if prediction_result.prediction == 'PLANETA CONFIRMADO' else 'false-positive' }}">
+                    <div class="prediction-icon">
+                        {% if prediction_result.prediction == "PLANETA CONFIRMADO" %}
+                            ðŸª
+                        {% else %}
+                            âŒ
+                        {% endif %}
+                    </div>
+                    <h3 class="prediction-result">{{ prediction_result.prediction }}</h3>
+                    <div class="confidence-meter">
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: {{ prediction_result.confidence }}%;"></div>
+                        </div>
+                        <p class="confidence-text">{{ prediction_result.confidence }}% de Confianza</p>
+                    </div>
+                </div>
+                
+                <!-- Detalles probabilÃ­sticos -->
+                <div class="probability-details">
+                    <div class="prob-item">
+                        <span class="prob-label">ðŸª Probabilidad de Planeta:</span>
+                        <span class="prob-value planet-prob">{{ prediction_result.planet_probability }}%</span>
+                    </div>
+                    <div class="prob-item">
+                        <span class="prob-label">âŒ Probabilidad de Falso Positivo:</span>
+                        <span class="prob-value false-prob">{{ prediction_result.false_positive_probability }}%</span>
+                    </div>
+                </div>
+                
+                <!-- Datos de entrada utilizados -->
+                <div class="input-summary">
+                    <h4>ðŸ“¡ Datos Capturados por los Telescopios</h4>
+                    <div class="input-grid">
+                        <div class="input-item">
+                            <span class="input-label">Radio Planeta:</span>
+                            <span class="input-value">{{ prediction_result.input_data.koi_prad }} RâŠ•</span>
+                        </div>
+                        <div class="input-item">
+                            <span class="input-label">Radio Estrella:</span>
+                            <span class="input-value">{{ prediction_result.input_data.koi_srad }} Râ˜‰</span>
+                        </div>
+                        <div class="input-item">
+                            <span class="input-label">Periodo Orbital:</span>
+                            <span class="input-value">{{ prediction_result.input_data.koi_period }} dÃ­as</span>
+                        </div>
+                        <div class="input-item">
+                            <span class="input-label">Temperatura Estelar:</span>
+                            <span class="input-value">{{ prediction_result.input_data.koi_steff }} K</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- InterpretaciÃ³n cientÃ­fica -->
+                <div class="interpretation">
+                    <h4>ðŸ”­ AnÃ¡lisis AstrofÃ­sico (IA)</h4>
+                    <div class="interpretation-content">
+                        {% if prediction_result.prediction == "PLANETA CONFIRMADO" %}
+                            <p class="interpretation-text success">
+                                âœ¨ <strong>"AsÃ­ lo revela el cosmos:"</strong> Las seÃ±ales cÃ³smicas confirman la existencia de este mundo distante. 
+                                Los parÃ¡metros orbitales coinciden con las predicciones de nuestros algoritmos entrenados con datos de Kepler/TESS, 
+                                validados por observaciones espectroscÃ³picas y fotomÃ©tricas.
+                            </p>
+                            {% if prediction_result.input_data.koi_period >= 200 and prediction_result.input_data.koi_period <= 400 %}
+                                <p class="zone-info habitable">ðŸŒ± <strong>"Zona Habitable:"</strong> Este planeta reside en la regiÃ³n donde el agua lÃ­quida podrÃ­a fluir como en los ocÃ©anos terrestres.</p>
+                            {% endif %}
+                            {% if prediction_result.input_data.koi_prad < 2.0 %}
+                                <p class="size-info terrestrial">ðŸŒ <strong>"Planeta Rocoso:"</strong> Un mundo terrestre forjado en el corazÃ³n estelar, similar a la Tierra primitiva.</p>
+                            {% elif prediction_result.input_data.koi_prad > 4.0 %}
+                                <p class="size-info gas-giant">ðŸª <strong>"Gigante Gaseoso:"</strong> Un coloso de los vientos, dominando su sistema solar como JÃºpiter.</p>
+                            {% else %}
+                                <p class="size-info super-earth">ðŸŒŽ <strong>"Super-Tierra:"</strong> Un mundo rocoso magnificado, con mayor gravedad superficial.</p>
+                            {% endif %}
+                        {% else %}
+                            <p class="interpretation-text warning">
+                                âš ï¸ <strong>AnÃ¡lisis Negativo:</strong> Las caracterÃ­sticas analizadas presentan inconsistencias tÃ­picas de falsos positivos. 
+                                Esto podrÃ­a deberse a contaminaciÃ³n estelar, variabilidad intrÃ­nseca de la estrella, o artefactos instrumentales.
+                            </p>
+                            <p class="recommendation">
+                                ðŸ” <strong>RecomendaciÃ³n:</strong> Se requieren observaciones de seguimiento con espectrometrÃ­a de velocidad radial 
+                                o fotometrÃ­a de trÃ¡nsito adicional para confirmar la naturaleza de esta seÃ±al.
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- ========================================
+                     VISUALIZACIONES AVANZADAS
+                     ======================================== -->
+                {% if prediction_result.prediction == "PLANETA CONFIRMADO" %}
+                <div class="advanced-visualizations fade-in" style="margin-top: 2rem;">
+                    <h2 class="results-title" style="text-align: center; margin-bottom: 2rem;">
+                        ðŸŒŒ VISUALIZACIONES AVANZADAS
+                    </h2>
+                    
+                    <div class="viz-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                        
+                        <!-- 1. RENDERIZADO PROCEDURAL DEL PLANETA -->
+                        <div class="viz-card" style="background: rgba(0, 0, 0, 0.4); border: 2px solid #8a2be2; border-radius: 15px; padding: 1.5rem; box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);">
+                            <h3 style="color: #ffd700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                                ðŸª Renderizado Procedural
+                            </h3>
+                            <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1rem;">
+                                RepresentaciÃ³n visual del planeta basada en temperatura, radio y zona habitable
+                            </p>
+                            <canvas id="planetCanvas" width="300" height="300" style="width: 100%; max-width: 300px; margin: 0 auto; display: block; border-radius: 10px; background: #000;"></canvas>
+                            <div id="planetInfo" style="margin-top: 1rem; font-size: 0.85rem; text-align: center;"></div>
+                        </div>
+                        
+                        <!-- 2. ÃNDICE DE HABITABILIDAD (ESI) -->
+                        <div class="viz-card" style="background: rgba(0, 0, 0, 0.4); border: 2px solid #00d4ff; border-radius: 15px; padding: 1.5rem; box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);">
+                            <h3 style="color: #ffd700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                                ðŸ§¬ Earth Similarity Index (ESI)
+                            </h3>
+                            <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1rem;">
+                                Ãndice de similitud con la Tierra (0 = ninguna, 1 = idÃ©ntica)
+                            </p>
+                            <div id="esiMeter" style="position: relative; width: 200px; height: 200px; margin: 0 auto;">
+                                <svg width="200" height="200" viewBox="0 0 200 200">
+                                    <!-- Fondo del cÃ­rculo -->
+                                    <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="15"/>
+                                    <!-- CÃ­rculo de progreso ESI -->
+                                    <circle id="esiCircle" cx="100" cy="100" r="80" fill="none" stroke="#00d4ff" stroke-width="15"
+                                            stroke-dasharray="502.4" stroke-dashoffset="502.4"
+                                            transform="rotate(-90 100 100)" stroke-linecap="round"
+                                            style="transition: stroke-dashoffset 2s ease;"/>
+                                </svg>
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                                    <div id="esiValue" style="font-size: 2.5rem; font-weight: bold; color: #00d4ff;">0.00</div>
+                                    <div style="font-size: 0.8rem; opacity: 0.7;">ESI</div>
+                                </div>
+                            </div>
+                            <div id="esiInterpretation" style="margin-top: 1rem; font-size: 0.85rem; text-align: center; padding: 0.8rem; background: rgba(0, 212, 255, 0.1); border-radius: 8px;"></div>
+                        </div>
+                        
+                    </div>
+                    
+                    <!-- 3. CURVA DE LUZ (TRÃNSITO) -->
+                    <div class="viz-card-full" style="background: rgba(0, 0, 0, 0.4); border: 2px solid #ffd700; border-radius: 15px; padding: 1.5rem; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);">
+                        <h3 style="color: #ffd700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            ðŸ“‰ Curva de Luz del TrÃ¡nsito
+                        </h3>
+                        <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1rem;">
+                            SimulaciÃ³n de cÃ³mo el brillo de la estrella disminuye cuando el planeta pasa frente a ella (mÃ©todo de trÃ¡nsito)
+                        </p>
+                        <canvas id="lightCurveCanvas" width="800" height="300" style="width: 100%; max-width: 800px; margin: 0 auto; display: block; border-radius: 10px; background: rgba(0, 0, 0, 0.6);"></canvas>
+                        <div style="margin-top: 1rem; font-size: 0.85rem; text-align: center; opacity: 0.8;">
+                            <p>La profundidad del trÃ¡nsito indica el tamaÃ±o del planeta relativo a la estrella</p>
+                            <p>Periodo: {{ prediction_result.input_data.koi_period }} dÃ­as | Profundidad estimada: <span id="transitDepth"></span>%</p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Metadatos del anÃ¡lisis -->
+                <div class="analysis-metadata">
+                    <p><strong>â° AnÃ¡lisis realizado:</strong> {{ prediction_result.analysis_timestamp[:19] }}</p>
+                    <p><strong>ðŸ¤– Modelo:</strong> Random Forest Classifier (AztlÃ¡n IA)</p>
+                    <p><strong>ðŸ“Š Dataset base:</strong> SimulaciÃ³n NASA Exoplanet Archive</p>
+                </div>
+                
+                <!-- Acciones -->
+                <div class="result-actions">
+                    <a href="{{ url_for('astronomy') }}" class="btn-cyber">
+                        ðŸ”„ Nuevo AnÃ¡lisis
+                    </a>
+                    <button onclick="shareResults()" class="btn-cyber btn-secondary">
+                        ðŸ“¤ Compartir Resultados
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+/* ========================================
+   ESTILOS ESPECÃFICOS PARA ASTRONOMÃA
+   ======================================== */
+
+/* ANIMACIONES AZTECAS */
+@keyframes aztec-pulse {
+    0%, 100% { 
+        transform: scale(1); 
+        opacity: 1; 
+        box-shadow: 0 0 10px currentColor;
+    }
+    50% { 
+        transform: scale(1.5); 
+        opacity: 0.5; 
+        box-shadow: 0 0 30px currentColor;
+    }
+}
+
+@keyframes glyph-glow {
+    0%, 100% { 
+        text-shadow: 0 0 5px #ffd700, 0 0 10px #ffd700;
+    }
+    50% { 
+        text-shadow: 0 0 20px #ffd700, 0 0 40px #ffd700, 0 0 60px #ff0;
+    }
+}
+
+@keyframes ritual-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.aztec-glyph {
+    animation: glyph-glow 2s infinite;
+    display: inline-block;
+}
+
+.astronomy-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-help {
+    color: #87CEEB;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    display: block;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.btn-analyze {
+    background: linear-gradient(45deg, var(--jade-azteca), var(--turquesa-neon));
+}
+
+.btn-reset {
+    background: linear-gradient(45deg, var(--cobre-brillante), var(--oro-neon));
+}
+
+/* Ejemplos predefinidos */
+.examples-section {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: rgba(0, 168, 107, 0.1);
+    border: 1px solid var(--jade-azteca);
+    border-radius: 10px;
+}
+
+.examples-title {
+    font-family: var(--font-primary);
+    color: var(--jade-azteca);
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.example-btn {
+    background: linear-gradient(45deg, rgba(0, 168, 107, 0.2), rgba(0, 243, 255, 0.2));
+    border: 1px solid rgba(0, 168, 107, 0.6);
+    color: var(--jade-azteca);
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.example-btn:hover {
+    background: linear-gradient(45deg, rgba(0, 168, 107, 0.4), rgba(0, 243, 255, 0.4));
+    color: white;
+    transform: scale(1.02);
+}
+
+/* ========================================
+   RESULTADOS DE PREDICCIÃ“N
+   ======================================== */
+
+.results-title {
+    font-family: var(--font-primary);
+    font-size: 2rem;
+    text-align: center;
+    color: var(--oro-neon);
+    text-shadow: 0 0 4px rgba(255, 215, 0, 0.4);
+    margin-bottom: 2rem;
+}
+
+.prediction-card {
+    text-align: center;
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.prediction-card.confirmed-planet {
+    background: linear-gradient(145deg, rgba(0, 168, 107, 0.15), rgba(0, 243, 255, 0.08));
+    border: 2px solid rgba(0, 168, 107, 0.7);
+    box-shadow: 0 0 8px rgba(0, 168, 107, 0.4);
+}
+
+.prediction-card.false-positive {
+    background: linear-gradient(145deg, rgba(220, 53, 69, 0.15), rgba(255, 107, 107, 0.08));
+    border: 2px solid rgba(220, 53, 69, 0.7);
+    box-shadow: 0 0 8px rgba(220, 53, 69, 0.4);
+}
+
+.prediction-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+.prediction-result {
+    font-family: var(--font-primary);
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.confirmed-planet .prediction-result {
+    color: var(--jade-azteca);
+    text-shadow: var(--glow-jade);
+}
+
+.false-positive .prediction-result {
+    color: #dc3545;
+    text-shadow: 0 0 15px #dc3545;
+}
+
+/* Medidor de confianza */
+.confidence-meter {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.confidence-bar {
+    width: 100%;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+    border: 1px solid rgba(255, 215, 0, 0.6);
+}
+
+.confidence-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--jade-azteca), var(--turquesa-neon), var(--oro-neon));
+    border-radius: 8px;
+    transition: width 2s ease-out;
+    box-shadow: 0 0 4px rgba(255, 215, 0, 0.3);
+}
+
+.confidence-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--oro-neon);
+}
+
+/* Detalles de probabilidad */
+.probability-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.prob-item {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--oro-neon);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.prob-label {
+    font-weight: 600;
+}
+
+.prob-value {
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.planet-prob {
+    color: var(--jade-azteca);
+}
+
+.false-prob {
+    color: #dc3545;
+}
+
+/* Resumen de entrada */
+.input-summary {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid var(--oro-neon);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+}
+
+.input-summary h4 {
+    color: var(--oro-neon);
+    font-family: var(--font-primary);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.input-item {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.input-label {
+    font-size: 0.9rem;
+    color: var(--plata-lunar);
+    margin-bottom: 0.5rem;
+}
+
+.input-value {
+    font-family: var(--font-primary);
+    font-weight: 600;
+    color: var(--oro-neon);
+    font-size: 1.1rem;
+}
+
+/* InterpretaciÃ³n cientÃ­fica */
+.interpretation {
+    background: rgba(0, 243, 255, 0.1);
+    border: 1px solid var(--turquesa-neon);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+}
+
+.interpretation h4 {
+    color: var(--turquesa-neon);
+    font-family: var(--font-primary);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.interpretation-text {
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.interpretation-text.success {
+    color: var(--jade-azteca);
+}
+
+.interpretation-text.warning {
+    color: #ffc107;
+}
+
+.zone-info, .size-info, .recommendation {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.8rem;
+    border-radius: 8px;
+    margin: 0.5rem 0;
+    border-left: 4px solid var(--jade-azteca);
+}
+
+.habitable { border-left-color: #4CAF50; }
+.terrestrial { border-left-color: #2196F3; }
+.gas-giant { border-left-color: #FF9800; }
+.super-earth { border-left-color: #9C27B0; }
+
+/* Metadatos */
+.analysis-metadata {
+    text-align: center;
+    color: var(--plata-lunar);
+    font-size: 0.9rem;
+    margin: 2rem 0;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+.result-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .examples-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .form-actions,
+    .result-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .prediction-icon {
+        font-size: 3rem;
+    }
+    
+    .prediction-result {
+        font-size: 1.8rem;
+    }
+}
+</style>
+
+<script>
+// ========================================
+// SISTEMA DE CARGA RITUAL AZTECA
+// ========================================
+
+const aztecGlyphs = [
+    `
+        â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+        â•‘    ï¿½  NEBULOSA DE DATOS  ðŸŒŒ   â•‘
+        â• â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•£
+        â•‘         âœ¦âœ¦âœ¦âœ¦âœ¦âœ¦âœ¦âœ¦âœ¦         â•‘
+        â•‘        âœ¦ ðŸ”­  â­  ðŸ›°ï¸ âœ¦        â•‘
+        â•‘         âœ¦âœ¦âœ¦âœ¦âœ¦âœ¦âœ¦âœ¦âœ¦         â•‘
+        â•‘      â–“â–“â–“â–“â–“â–“â–“â–“â–“â–“â–“â–“â–“â–“â–“      â•‘
+        â•‘     â–“â–“ AstronomIA â–“â–“     â•‘
+        â•‘      â–“â–“â–“â–“â–“â–“â–“â–“â–“â–“â–“â–“â–“â–“â–“      â•‘
+        â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    `,
+    `
+        â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+        â•‘  ðŸŒ  ESCANEO ESPECTRAL  ðŸŒ   â•‘
+        â• â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•£
+        â•‘       â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†       â•‘
+        â•‘      â—†  âˆ— âˆ— âˆ—  â—†      â•‘
+        â•‘     â—†  âˆ— ðŸª âˆ—  â—†     â•‘
+        â•‘      â—†  âˆ— âˆ— âˆ—  â—†      â•‘
+        â•‘       â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†       â•‘
+        â•‘                                   â•‘
+        â•‘   [â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–‘â–‘â–‘â–‘â–‘] 60%  â•‘
+        â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    `,
+    `
+        â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+        â•‘   âš¡ VÃA LÃCTEA DIGITAL âš¡   â•‘
+        â• â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•£
+        â•‘         â•±â•²  â•±â•²  â•±â•²         â•‘
+        â•‘        â•±  â•²â•±  â•²â•±  â•²        â•‘
+        â•‘       â”‚  ðŸŒ™ â˜€ï¸ ðŸª  â”‚       â•‘
+        â•‘        â•²  â•±â•²  â•±â•²  â•±        â•‘
+        â•‘         â•²â•±  â•²â•±  â•²â•±         â•‘
+        â•‘                                   â•‘
+        â•‘   [â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–‘] 90%  â•‘
+        â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    `
+];
+
+const aztecMessages = [
+    "ï¿½ Navegando por las nebulosas de datos...",
+    "âœ¨ Analizando constelaciones estelares...",
+    "ðŸ”­ Escaneando la VÃ­a LÃ¡ctea digital...",
+    "ðŸŒ  Procesando seÃ±ales de Kepler y TESS...",
+    "ðŸŒŠ Calculando trÃ¡nsitos planetarios...",
+    "ðŸ”¥ Midiendo temperaturas estelares...",
+    "ðŸ”­ Buscando zonas habitables...",
+    "â­ Comparando con sistemas conocidos...",
+    "ðŸŒ La IA estÃ¡ procesando el universo...",
+    "ðŸ’« Â¡RevelaciÃ³n cÃ³smica inminente!"
+];
+
+function showAztecLoading(event) {
+    event.preventDefault();
+    
+    const modal = document.getElementById('aztecLoadingModal');
+    const ritualPre = document.getElementById('aztecRitual');
+    const messagesDiv = document.getElementById('loadingMessages');
+    
+    modal.style.display = 'flex';
+    
+    let glyphIndex = 0;
+    let messageIndex = 0;
+    
+    // Animar glifos
+    const glyphInterval = setInterval(() => {
+        ritualPre.textContent = aztecGlyphs[glyphIndex % aztecGlyphs.length];
+        glyphIndex++;
+    }, 1500);
+    
+    // Animar mensajes
+    const messageInterval = setInterval(() => {
+        messagesDiv.innerHTML = `<div class="aztec-glyph">${aztecMessages[messageIndex % aztecMessages.length]}</div>`;
+        messageIndex++;
+    }, 2000);
+    
+    // Mostrar primer glifo inmediatamente
+    ritualPre.textContent = aztecGlyphs[0];
+    messagesDiv.innerHTML = `<div class="aztec-glyph">${aztecMessages[0]}</div>`;
+    
+    // Enviar formulario despuÃ©s de 6 segundos (suficiente para ver la animaciÃ³n)
+    setTimeout(() => {
+        clearInterval(glyphInterval);
+        clearInterval(messageInterval);
+        event.target.form.submit();
+    }, 6000);
+}
+
+// Ejemplos predefinidos
+const examples = {
+    earth: {
+        koi_prad: 1.0,
+        koi_srad: 1.0,
+        koi_period: 365.25,
+        koi_steff: 5778
+    },
+    jupiter: {
+        koi_prad: 11.2,
+        koi_srad: 1.0,
+        koi_period: 4333,
+        koi_steff: 5778
+    },
+    super_earth: {
+        koi_prad: 2.5,
+        koi_srad: 0.8,
+        koi_period: 180,
+        koi_steff: 4800
+    },
+    hot_jupiter: {
+        koi_prad: 12.0,
+        koi_srad: 1.2,
+        koi_period: 3.5,
+        koi_steff: 6200
+    }
+};
+
+function loadExample(type) {
+    const example = examples[type];
+    if (example) {
+        document.getElementById('koi_prad').value = example.koi_prad;
+        document.getElementById('koi_srad').value = example.koi_srad;
+        document.getElementById('koi_period').value = example.koi_period;
+        document.getElementById('koi_steff').value = example.koi_steff;
+        
+        // Efecto visual
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.style.borderColor = 'var(--jade-azteca)';
+            input.style.boxShadow = 'var(--glow-jade)';
+            setTimeout(() => {
+                input.style.borderColor = 'var(--oro-neon)';
+                input.style.boxShadow = 'none';
+            }, 1000);
+        });
+    }
+}
+
+function shareResults() {
+    // Funcionalidad para compartir resultados
+    if (navigator.share) {
+        navigator.share({
+            title: 'AztlÃ¡n Decode - AnÃ¡lisis de Exoplaneta',
+            text: 'He analizado una seÃ±al astronÃ³mica con IA',
+            url: window.location.href
+        });
+    } else {
+        // Fallback: copiar URL
+        navigator.clipboard.writeText(window.location.href);
+        alert('Â¡URL copiada al portapapeles!');
+    }
+}
+
+// Animaciones de entrada
+document.addEventListener('DOMContentLoaded', function() {
+    // Animar entrada de formularios
+    const formGroups = document.querySelectorAll('.form-group');
+    formGroups.forEach((group, index) => {
+        group.style.opacity = '0';
+        group.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            group.style.transition = 'all 0.5s ease';
+            group.style.opacity = '1';
+            group.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+    
+    // Animar barra de confianza si existe
+    const confidenceFill = document.querySelector('.confidence-fill');
+    if (confidenceFill) {
+        const targetWidth = confidenceFill.style.width;
+        confidenceFill.style.width = '0%';
+        setTimeout(() => {
+            confidenceFill.style.width = targetWidth;
+        }, 500);
+    }
+    
+    // ========================================
+    // VISUALIZACIONES AVANZADAS
+    // ========================================
+    {% if prediction_result and prediction_result.prediction == "PLANETA CONFIRMADO" %}
+    
+    // Datos del planeta
+    const planetData = {
+        radius: parseFloat("{{ prediction_result.input_data.koi_prad }}") || 1.0,
+        stellarRadius: parseFloat("{{ prediction_result.input_data.koi_srad }}") || 1.0,
+        period: parseFloat("{{ prediction_result.input_data.koi_period }}") || 365,
+        stellarTemp: parseFloat("{{ prediction_result.input_data.koi_steff }}") || 5778
+    };
+    
+    // 1. RENDERIZADO PROCEDURAL DEL PLANETA
+    function renderPlanet() {
+        const canvas = document.getElementById('planetCanvas');
+        if (!canvas) return;
+        
+        const ctx = canvas.getContext('2d');
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = Math.min(100, 30 + planetData.radius * 8);
+        
+        // Determinar tipo de planeta y color
+        let planetColor, planetType, glowColor;
+        
+        if (planetData.stellarTemp > 6000) {
+            // Planeta caliente (rojizo/lava)
+            planetColor = ['#ff4500', '#ff6347', '#ff8c00'];
+            glowColor = 'rgba(255, 69, 0, 0.6)';
+            planetType = 'ðŸ”¥ Planeta Caliente (Lava)';
+        } else if (planetData.radius > 4) {
+            // Gigante gaseoso (tipo JÃºpiter)
+            planetColor = ['#daa520', '#cd853f', '#d2691e'];
+            glowColor = 'rgba(218, 165, 32, 0.4)';
+            planetType = 'ðŸª Gigante Gaseoso';
+        } else if (planetData.period >= 200 && planetData.period <= 400) {
+            // Zona habitable (azul/verde tipo Tierra)
+            planetColor = ['#1e90ff', '#00ced1', '#20b2aa'];
+            glowColor = 'rgba(30, 144, 255, 0.6)';
+            planetType = 'ðŸŒ Zona Habitable (Tipo Tierra)';
+        } else {
+            // Planeta rocoso genÃ©rico
+            planetColor = ['#8b7355', '#a0522d', '#cd853f'];
+            glowColor = 'rgba(139, 115, 85, 0.4)';
+            planetType = 'ðŸŒ‘ Planeta Rocoso';
+        }
+        
+        // Limpiar canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Glow exterior
+        const gradient = ctx.createRadialGradient(centerX, centerY, radius, centerX, centerY, radius + 30);
+        gradient.addColorStop(0, glowColor);
+        gradient.addColorStop(1, 'transparent');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Planeta base
+        const planetGradient = ctx.createRadialGradient(
+            centerX - radius * 0.3, centerY - radius * 0.3, radius * 0.1,
+            centerX, centerY, radius
+        );
+        planetGradient.addColorStop(0, planetColor[0]);
+        planetGradient.addColorStop(0.5, planetColor[1]);
+        planetGradient.addColorStop(1, planetColor[2]);
+        
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.fillStyle = planetGradient;
+        ctx.fill();
+        
+        // Textura/detalles del planeta
+        ctx.globalAlpha = 0.3;
+        for (let i = 0; i < 5; i++) {
+            ctx.beginPath();
+            ctx.arc(
+                centerX + (Math.random() - 0.5) * radius,
+                centerY + (Math.random() - 0.5) * radius,
+                Math.random() * 20 + 10,
+                0, Math.PI * 2
+            );
+            ctx.fillStyle = planetColor[Math.floor(Math.random() * 3)];
+            ctx.fill();
+        }
+        ctx.globalAlpha = 1.0;
+        
+        // InformaciÃ³n del planeta
+        document.getElementById('planetInfo').innerHTML = `
+            <strong>${planetType}</strong><br>
+            Radio: ${planetData.radius.toFixed(2)} RâŠ•<br>
+            Temperatura: ${planetData.stellarTemp} K
+        `;
+    }
+    
+    // 2. CALCULADORA ESI (Earth Similarity Index)
+    function calculateESI() {
+        // FÃ³rmula ESI simplificada
+        // ESI = producto de similitudes de radio, densidad, velocidad de escape y temperatura
+        
+        const earthRadius = 1.0;
+        const earthTemp = 288; // K (temperatura superficial promedio)
+        
+        // Similitud de radio
+        const radiusSimilarity = 1 - Math.abs(planetData.radius - earthRadius) / (planetData.radius + earthRadius);
+        
+        // Estimar temperatura del planeta (aproximaciÃ³n simple)
+        const au = Math.pow(planetData.period / 365.25, 2/3); // Tercera ley de Kepler
+        const planetTemp = planetData.stellarTemp * Math.sqrt(planetData.stellarRadius / (2 * au));
+        
+        // Similitud de temperatura
+        const tempSimilarity = 1 - Math.abs(planetTemp - earthTemp) / (planetTemp + earthTemp);
+        
+        // ESI combinado (simplificado, versiÃ³n real usa mÃ¡s parÃ¡metros)
+        const esi = Math.pow(radiusSimilarity * Math.max(0, tempSimilarity), 0.5);
+        
+        // Animar el cÃ­rculo ESI
+        const circle = document.getElementById('esiCircle');
+        const circumference = 2 * Math.PI * 80; // radio = 80
+        const offset = circumference - (esi * circumference);
+        
+        setTimeout(() => {
+            circle.style.strokeDashoffset = offset;
+        }, 500);
+        
+        // Animar el valor numÃ©rico
+        const valueElement = document.getElementById('esiValue');
+        let current = 0;
+        const increment = esi / 50;
+        const interval = setInterval(() => {
+            current += increment;
+            if (current >= esi) {
+                current = esi;
+                clearInterval(interval);
+            }
+            valueElement.textContent = current.toFixed(2);
+            
+            // Cambiar color segÃºn ESI
+            if (esi > 0.8) {
+                circle.style.stroke = '#00ff00';
+                valueElement.style.color = '#00ff00';
+            } else if (esi > 0.6) {
+                circle.style.stroke = '#ffd700';
+                valueElement.style.color = '#ffd700';
+            } else {
+                circle.style.stroke = '#ff6b6b';
+                valueElement.style.color = '#ff6b6b';
+            }
+        }, 40);
+        
+        // InterpretaciÃ³n
+        let interpretation = '';
+        if (esi > 0.8) {
+            interpretation = 'ðŸŒŸ <strong>Altamente Similar a la Tierra!</strong> Este planeta tiene caracterÃ­sticas muy similares a nuestro hogar.';
+        } else if (esi > 0.6) {
+            interpretation = 'âœ¨ <strong>Moderadamente Similar</strong> - Presenta algunas caracterÃ­sticas terrestres interesantes.';
+        } else if (esi > 0.4) {
+            interpretation = 'âš ï¸ <strong>Baja Similitud</strong> - Condiciones significativamente diferentes a la Tierra.';
+        } else {
+            interpretation = 'âŒ <strong>Muy Diferente</strong> - Ambiente probablemente hostil para vida como la conocemos.';
+        }
+        
+        document.getElementById('esiInterpretation').innerHTML = interpretation;
+    }
+    
+    // 3. CURVA DE LUZ DEL TRÃNSITO
+    function renderLightCurve() {
+        const canvas = document.getElementById('lightCurveCanvas');
+        if (!canvas) return;
+        
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+        const padding = 40;
+        
+        // Limpiar canvas
+        ctx.clearRect(0, 0, width, height);
+        
+        // Calcular profundidad del trÃ¡nsito
+        // Profundidad = (Radio_planeta / Radio_estrella)^2
+        const transitDepth = Math.pow(planetData.radius / (planetData.stellarRadius * 109), 2) * 100; // en porcentaje
+        document.getElementById('transitDepth').textContent = transitDepth.toFixed(4);
+        
+        // Generar curva de luz simulada
+        const points = [];
+        const numPoints = 200;
+        const transitStart = 0.35;
+        const transitEnd = 0.65;
+        const transitMid = 0.5;
+        
+        for (let i = 0; i < numPoints; i++) {
+            const x = i / numPoints;
+            let y = 1.0; // Brillo normal
+            
+            // Agregar ruido realista
+            y += (Math.random() - 0.5) * 0.002;
+            
+            // Simular el trÃ¡nsito (curva gaussiana invertida)
+            if (x >= transitStart && x <= transitEnd) {
+                const normalizedX = (x - transitMid) / (transitEnd - transitStart);
+                const transitEffect = Math.exp(-50 * normalizedX * normalizedX);
+                y -= transitDepth / 100 * transitEffect;
+            }
+            
+            points.push({ x, y });
+        }
+        
+        // Dibujar ejes
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(padding, height - padding);
+        ctx.lineTo(width - padding, height - padding);
+        ctx.moveTo(padding, padding);
+        ctx.lineTo(padding, height - padding);
+        ctx.stroke();
+        
+        // Etiquetas de ejes
+        ctx.fillStyle = '#ffd700';
+        ctx.font = '12px Arial';
+        ctx.fillText('Tiempo (fase orbital)', width / 2 - 50, height - 10);
+        ctx.save();
+        ctx.translate(15, height / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillText('Brillo Relativo', 0, 0);
+        ctx.restore();
+        
+        // Dibujar lÃ­nea base
+        ctx.strokeStyle = 'rgba(0, 212, 255, 0.3)';
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(padding, padding + 20);
+        ctx.lineTo(width - padding, padding + 20);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // Dibujar curva de luz
+        ctx.strokeStyle = '#00d4ff';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        
+        points.forEach((point, index) => {
+            const x = padding + point.x * (width - 2 * padding);
+            const y = padding + 20 + (1 - point.y) * (height - 2 * padding - 40) * 50;
+            
+            if (index === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+        });
+        
+        ctx.stroke();
+        
+        // Resaltar la zona de trÃ¡nsito
+        ctx.fillStyle = 'rgba(255, 215, 0, 0.1)';
+        ctx.fillRect(
+            padding + transitStart * (width - 2 * padding),
+            padding,
+            (transitEnd - transitStart) * (width - 2 * padding),
+            height - 2 * padding
+        );
+        
+        // Etiqueta de trÃ¡nsito
+        ctx.fillStyle = '#ffd700';
+        ctx.font = 'bold 14px Arial';
+        ctx.fillText('â† TrÃ¡nsito â†’', padding + transitMid * (width - 2 * padding) - 40, padding + 10);
+    }
+    
+    // Ejecutar todas las visualizaciones
+    setTimeout(() => {
+        renderPlanet();
+        calculateESI();
+        renderLightCurve();
+    }, 800);
+    {% endif %}
+    });
+</script>
+{% endblock %}

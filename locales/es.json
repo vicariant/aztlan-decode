@@ -1,0 +1,95 @@
+{
+  "app_name": "Aztlán Decode",
+  "tagline": "Sistema de Análisis FTC",
+  "navigation": {
+    "home": "Inicio",
+    "scouting": "Scouting",
+    "astronomy": "Astronomía",
+    "comparison": "Comparación",
+    "about": "Acerca de"
+  },
+  "common": {
+    "search": "Buscar",
+    "analyze": "Analizar",
+    "compare": "Comparar",
+    "export": "Exportar",
+    "download": "Descargar",
+    "share": "Compartir",
+    "favorite": "Favorito",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "close": "Cerrar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar"
+  },
+  "scouting": {
+    "title": "Excavación Digital",
+    "subtitle": "Sistema TRIDENTE de Inteligencia Competitiva",
+    "team_number": "Número de Equipo FTC",
+    "analyze_team": "Analizar Equipo",
+    "team_info": "Información del Equipo",
+    "performance_metrics": "Métricas de Rendimiento",
+    "ai_analysis": "Análisis de IA",
+    "strategic_recommendations": "Recomendaciones Estratégicas",
+    "tridente_consensus": "Consenso TRIDENTE"
+  },
+  "astronomy": {
+    "title": "Exploración de Exoplanetas",
+    "subtitle": "Simulación de Búsqueda de Mundos Habitables",
+    "distance": "Distancia (años luz)",
+    "radius": "Radio (Tierras)",
+    "temperature": "Temperatura (K)",
+    "orbital_period": "Periodo Orbital (días)",
+    "simulate": "Simular Búsqueda",
+    "habitable_zone": "Zona Habitable",
+    "habitability_score": "Puntuación de Habitabilidad"
+  },
+  "comparison": {
+    "title": "Campo de Batalla",
+    "subtitle": "Comparación Directa de Equipos",
+    "team1": "Equipo 1",
+    "team2": "Equipo 2",
+    "compare_teams": "Comparar Equipos",
+    "winner_prediction": "Predicción de Ganador",
+    "win_probability": "Probabilidad de Victoria",
+    "strategic_analysis": "Análisis Estratégico"
+  },
+  "export": {
+    "export_pdf": "Exportar a PDF",
+    "export_csv": "Exportar a CSV",
+    "export_excel": "Exportar a Excel",
+    "export_success": "Exportación exitosa",
+    "export_error": "Error al exportar"
+  },
+  "chatbot": {
+    "title": "Asistente IA",
+    "placeholder": "Pregunta algo sobre FTC o exoplanetas...",
+    "send": "Enviar",
+    "thinking": "Pensando...",
+    "error": "Error al procesar tu mensaje"
+  },
+  "stats": {
+    "total_searches": "Total de Búsquedas",
+    "total_analyses": "Total de Análisis",
+    "most_searched": "Más Buscados",
+    "recent_activity": "Actividad Reciente"
+  },
+  "errors": {
+    "team_not_found": "Equipo no encontrado",
+    "invalid_team_number": "Número de equipo inválido",
+    "api_error": "Error de API",
+    "network_error": "Error de conexión",
+    "database_error": "Error de base de datos",
+    "export_error": "Error al exportar"
+  },
+  "success": {
+    "analysis_complete": "Análisis completado",
+    "export_complete": "Exportación completada",
+    "favorite_added": "Agregado a favoritos",
+    "favorite_removed": "Eliminado de favoritos"
+  }
+}

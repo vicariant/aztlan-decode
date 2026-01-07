@@ -1,0 +1,537 @@
+/* ========================================
+   ANIMACIONES ASCII RETRO - ESTILO 1980s
+   Arte ASCII clásico de teclado
+   ======================================== */
+
+/* GUERRERO ASCII PELEANDO */
+.aztec-warrior-loading {
+    position: relative;
+    width: 300px;
+    height: 150px;
+    margin: 0 auto 2rem;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.2;
+    color: #00ff00;
+    text-shadow: 0 0 10px #00ff00;
+}
+
+.warrior-body {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    white-space: pre;
+    text-align: center;
+    font-size: 18px;
+    color: #00ff00;
+    animation: warriorBounce 2s ease-in-out infinite;
+}
+
+@keyframes warriorBounce {
+    0%, 100% { 
+        transform: translateY(0px) rotate(0deg);
+        filter: brightness(1);
+    }
+    25% { 
+        transform: translateY(-10px) rotate(-5deg);
+        filter: brightness(1.2);
+    }
+    50% { 
+        transform: translateY(-20px) rotate(0deg);
+        filter: brightness(1.4);
+    }
+    75% { 
+        transform: translateY(-10px) rotate(5deg);
+        filter: brightness(1.2);
+    }
+}
+
+.warrior-weapon {
+    position: absolute;
+    font-size: 18px;
+    top: 20%;
+    right: -15%;
+    animation: weaponSlashASCII 1s linear infinite;
+    font-family: 'Courier New', monospace;
+    color: #ff0000;
+    text-shadow: 0 0 10px #ff0000;
+}
+
+@keyframes weaponSlashASCII {
+    0% { content: "===>"; opacity: 1; }
+    25% { content: " ==>"; opacity: 0.8; }
+    50% { content: "  =>"; opacity: 0.6; }
+    75% { content: "   >"; opacity: 0.8; }
+    100% { content: "===>"; opacity: 1; }
+}
+
+.warrior-shield {
+    position: absolute;
+    font-size: 18px;
+    top: 20%;
+    left: -15%;
+    animation: shieldBlockASCII 1s linear infinite;
+    font-family: 'Courier New', monospace;
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff;
+}
+
+@keyframes shieldBlockASCII {
+    0%, 100% { content: "[###]"; opacity: 1; }
+    50% { content: "[###]"; opacity: 0.7; transform: scale(1.1); }
+}
+
+/* CHAMÁN ASCII RITUAL */
+.aztec-shaman-loading {
+    position: relative;
+    width: 300px;
+    height: 150px;
+    margin: 0 auto 2rem;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.2;
+    color: #ff00ff;
+    text-shadow: 0 0 10px #ff00ff;
+}
+
+.shaman-body {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    white-space: pre;
+    animation: shamanRitualASCII 2s linear infinite;
+}
+
+@keyframes shamanRitualASCII {
+    0% { 
+        content: "    ^\n   <o>\n   /|\\\n   / \\";
+        opacity: 1;
+    }
+    33% { 
+        content: "    *\n   <o>\n   /|\\\n   / \\";
+        opacity: 0.9;
+    }
+    66% { 
+        content: "    +\n   <o>\n   /|\\\n   / \\";
+        opacity: 0.8;
+    }
+    100% { 
+        content: "    ^\n   <o>\n   /|\\\n   / \\";
+        opacity: 1;
+    }
+}
+
+/* FUEGO ASCII */
+.mystic-fire {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    animation: fireFlickerASCII 0.5s linear infinite;
+    font-family: 'Courier New', monospace;
+    color: #ff4500;
+    text-shadow: 0 0 15px #ff4500;
+}
+
+@keyframes fireFlickerASCII {
+    0% { content: "  ^\n ^*^\n^*^*^"; opacity: 1; }
+    25% { content: " ^\n^*^\n*^*^"; opacity: 0.9; }
+    50% { content: "  *\n ^*^\n^*^*"; opacity: 0.8; }
+    75% { content: " ^\n*^*\n^*^*^"; opacity: 0.9; }
+    100% { content: "  ^\n ^*^\n^*^*^"; opacity: 1; }
+}
+
+/* INCIENSO MÍSTICO */
+.mystic-smoke {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    animation: smokeRise 4s ease-in-out infinite;
+    opacity: 0.7;
+}
+
+@keyframes smokeRise {
+    0% { 
+        transform: translateX(-50%) translateY(0) scale(1);
+        opacity: 0;
+    }
+    25% { 
+        transform: translateX(-40%) translateY(-20px) scale(1.2);
+        opacity: 0.7;
+    }
+    50% { 
+        transform: translateX(-60%) translateY(-40px) scale(1.5);
+        opacity: 0.5;
+    }
+    75% { 
+        transform: translateX(-45%) translateY(-60px) scale(1.8);
+        opacity: 0.3;
+    }
+    100% { 
+        transform: translateX(-50%) translateY(-80px) scale(2);
+        opacity: 0;
+    }
+}
+
+/* ENERGÍA CÓSMICA */
+.cosmic-energy {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    animation: energyPulse 2s ease-in-out infinite;
+}
+
+.energy-orb {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 243, 255, 1), rgba(0, 243, 255, 0));
+    animation: orbFloat 3s ease-in-out infinite;
+}
+
+.energy-orb:nth-child(1) {
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.energy-orb:nth-child(2) {
+    top: 10%;
+    right: 10%;
+    animation-delay: 0.5s;
+}
+
+.energy-orb:nth-child(3) {
+    bottom: 10%;
+    left: 10%;
+    animation-delay: 1s;
+}
+
+.energy-orb:nth-child(4) {
+    bottom: 10%;
+    right: 10%;
+    animation-delay: 1.5s;
+}
+
+@keyframes orbFloat {
+    0%, 100% { 
+        transform: translateY(0) scale(1);
+        opacity: 0.5;
+    }
+    50% { 
+        transform: translateY(-30px) scale(1.5);
+        opacity: 1;
+    }
+}
+
+@keyframes energyPulse {
+    0%, 100% { 
+        box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+    }
+    50% { 
+        box-shadow: 0 0 60px rgba(138, 43, 226, 0.6);
+    }
+}
+
+/* CALENDARIO AZTECA GIRANDO */
+.aztec-calendar {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 10rem;
+    animation: calendarSpin 8s linear infinite;
+    opacity: 0.15;
+    z-index: -1;
+}
+
+@keyframes calendarSpin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* RAYOS DE LUZ DIVINA */
+.divine-rays {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.ray {
+    position: absolute;
+    width: 4px;
+    height: 100px;
+    background: linear-gradient(to bottom, rgba(255, 215, 0, 0.8), rgba(255, 215, 0, 0));
+    transform-origin: top center;
+    animation: rayBeam 3s ease-in-out infinite;
+}
+
+.ray:nth-child(1) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(0deg);
+    animation-delay: 0s;
+}
+
+.ray:nth-child(2) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    animation-delay: 0.2s;
+}
+
+.ray:nth-child(3) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(90deg);
+    animation-delay: 0.4s;
+}
+
+.ray:nth-child(4) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(135deg);
+    animation-delay: 0.6s;
+}
+
+.ray:nth-child(5) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(180deg);
+    animation-delay: 0.8s;
+}
+
+.ray:nth-child(6) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(225deg);
+    animation-delay: 1s;
+}
+
+.ray:nth-child(7) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(270deg);
+    animation-delay: 1.2s;
+}
+
+.ray:nth-child(8) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(315deg);
+    animation-delay: 1.4s;
+}
+
+@keyframes rayBeam {
+    0%, 100% { 
+        opacity: 0.3;
+        height: 80px;
+    }
+    50% { 
+        opacity: 0.8;
+        height: 120px;
+    }
+}
+
+/* SERPIENTE EMPLUMADA */
+.feathered-serpent {
+    position: absolute;
+    font-size: 3rem;
+    animation: serpentMove 5s ease-in-out infinite;
+}
+
+@keyframes serpentMove {
+    0%, 100% { 
+        transform: translateX(-100px) translateY(0) rotate(-20deg);
+        opacity: 0;
+    }
+    25% { 
+        transform: translateX(0) translateY(-20px) rotate(0deg);
+        opacity: 1;
+        filter: drop-shadow(0 0 30px rgba(0, 255, 127, 0.9));
+    }
+    50% { 
+        transform: translateX(100px) translateY(0) rotate(20deg);
+        opacity: 1;
+        filter: drop-shadow(0 0 40px rgba(50, 205, 50, 1));
+    }
+    75% { 
+        transform: translateX(200px) translateY(-20px) rotate(40deg);
+        opacity: 0.5;
+    }
+    100% { 
+        transform: translateX(300px) translateY(0) rotate(60deg);
+        opacity: 0;
+    }
+}
+
+/* MODAL DE CARGA AZTECA */
+.aztec-loading-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    backdrop-filter: blur(10px);
+}
+
+.aztec-loading-content {
+    text-align: center;
+    padding: 3rem;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(20, 20, 40, 0.9));
+    border: 3px solid var(--oro-neon);
+    border-radius: 20px;
+    box-shadow: 0 0 60px rgba(255, 215, 0, 0.5);
+    max-width: 500px;
+    animation: modalPulse 2s ease-in-out infinite;
+}
+
+@keyframes modalPulse {
+    0%, 100% { 
+        box-shadow: 0 0 60px rgba(255, 215, 0, 0.5);
+        border-color: var(--oro-neon);
+    }
+    50% { 
+        box-shadow: 0 0 100px rgba(0, 243, 255, 0.7);
+        border-color: var(--turquesa-neon);
+    }
+}
+
+.loading-title {
+    color: var(--oro-neon);
+    font-family: var(--font-primary);
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+    animation: titleGlow 2s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+    0%, 100% { 
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        transform: scale(1);
+    }
+    50% { 
+        text-shadow: 0 0 40px rgba(255, 215, 0, 1), 0 0 60px rgba(0, 243, 255, 0.8);
+        transform: scale(1.05);
+    }
+}
+
+.loading-message {
+    color: var(--turquesa-neon);
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    animation: messageFloat 3s ease-in-out infinite;
+}
+
+/* PARTÍCULAS MÍSTICAS */
+.mystic-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--oro-neon);
+    border-radius: 50%;
+    animation: particleFloat 4s ease-in-out infinite;
+}
+
+.particle:nth-child(odd) {
+    background: var(--turquesa-neon);
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translateY(100vh) translateX(0) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) translateX(100px) scale(1);
+        opacity: 0;
+    }
+}
+
+/* GLIFOS FLOTANTES */
+.floating-glyphs {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.glyph {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.3;
+    animation: glyphFloat 8s ease-in-out infinite;
+}
+
+@keyframes glyphFloat {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.2;
+    }
+    50% {
+        transform: translateY(-50px) rotate(180deg);
+        opacity: 0.6;
+    }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .aztec-warrior-loading,
+    .aztec-shaman-loading {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .warrior-body,
+    .shaman-body {
+        font-size: 6rem;
+    }
+    
+    .warrior-weapon,
+    .warrior-shield,
+    .mystic-fire {
+        font-size: 2rem;
+    }
+    
+    .aztec-loading-content {
+        padding: 2rem;
+        margin: 1rem;
+    }
+    
+    .loading-title {
+        font-size: 1.4rem;
+    }
+    
+    .loading-message {
+        font-size: 1rem;
+    }
+}

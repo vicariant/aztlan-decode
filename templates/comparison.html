@@ -1,0 +1,2653 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="comparison-module fade-in">
+    <div class="module-card">
+        <h1 class="module-title">⚔️ CENTRO DE ANÁLISIS AVANZADO</h1>
+        <p class="module-description">
+            Análisis comparativo con <strong>IA</strong> y validación <strong>TRIDENTE</strong><br>
+            <strong>🧠 Quetzal-Bot | 🔮 El Oráculo | 🕸️ Spider Charts</strong>
+        </p>
+        
+        <!-- TABS DE NAVEGACIÓN -->
+        <div class="tabs-nav">
+            <button class="tab-btn active" onclick="switchTab('comparison')">⚔️ Comparación</button>
+            <button class="tab-btn" onclick="switchTab('quetzal')">🧠 Quetzal-Bot</button>
+            <button class="tab-btn" onclick="switchTab('oraculo')">🔮 El Oráculo</button>
+            <button class="tab-btn" onclick="switchTab('spider')">🕸️ Spider Charts</button>
+            <button class="tab-btn" onclick="switchTab('regional')">🏆 Predictor Regional</button>
+        </div>
+        
+        <!-- MODAL DE CARGA ASCII RETRO -->
+        <div id="loadingModal" class="aztec-loading-modal" style="display:none;">
+            <div class="aztec-loading-content">
+                <!-- GUERRERO ASCII -->
+                <div class="aztec-warrior-loading">
+                    <pre class="warrior-body" style="text-align: center;">    o
+   /|\
+   / \</pre>
+                    <pre class="warrior-weapon" style="text-align: center;">===&gt;</pre>
+                    <pre class="warrior-shield" style="text-align: center;">[###]</pre>
+                </div>
+                
+                <h2 class="loading-title">=== GUERRERO CONSULTANDO DATOS ===</h2>
+                <div id="loadingMessage" class="loading-message"></div>
+                
+                <div class="loading-bar">
+                    <div class="loading-fill"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- TAB: COMPARACIÓN TRADICIONAL -->
+        <div id="tab-comparison" class="tab-content active">
+        
+        {% if not show_results %}
+            <!-- FORMULARIO DE COMPARACIÓN -->
+            <form method="POST" class="comparison-form">
+                <div class="teams-input-grid">
+                    <div class="team-input-section">
+                        <label for="team1_number" class="form-label">
+                            🤖 Equipo 1
+                        </label>
+                        <input type="number" 
+                               id="team1_number" 
+                               name="team1_number" 
+                               class="form-input team-input" 
+                               min="1" 
+                               max="99999" 
+                               placeholder="16418" 
+                               required>
+                    </div>
+                    
+                    <div class="vs-divider">
+                        <span>VS</span>
+                    </div>
+                    
+                    <div class="team-input-section">
+                        <label for="team2_number" class="form-label">
+                            🤖 Equipo 2
+                        </label>
+                        <input type="number" 
+                               id="team2_number" 
+                               name="team2_number" 
+                               class="form-input team-input" 
+                               min="1" 
+                               max="99999" 
+                               placeholder="254" 
+                               required>
+                    </div>
+                </div>
+                
+                <div class="search-actions">
+                    <button type="submit" class="btn-cyber btn-compare">
+                        ⚔️ COMPARAR EQUIPOS
+                    </button>
+                </div>
+                
+                <!-- Explicación -->
+                <div class="comparison-explanation">
+                    <h3>🤖 Análisis con IA</h3>
+                    <p>El sistema utiliza inteligencia artificial para analizar:</p>
+                    <ul>
+                        <li>📊 Estadísticas competitivas (W-L, OPR, Ranking)</li>
+                        <li>🏆 Premios y logros obtenidos</li>
+                        <li>🎮 Historial de matches y desempeño</li>
+                        <li>🌟 Calificación a campeonatos nacionales</li>
+                        <li>🔱 Confiabilidad de datos (TRIDENTE)</li>
+                    </ul>
+                </div>
+            </form>
+            
+        {% else %}
+            <!-- RESULTADOS DE LA COMPARACIÓN -->
+            <div class="comparison-results fade-in">
+                
+                <!-- Análisis IA Propio -->
+                {% if ai_analysis %}
+                <div class="ai-analysis-section">
+                    <h2>🤖 Análisis Estratégico IA</h2>
+                    
+                    <!-- Scores y Probabilidades -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; text-align: center;">
+                            <h3>{{ team1_data.identity.team_name }}</h3>
+                            <h2 style="font-size: 2.5em; margin: 10px 0;">{{ ai_analysis.team1_score | round(1) }}</h2>
+                            <p>{{ ai_analysis.team1_category }}</p>
+                            <p style="font-size: 1.5em; margin-top: 10px;">{{ ai_analysis.team1.win_probability | round(0) }}% victoria</p>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 20px; border-radius: 10px; text-align: center;">
+                            <h3>{{ team2_data.identity.team_name }}</h3>
+                            <h2 style="font-size: 2.5em; margin: 10px 0;">{{ ai_analysis.team2_score | round(1) }}</h2>
+                            <p>{{ ai_analysis.team2_category }}</p>
+                            <p style="font-size: 1.5em; margin-top: 10px;">{{ ai_analysis.team2.win_probability | round(0) }}% victoria</p>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-winner-banner {% if ai_analysis.winner == 'team1' %}winner-team1{% elif ai_analysis.winner == 'team2' %}winner-team2{% else %}winner-tie{% endif %}">
+                        {% if ai_analysis.winner == 'team1' %}
+                            🏆 Ventaja: Equipo #{{ team1_data.identity.team_number }}
+                        {% elif ai_analysis.winner == 'team2' %}
+                            🏆 Ventaja: Equipo #{{ team2_data.identity.team_number }}
+                        {% else %}
+                            ⚖️ Equipos Equilibrados
+                        {% endif %}
+                    </div>
+                    
+                    <div class="ai-summary" style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; line-height: 1.8;">
+                        {{ ai_analysis.summary | markdown }}
+                    </div>
+                    
+                    <div class="strengths-comparison">
+                        <div class="team-strengths">
+                            <h4>💪 Ventajas {{ team1_data.identity.team_name }}</h4>
+                            <ul>
+                                {% for strength in ai_analysis.team1_strengths %}
+                                <li>✅ {{ strength }}</li>
+                                {% endfor %}
+                                {% if not ai_analysis.team1_strengths %}
+                                <li>⚖️ Sin ventajas claras identificadas</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                        
+                        <div class="team-strengths">
+                            <h4>💪 Ventajas {{ team2_data.identity.team_name }}</h4>
+                            <ul>
+                                {% for strength in ai_analysis.team2_strengths %}
+                                <li>✅ {{ strength }}</li>
+                                {% endfor %}
+                                {% if not ai_analysis.team2_strengths %}
+                                <li>⚖️ Sin ventajas claras identificadas</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-prediction">
+                        <h3>🎯 Veredicto Final</h3>
+                        <p style="font-size: 1.2em; font-weight: bold;">{{ ai_analysis.prediction }}</p>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Comparación Visual Lado a Lado -->
+                <div class="side-by-side-comparison">
+                    <h2>📊 Comparación Detallada</h2>
+                    
+                    <div class="teams-grid">
+                        <!-- EQUIPO 1 -->
+                        <div class="team-column">
+                            <div class="team-header team1-header">
+                                <h3>🤖 Equipo #{{ team1_data.identity.team_number }}</h3>
+                                <p class="team-name">{{ team1_data.identity.team_name }}</p>
+                                <div class="trust-badge trust-{{ team1_data.trust_level|lower }}">
+                                    {{ team1_data.trust_level }}
+                                </div>
+                            </div>
+                            
+                            <div class="team-stats-compact">
+                                <div class="stat-item">
+                                    <span class="stat-label">📊 Récord W-L</span>
+                                    <span class="stat-value">{{ team1_data.stats.record }}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">🏅 Ranking</span>
+                                    <span class="stat-value">{{ team1_data.stats.ranking or 'N/A' }}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">⚡ OPR</span>
+                                    <span class="stat-value">{{ team1_data.stats.opr or 'N/A' }}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">🏆 Premios</span>
+                                    <span class="stat-value">{{ team1_data.awards|length }}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">🎮 Matches</span>
+                                    <span class="stat-value">{{ team1_data.matches|length }}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">🌟 Nacionales</span>
+                                    <span class="stat-value">{{ '✅ Sí' if team1_data.worlds_qualified else '❌ No' }}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">📈 Win Rate</span>
+                                    <span class="stat-value">{{ "%.1f"|format(team1_data.stats.win_rate * 100 if team1_data.stats.win_rate else 0) }}%</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">🎯 Puntos Avg</span>
+                                    <span class="stat-value">{{ "%.1f"|format(team1_data.stats.avg_score if team1_data.stats.avg_score else 0) }}</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Estadísticas Avanzadas -->
+                            <div class="advanced-stats">
+                                <h4>📊 Estadísticas Avanzadas</h4>
+                                <div class="stats-grid">
+                                    <div class="stat-detail">
+                                        <span class="stat-icon">🎲</span>
+                                        <div class="stat-info">
+                                            <span class="stat-name">Highest Score</span>
+                                            <span class="stat-number">{{ team1_data.stats.highest_score or 'N/A' }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="stat-detail">
+                                        <span class="stat-icon">📉</span>
+                                        <div class="stat-info">
+                                            <span class="stat-name">Lowest Score</span>
+                                            <span class="stat-number">{{ team1_data.stats.lowest_score or 'N/A' }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="stat-detail">
+                                        <span class="stat-icon">🔥</span>
+                                        <div class="stat-info">
+                                            <span class="stat-name">Racha Actual</span>
+                                            <span class="stat-number">{{ team1_data.stats.current_streak or 'N/A' }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="stat-detail">
+                                        <span class="stat-icon">💪</span>
+                                        <div class="stat-info">
+                                            <span class="stat-name">Consistencia</span>
+                                            <span class="stat-number">{{ "%.1f"|format((team1_data.stats.win_rate or 0) * 100) }}%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- EQUIPO 2 -->
+                        <div class="team-column">
+                            <div class="team-header team2-header">
+                                <h3>🤖 Equipo #{{ team2_data.identity.team_number }}</h3>
+                                <p class="team-name">{{ team2_data.identity.team_name }}</p>
+                                <div class="trust-badge trust-{{ team2_data.trust_level|lower }}">
+                                    {{ team2_data.trust_level }}
+                                </div>
+                            </div>
+                            
+                            <div class="team-stats-compact">
+                                <div class="stat-item">
+                                    <span class="stat-label">📊 Récord W-L</span>
+                                    <span class="stat-value">{{ team2_data.stats.record }}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">🏅 Ranking</span>
+                                    <span class="stat-value">{{ team2_data.stats.ranking or 'N/A' }}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">⚡ OPR</span>
+                                    <span class="stat-value">{{ team2_data.stats.opr or 'N/A' }}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">🏆 Premios</span>
+                                    <span class="stat-value">{{ team2_data.awards|length }}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">🎮 Matches</span>
+                                    <span class="stat-value">{{ team2_data.matches|length }}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">🌟 Nacionales</span>
+                                    <span class="stat-value">{{ '✅ Sí' if team2_data.worlds_qualified else '❌ No' }}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">📈 Win Rate</span>
+                                    <span class="stat-value">{{ "%.1f"|format(team2_data.stats.win_rate * 100 if team2_data.stats.win_rate else 0) }}%</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">🎯 Puntos Avg</span>
+                                    <span class="stat-value">{{ "%.1f"|format(team2_data.stats.avg_score if team2_data.stats.avg_score else 0) }}</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Estadísticas Avanzadas -->
+                            <div class="advanced-stats">
+                                <h4>📊 Estadísticas Avanzadas</h4>
+                                <div class="stats-grid">
+                                    <div class="stat-detail">
+                                        <span class="stat-icon">🎲</span>
+                                        <div class="stat-info">
+                                            <span class="stat-name">Highest Score</span>
+                                            <span class="stat-number">{{ team2_data.stats.highest_score or 'N/A' }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="stat-detail">
+                                        <span class="stat-icon">📉</span>
+                                        <div class="stat-info">
+                                            <span class="stat-name">Lowest Score</span>
+                                            <span class="stat-number">{{ team2_data.stats.lowest_score or 'N/A' }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="stat-detail">
+                                        <span class="stat-icon">🔥</span>
+                                        <div class="stat-info">
+                                            <span class="stat-name">Racha Actual</span>
+                                            <span class="stat-number">{{ team2_data.stats.current_streak or 'N/A' }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="stat-detail">
+                                        <span class="stat-icon">💪</span>
+                                        <div class="stat-info">
+                                            <span class="stat-name">Consistencia</span>
+                                            <span class="stat-number">{{ "%.1f"|format((team2_data.stats.win_rate or 0) * 100) }}%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Comparación Visual de Rendimiento -->
+                    <div class="performance-comparison">
+                        <h3>📊 Comparación de Rendimiento</h3>
+                        <div class="comparison-bars">
+                            <div class="comparison-bar-item">
+                                <span class="bar-label">⚡ OPR</span>
+                                <div class="bar-container">
+                                    <div class="bar team1-bar" style="width: {{ comparison_bars.opr.team1|default(0) }}%">
+                                        {{ team1_data.stats.opr|default('N/A') }}
+                                    </div>
+                                    <div class="bar team2-bar" style="width: {{ comparison_bars.opr.team2|default(0) }}%">
+                                        {{ team2_data.stats.opr|default('N/A') }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comparison-bar-item">
+                                <span class="bar-label">📈 Win Rate</span>
+                                <div class="bar-container">
+                                    <div class="bar team1-bar" style="width: {{ comparison_bars.win_rate.team1|default(0) }}%">
+                                        {{ comparison_bars.win_rate.team1|default(0) }}%
+                                    </div>
+                                    <div class="bar team2-bar" style="width: {{ comparison_bars.win_rate.team2|default(0) }}%">
+                                        {{ comparison_bars.win_rate.team2|default(0) }}%
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comparison-bar-item">
+                                <span class="bar-label">🏆 Premios</span>
+                                <div class="bar-container">
+                                    <div class="bar team1-bar" style="width: {{ comparison_bars.awards.team1|default(0) }}%">
+                                        {{ team1_data.awards|length|default(0) }}
+                                    </div>
+                                    <div class="bar team2-bar" style="width: {{ comparison_bars.awards.team2|default(0) }}%">
+                                        {{ team2_data.awards|length|default(0) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comparison-bar-item">
+                                <span class="bar-label">🎮 Experiencia</span>
+                                <div class="bar-container">
+                                    <div class="bar team1-bar" style="width: {{ comparison_bars.experience.team1|default(0) }}%">
+                                        {{ team1_data.matches|length|default(0) }} matches
+                                    </div>
+                                    <div class="bar team2-bar" style="width: {{ comparison_bars.experience.team2|default(0) }}%">
+                                        {{ team2_data.matches|length|default(0) }} matches
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Botón para nueva comparación -->
+                <div class="new-comparison-action">
+                    <a href="{{ url_for('comparison') }}" class="btn-cyber btn-secondary">
+                        🔄 Nueva Comparación
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- TAB: QUETZAL-BOT (RAG CHATBOT) -->
+<div id="tab-quetzal" class="tab-content">
+    <div class="quetzal-container">
+        <h2>🧠 QUETZAL-BOT</h2>
+        <p class="feature-desc">Consulta el manual de reglas DECODE INTO THE DEEP con IA</p>
+        
+        <!-- Sugerencias -->
+        <div class="suggestions-section">
+            <h3>💡 Preguntas Sugeridas</h3>
+            <div id="suggestions-grid" class="suggestions-grid">
+                <button class="suggestion-btn" onclick="askQuetzal('¿Cuántos puntos vale un specimen en chamber alto?')">
+                    🏆 Puntos specimen alto
+                </button>
+                <button class="suggestion-btn" onclick="askQuetzal('¿Es penalización bloquear la zona de carga?')">
+                    ⚠️ Regla zona de carga
+                </button>
+                <button class="suggestion-btn" onclick="askQuetzal('¿Cómo se califican equipos para Worlds?')">
+                    🌎 Calificación Worlds
+                </button>
+                <button class="suggestion-btn" onclick="askQuetzal('¿Qué es la regla G14?')">
+                    📋 Regla G14
+                </button>
+            </div>
+        </div>
+        
+        <!-- Chat Interface -->
+        <div class="chat-container">
+            <div id="chat-messages" class="chat-messages"></div>
+            <div class="chat-input-container">
+                <input type="text" 
+                       id="chat-input" 
+                       class="chat-input" 
+                       placeholder="Pregunta sobre las reglas..."
+                       onkeypress="if(event.key === 'Enter') sendQuetzalMessage()">
+                <button class="btn-cyber btn-send" onclick="sendQuetzalMessage()">
+                    📤 Enviar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TAB: EL ORÁCULO (MATCH SIMULATOR) -->
+<div id="tab-oraculo" class="tab-content">
+    <div class="oraculo-container">
+        <h2>🔮 EL ORÁCULO</h2>
+        <p class="feature-desc">Simula partidos y predice resultados usando OPR/EPA de TRIDENTE</p>
+        
+        <!-- Selector de Alianzas -->
+        <div class="alliances-selector">
+            <div class="alliance-section red-alliance">
+                <h3>🔴 ALIANZA ROJA</h3>
+                <div class="team-inputs">
+                    <input type="number" id="red1" class="team-number-input" placeholder="Equipo 1" min="1" max="99999">
+                    <input type="number" id="red2" class="team-number-input" placeholder="Equipo 2" min="1" max="99999">
+                </div>
+            </div>
+            
+            <div class="vs-indicator">VS</div>
+            
+            <div class="alliance-section blue-alliance">
+                <h3>🔵 ALIANZA AZUL</h3>
+                <div class="team-inputs">
+                    <input type="number" id="blue1" class="team-number-input" placeholder="Equipo 1" min="1" max="99999">
+                    <input type="number" id="blue2" class="team-number-input" placeholder="Equipo 2" min="1" max="99999">
+                </div>
+            </div>
+        </div>
+        
+        <button class="btn-cyber btn-simulate" onclick="simulateMatch()">
+            🎲 SIMULAR MATCH
+        </button>
+        
+        <!-- Resultados de Simulación -->
+        <div id="simulation-results" class="simulation-results" style="display:none;">
+            <!-- Se llena dinámicamente con JavaScript -->
+        </div>
+    </div>
+</div>
+
+<!-- TAB: SPIDER CHARTS (RADAR COMPARISON) -->
+<div id="tab-spider" class="tab-content">
+    <div class="spider-container">
+        <h2>🕸️ GRÁFICAS DE RADAR</h2>
+        <p class="feature-desc">Compara robots visualmente en 5 ejes: Autónomo, TeleOp, EndGame, Fiabilidad, Defensa</p>
+        
+        <!-- Selector de Equipos -->
+        <div class="spider-team-selector">
+            <div class="spider-input-group">
+                <label>🤖 Equipo 1:</label>
+                <input type="number" id="spider-team1" class="team-number-input" placeholder="16818" min="1" max="99999">
+            </div>
+            <div class="spider-input-group">
+                <label>🤖 Equipo 2:</label>
+                <input type="number" id="spider-team2" class="team-number-input" placeholder="17625" min="1" max="99999">
+            </div>
+            <button class="btn-cyber btn-compare-spider" onclick="generateSpiderChart()">
+                📊 GENERAR RADAR
+            </button>
+        </div>
+        
+        <!-- Canvas para Chart.js -->
+        <div class="spider-chart-container" id="spider-chart-wrapper">
+            <canvas id="spiderChart"></canvas>
+        </div>
+        
+        <!-- Mensaje de estado -->
+        <div id="spider-status" style="text-align: center; margin: 20px 0; color: #00a86b; font-size: 14px;"></div>
+        
+        <!-- Leyenda de métricas -->
+        <div class="metrics-legend">
+            <h3>📝 Explicación de Métricas</h3>
+            <div class="legend-grid">
+                <div class="legend-item">
+                    <span class="legend-icon">🚀</span>
+                    <strong>Autónomo:</strong> Desempeño en período autónomo (30% OPR)
+                </div>
+                <div class="legend-item">
+                    <span class="legend-icon">🎮</span>
+                    <strong>TeleOp:</strong> Control manual y puntuación (50% OPR)
+                </div>
+                <div class="legend-item">
+                    <span class="legend-icon">🏁</span>
+                    <strong>EndGame:</strong> Ascenso y puntos finales (20% OPR)
+                </div>
+                <div class="legend-item">
+                    <span class="legend-icon">⚙️</span>
+                    <strong>Fiabilidad:</strong> Tasa de victorias (Win Rate)
+                </div>
+                <div class="legend-item">
+                    <span class="legend-icon">🛡️</span>
+                    <strong>Defensa:</strong> Experiencia (matches jugados)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TAB: PREDICTOR REGIONAL -->
+<div id="tab-regional" class="tab-content">
+    <div class="regional-container">
+        <h2>🏆 PREDICTOR DE REGIONAL</h2>
+        <p class="feature-desc">Predice resultados completos de un torneo: ranking, alianzas, ganadores</p>
+        
+        <!-- Configuración del Regional -->
+        <div class="regional-config">
+            <div class="config-group" style="text-align: center; margin-bottom: 30px;">
+                <button class="btn-cyber btn-auto-load" onclick="autoLoadRegional()" style="font-size: 18px; padding: 15px 30px; background: linear-gradient(135deg, #00d4ff 0%, #00a86b 100%); animation: pulse-glow 2s infinite;">
+                    ⚡ CARGAR EQUIPOS DEL REGIONAL AUTOMÁTICAMENTE
+                </button>
+                <p style="color: #00a86b; margin-top: 10px; font-size: 14px;">
+                    Obtiene TODOS los equipos registrados en ese regional desde las APIs
+                </p>
+            </div>
+            
+            <div style="text-align: center; margin: 20px 0; color: #666;">
+                <span>──────── o ────────</span>
+                <p style="margin: 10px 0; color: #888;">Configuración manual (opcional)</p>
+            </div>
+            
+            <div class="config-group">
+                <label>📍 Nombre del Regional:</label>
+                <input type="text" id="regional-name" class="event-input" placeholder="Regional Toluca 2025" value="Regional Toluca 2025">
+                <small style="color: #888;">Soporta: Toluca, Cuautitlán, Querétaro, Monterrey, Guadalajara</small>
+            </div>
+            
+            <div class="config-group">
+                <label>👥 Equipos Participantes (separados por comas):</label>
+                <textarea id="regional-teams" class="teams-textarea" rows="4" placeholder="Se cargarán automáticamente desde las APIs"></textarea>
+                <small style="color: #00a86b;">O ingresa manualmente al menos 4 equipos</small>
+            </div>
+            
+            <button class="btn-cyber btn-predict-regional" onclick="predictRegional()">
+                🔮 PREDECIR REGIONAL
+            </button>
+        </div>
+        
+        <!-- Mensaje de estado -->
+        <div id="regional-status" style="text-align: center; margin: 20px 0; color: #00a86b; font-size: 14px;"></div>
+        
+        <!-- Resultados de la predicción -->
+        <div id="regional-results" style="display: none;">
+            <!-- Ranking Predicho -->
+            <div class="prediction-section">
+                <h3>📊 RANKING PREDICHO</h3>
+                <div id="predicted-ranking" class="ranking-table"></div>
+            </div>
+            
+            <!-- Alianzas Predichas -->
+            <div class="prediction-section">
+                <h3>⚔️ ALIANZAS PREDICHAS</h3>
+                <div id="predicted-alliances" class="alliances-grid"></div>
+            </div>
+            
+            <!-- Ganador Predicho -->
+            <div class="prediction-section">
+                <h3>🏆 GANADOR PREDICHO</h3>
+                <div id="predicted-winner" class="winner-card"></div>
+            </div>
+            
+            <!-- Premios Especiales -->
+            <div class="prediction-section">
+                <h3>🏅 PREMIOS ESPECIALES PREDICHOS</h3>
+                <div id="predicted-awards" class="awards-list"></div>
+            </div>
+            
+            <!-- Análisis IA -->
+            <div class="prediction-section">
+                <h3>🤖 ANÁLISIS COMPLETO</h3>
+                <div id="regional-ai-analysis" class="ai-analysis-box"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* ========================================
+   ESTILOS PARA TABS
+   ======================================== */
+.tabs-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    background: rgba(0, 168, 107, 0.2);
+    border: 2px solid rgba(0, 168, 107, 0.5);
+    color: var(--jade-azteca);
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+    background: rgba(0, 168, 107, 0.4);
+    transform: translateY(-2px);
+}
+
+.tab-btn.active {
+    background: var(--jade-azteca);
+    color: var(--negro-obsidiana);
+    box-shadow: 0 0 20px rgba(0, 168, 107, 0.6);
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========================================
+   MODAL DE CARGA ARQUEOLÓGICO
+   ======================================== */
+.aztec-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.aztec-ritual-container {
+    background: linear-gradient(135deg, rgba(0, 168, 107, 0.2), rgba(0, 243, 255, 0.1));
+    border: 3px solid var(--jade-azteca);
+    border-radius: 16px;
+    padding: 3rem;
+    text-align: center;
+    max-width: 600px;
+    animation: ritualPulse 2s ease-in-out infinite;
+}
+
+@keyframes ritualPulse {
+    0%, 100% { box-shadow: 0 0 30px rgba(0, 168, 107, 0.6); }
+    50% { box-shadow: 0 0 60px rgba(0, 168, 107, 0.9); }
+}
+
+.ritual-title {
+    color: var(--oro-neon);
+    font-family: var(--font-primary);
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+}
+
+.aztec-glyph {
+    font-family: monospace;
+    font-size: 1.2rem;
+    color: var(--turquesa-neon);
+    line-height: 1.5;
+    margin: 2rem 0;
+    text-shadow: 0 0 10px rgba(0, 243, 255, 0.6);
+    animation: glyphGlow 2s ease-in-out infinite;
+}
+
+@keyframes glyphGlow {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; text-shadow: 0 0 20px rgba(0, 243, 255, 0.9); }
+}
+
+.ritual-message {
+    color: var(--plata-lunar);
+    font-size: 1.2rem;
+    margin: 2rem 0;
+    animation: messageFloat 3s ease-in-out infinite;
+}
+
+@keyframes messageFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.loading-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 2rem;
+}
+
+.loading-fill {
+    height: 100%;
+    background: linear-gradient(90deg, 
+        var(--jade-azteca), 
+        var(--turquesa-neon), 
+        var(--oro-neon), 
+        var(--turquesa-neon), 
+        var(--jade-azteca)
+    );
+    background-size: 200% 100%;
+    animation: loadingSlide 2s linear infinite;
+}
+
+@keyframes loadingSlide {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ========================================
+   ADVANCED STATS & COMPARISON BARS
+   ======================================== */
+.advanced-stats {
+    background: rgba(0, 243, 255, 0.05);
+    border: 1px solid var(--turquesa-neon);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+.advanced-stats h4 {
+    color: var(--turquesa-neon);
+    font-family: var(--font-primary);
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.stat-detail {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.stat-icon {
+    font-size: 1.8rem;
+}
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-name {
+    color: var(--plata-lunar);
+    font-size: 0.85rem;
+    margin-bottom: 0.2rem;
+}
+
+.stat-number {
+    color: var(--oro-neon);
+    font-weight: 700;
+    font-size: 1.1rem;
+    font-family: var(--font-primary);
+}
+
+.performance-comparison {
+    background: rgba(0, 168, 107, 0.05);
+    border: 2px solid var(--jade-azteca);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+}
+
+.performance-comparison h3 {
+    color: var(--jade-azteca);
+    font-family: var(--font-primary);
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+}
+
+.comparison-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.comparison-bar-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.bar-label {
+    color: var(--oro-neon);
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+}
+
+.bar-container {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.bar {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: white;
+    font-weight: 700;
+    transition: all 0.5s ease;
+    min-width: 80px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.team1-bar {
+    background: linear-gradient(90deg, rgba(0, 168, 107, 0.8), rgba(0, 243, 255, 0.6));
+    border: 2px solid var(--jade-azteca);
+}
+
+.team2-bar {
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.8), rgba(255, 107, 0, 0.6));
+    border: 2px solid var(--oro-neon);
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .bar-container {
+        flex-direction: column;
+    }
+    
+    .bar {
+        width: 100% !important;
+    }
+}
+
+/* ========================================
+   QUETZAL-BOT STYLES
+   ======================================== */
+.quetzal-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.quetzal-container h2 {
+    color: var(--oro-neon);
+    font-family: var(--font-primary);
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.feature-desc {
+    text-align: center;
+    color: var(--plata-lunar);
+    margin-bottom: 2rem;
+}
+
+.suggestions-section {
+    margin: 2rem 0;
+}
+
+.suggestions-section h3 {
+    color: var(--turquesa-neon);
+    margin-bottom: 1rem;
+}
+
+.suggestions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.suggestion-btn {
+    background: rgba(0, 243, 255, 0.1);
+    border: 1px solid var(--turquesa-neon);
+    color: var(--turquesa-neon);
+    padding: 0.8rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.suggestion-btn:hover {
+    background: rgba(0, 243, 255, 0.3);
+    transform: scale(1.02);
+}
+
+.chat-container {
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--jade-azteca);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.chat-messages {
+    height: 400px;
+    overflow-y: auto;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.chat-message {
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.chat-message.user {
+    background: rgba(0, 168, 107, 0.2);
+    border-left: 4px solid var(--jade-azteca);
+    text-align: right;
+}
+
+.chat-message.bot {
+    background: rgba(0, 243, 255, 0.2);
+    border-left: 4px solid var(--turquesa-neon);
+}
+
+.message-content {
+    color: white;
+    line-height: 1.6;
+}
+
+.chat-input-container {
+    display: flex;
+    gap: 1rem;
+}
+
+.chat-input {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--oro-neon);
+    color: white;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.btn-send {
+    padding: 0.8rem 1.5rem;
+}
+
+/* ========================================
+   EL ORÁCULO STYLES
+   ======================================== */
+.oraculo-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.oraculo-container h2 {
+    color: var(--oro-neon);
+    font-family: var(--font-primary);
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.alliances-selector {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+    margin: 2rem 0;
+    align-items: center;
+}
+
+.alliance-section {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 1.5rem;
+    border-radius: 12px;
+}
+
+.red-alliance {
+    border: 2px solid rgba(239, 68, 68, 0.6);
+}
+
+.blue-alliance {
+    border: 2px solid rgba(59, 130, 246, 0.6);
+}
+
+.alliance-section h3 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-family: var(--font-primary);
+}
+
+.red-alliance h3 {
+    color: #ef4444;
+}
+
+.blue-alliance h3 {
+    color: #3b82f6;
+}
+
+.team-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.team-number-input {
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--oro-neon);
+    color: white;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.vs-indicator {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--oro-neon);
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+}
+
+.btn-simulate,
+.btn-compare-spider {
+    display: block;
+    margin: 2rem auto;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+}
+
+.simulation-results {
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--jade-azteca);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.prediction-banner {
+    text-align: center;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+.prediction-banner.red-wins {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(239, 68, 68, 0.1));
+    border: 2px solid #ef4444;
+}
+
+.prediction-banner.blue-wins {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.1));
+    border: 2px solid #3b82f6;
+}
+
+.winner-text {
+    font-size: 2rem;
+    font-weight: 900;
+    font-family: var(--font-primary);
+    margin-bottom: 1rem;
+}
+
+.probability-text {
+    font-size: 1.3rem;
+    color: var(--plata-lunar);
+}
+
+.score-prediction {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+    align-items: center;
+    margin: 2rem 0;
+}
+
+.alliance-score {
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 12px;
+}
+
+.alliance-score.red {
+    background: rgba(239, 68, 68, 0.2);
+    border: 2px solid #ef4444;
+}
+
+.alliance-score.blue {
+    background: rgba(59, 130, 246, 0.2);
+    border: 2px solid #3b82f6;
+}
+
+.score-number {
+    font-size: 3rem;
+    font-weight: 900;
+    font-family: var(--font-primary);
+}
+
+.alliance-score.red .score-number {
+    color: #ef4444;
+}
+
+.alliance-score.blue .score-number {
+    color: #3b82f6;
+}
+
+.ai-match-analysis {
+    background: rgba(0, 243, 255, 0.1);
+    border: 2px solid var(--turquesa-neon);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.ai-match-analysis h3 {
+    color: var(--turquesa-neon);
+    margin-bottom: 1rem;
+}
+
+.ai-analysis-text {
+    color: white;
+    line-height: 1.8;
+    white-space: pre-wrap;
+}
+
+/* ========================================
+   SPIDER CHARTS STYLES
+   ======================================== */
+.spider-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.spider-container h2 {
+    color: var(--oro-neon);
+    font-family: var(--font-primary);
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.spider-team-selector {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: flex-end;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.spider-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.spider-input-group label {
+    color: var(--turquesa-neon);
+    font-weight: 600;
+}
+
+.spider-chart-container {
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--jade-azteca);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center;
+    min-height: 500px;
+    position: relative;
+}
+
+#spiderChart {
+    max-width: 800px;
+    width: 100%;
+    height: 500px !important;
+}
+
+.metrics-legend {
+    background: rgba(0, 243, 255, 0.1);
+    border: 2px solid var(--turquesa-neon);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.metrics-legend h3 {
+    color: var(--turquesa-neon);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.legend-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.legend-item {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--jade-azteca);
+}
+
+.legend-icon {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+}
+
+/* ========================================
+   ESTILOS ORIGINALES DE COMPARACIÓN
+   ======================================== */
+.comparison-module {
+    padding: 2rem 1rem;
+    min-height: 100vh;
+}
+
+.teams-input-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+    align-items: center;
+    margin: 2rem 0;
+}
+
+.team-input-section {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.vs-divider {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--oro-neon);
+    font-family: var(--font-primary);
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+}
+
+.btn-compare {
+    font-size: 1.2rem;
+    padding: 1rem 3rem;
+}
+
+.comparison-explanation {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--turquesa-neon);
+    margin-top: 2rem;
+}
+
+.comparison-explanation h3 {
+    color: var(--turquesa-neon);
+    margin-bottom: 1rem;
+}
+
+.comparison-explanation ul {
+    list-style: none;
+    padding: 0;
+}
+
+.comparison-explanation li {
+    padding: 0.5rem 0;
+    color: var(--plata-lunar);
+}
+
+/* Resultados de comparación */
+.comparison-results {
+    margin-top: 2rem;
+}
+
+.ai-analysis-section {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 215, 0, 0.1));
+    border: 2px solid var(--turquesa-neon);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.ai-analysis-section h2 {
+    color: var(--turquesa-neon);
+    font-family: var(--font-primary);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.ai-winner-banner {
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+.winner-team1 {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(16, 185, 129, 0.1));
+    border: 2px solid #10b981;
+    color: #10b981;
+}
+
+.winner-team2 {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.1));
+    border: 2px solid #3b82f6;
+    color: #3b82f6;
+}
+
+.winner-tie {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 215, 0, 0.1));
+    border: 2px solid var(--oro-neon);
+    color: var(--oro-neon);
+}
+
+.ai-summary, .ai-prediction {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.ai-summary h3, .ai-prediction h3 {
+    color: var(--oro-neon);
+    margin-bottom: 0.75rem;
+}
+
+.ai-summary p, .ai-prediction p {
+    color: #ddd;
+    line-height: 1.6;
+    font-size: 1.05rem;
+}
+
+.strengths-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.team-strengths {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.team-strengths h4 {
+    color: var(--turquesa-neon);
+    margin-bottom: 1rem;
+}
+
+.team-strengths ul {
+    list-style: none;
+    padding: 0;
+}
+
+.team-strengths li {
+    padding: 0.5rem 0;
+    color: #ddd;
+}
+
+.key-differences {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.key-differences h4 {
+    color: var(--oro-neon);
+    margin-bottom: 1rem;
+}
+
+.key-differences ul {
+    list-style: none;
+    padding: 0;
+}
+
+.key-differences li {
+    padding: 0.5rem 0;
+    color: #ddd;
+}
+
+/* Comparación lado a lado */
+.side-by-side-comparison {
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--oro-neon);
+    border-radius: 12px;
+    padding: 2rem;
+/* ========================================
+   ESTILOS ORIGINALES DE COMPARACIÓN
+   ======================================== */
+.comparison-module {
+    padding: 2rem 1rem;
+    min-height: 100vh;
+}
+
+.teams-input-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+    align-items: center;
+    margin: 2rem 0;
+}
+
+.team-input-section {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.vs-divider {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--oro-neon);
+    font-family: var(--font-primary);
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+}
+
+.comparison-explanation {
+    background: rgba(0, 243, 255, 0.1);
+    border: 2px solid var(--turquesa-neon);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.comparison-explanation h3 {
+    color: var(--turquesa-neon);
+    margin-bottom: 1rem;
+}
+
+.comparison-explanation ul {
+    list-style: none;
+    padding: 0;
+}
+
+.comparison-explanation li {
+    padding: 0.5rem 0;
+    color: var(--plata-lunar);
+}
+
+/* AI Analysis */
+.ai-analysis-section {
+    background: rgba(0, 168, 107, 0.1);
+    border: 2px solid var(--jade-azteca);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.ai-analysis-section h2 {
+    color: var(--jade-azteca);
+    margin-bottom: 1rem;
+}
+
+.ai-winner-banner {
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 12px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.winner-team1 {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(16, 185, 129, 0.1));
+    border: 2px solid #10b981;
+    color: #10b981;
+}
+
+.winner-team2 {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.1));
+    border: 2px solid #3b82f6;
+    color: #3b82f6;
+}
+
+.winner-tie {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 215, 0, 0.1));
+    border: 2px solid var(--oro-neon);
+    color: var(--oro-neon);
+}
+
+.ai-summary,
+.ai-prediction {
+    margin: 1.5rem 0;
+}
+
+.ai-summary h3,
+.ai-prediction h3 {
+    color: var(--turquesa-neon);
+    margin-bottom: 0.8rem;
+}
+
+.strengths-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.team-strengths {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.team-strengths h4 {
+    color: var(--oro-neon);
+    margin-bottom: 1rem;
+}
+
+.team-strengths ul {
+    list-style: none;
+    padding: 0;
+}
+
+.team-strengths li {
+    padding: 0.5rem 0;
+    color: var(--plata-lunar);
+}
+
+.key-differences {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+}
+
+.key-differences h4 {
+    color: var(--oro-neon);
+    margin-bottom: 1rem;
+}
+
+.key-differences ul {
+    list-style: none;
+    padding: 0;
+}
+
+.key-differences li {
+    padding: 0.5rem 0;
+    color: var(--plata-lunar);
+}
+
+.side-by-side-comparison {
+    margin-top: 2rem;
+}
+
+.side-by-side-comparison h2 {
+    color: var(--oro-neon);
+    font-family: var(--font-primary);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.teams-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.team-column {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.team-header {
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.team1-header {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.05));
+}
+
+.team2-header {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.05));
+}
+
+.team-header h3 {
+    color: var(--oro-neon);
+    margin-bottom: 0.5rem;
+}
+
+.team-name {
+    color: var(--plata-lunar);
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+}
+
+.trust-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+}
+
+.trust-platinum {
+    background: linear-gradient(135deg, #e5e7eb, #9ca3af);
+    color: #1f2937;
+}
+
+.trust-gold {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #1f2937;
+}
+
+.trust-silver {
+    background: linear-gradient(135deg, #d1d5db, #9ca3af);
+    color: #1f2937;
+}
+
+.team-stats-compact {
+    padding: 1.5rem;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.stat-label {
+    color: var(--plata-lunar);
+    font-weight: 600;
+}
+
+.stat-value {
+    color: var(--oro-neon);
+    font-weight: 700;
+}
+
+.new-comparison-action {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tabs-nav {
+        flex-direction: column;
+    }
+    
+    .teams-input-grid,
+    .alliances-selector {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .vs-divider,
+    .vs-indicator {
+        font-size: 1.5rem;
+    }
+    
+    .strengths-comparison,
+    .teams-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .score-prediction {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ========================================
+   ESTILOS PREDICTOR REGIONAL
+   ======================================== */
+.regional-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.regional-config {
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid var(--jade-azteca);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+}
+
+/* Botón de carga automática */
+.btn-auto-load {
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+    transition: all 0.3s ease;
+}
+
+.btn-auto-load:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 50px rgba(0, 212, 255, 0.9);
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(0, 212, 255, 0.9);
+    }
+}
+
+/* Animación de puntos de carga */
+.loading-dots {
+    display: inline-block;
+    animation: loading-dots 1.4s infinite;
+}
+
+@keyframes loading-dots {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60%, 100% { content: '...'; }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+.config-group {
+    margin-bottom: 1.5rem;
+}
+
+.config-group label {
+    display: block;
+    color: var(--jade-azteca);
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.event-input, .teams-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(0, 168, 107, 0.3);
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+}
+
+.event-input:focus, .teams-textarea:focus {
+    outline: none;
+    border-color: var(--jade-azteca);
+}
+
+.btn-predict-regional {
+    margin-top: 1rem;
+}
+
+.prediction-section {
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(0, 168, 107, 0.3);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+}
+
+.prediction-section h3 {
+    color: var(--jade-azteca);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.ranking-table {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.rank-row {
+    background: rgba(0, 168, 107, 0.1);
+    border: 1px solid rgba(0, 168, 107, 0.3);
+    border-radius: 8px;
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: 50px 1fr 100px 120px;
+    align-items: center;
+    gap: 1rem;
+}
+
+.rank-row.top-4 {
+    background: rgba(255, 215, 0, 0.15);
+    border-color: rgba(255, 215, 0, 0.5);
+}
+
+.rank-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--jade-azteca);
+    text-align: center;
+}
+
+.team-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.team-number-name {
+    font-weight: bold;
+    color: #fff;
+}
+
+.team-opr {
+    font-size: 0.9rem;
+    color: #00a86b;
+}
+
+.predicted-rp {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffd700;
+}
+
+.predicted-record {
+    text-align: center;
+    color: #ccc;
+}
+
+.alliances-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.alliance-card {
+    background: linear-gradient(135deg, rgba(0, 168, 107, 0.2), rgba(0, 168, 107, 0.05));
+    border: 2px solid var(--jade-azteca);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.alliance-header {
+    text-align: center;
+    color: #ffd700;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.alliance-team {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+
+.alliance-team.captain {
+    border: 2px solid #ffd700;
+}
+
+.winner-card {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 215, 0, 0.1));
+    border: 3px solid #ffd700;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+}
+
+.winner-trophy {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.winner-team {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffd700;
+    margin-bottom: 0.5rem;
+}
+
+.finalist-team {
+    font-size: 1.2rem;
+    color: #c0c0c0;
+}
+
+.awards-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.award-item {
+    background: rgba(0, 168, 107, 0.1);
+    border-left: 4px solid var(--jade-azteca);
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.award-name {
+    font-weight: bold;
+    color: var(--jade-azteca);
+    margin-bottom: 0.5rem;
+}
+
+.award-winner {
+    color: #ffd700;
+    font-size: 1.1rem;
+}
+
+.ai-analysis-box {
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(0, 168, 107, 0.3);
+    border-radius: 12px;
+    padding: 1.5rem;
+    color: #fff;
+    line-height: 1.8;
+    white-space: pre-wrap;
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<script>
+// ========================================
+// TAB SWITCHING
+// ========================================
+function switchTab(tabName) {
+    // Hide all tabs
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    // Remove active class from all buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Show selected tab
+    document.getElementById(`tab-${tabName}`).classList.add('active');
+    
+    // Add active class to clicked button
+    event.target.classList.add('active');
+}
+
+// ========================================
+// LOADING MODAL FUNCTIONS
+// ========================================
+const archeologicalGlyphs = [
+    `    🏺
+   ╱╲╱╲
+  ╱    ╲
+ ╱ DATA ╲
+╱________╲`,
+    `   🧱🧱
+  ╱    ╲
+ │ API  │
+ │ CALL │
+  ╲____╱`,
+    `   🏛️
+  ┌────┐
+  │ IA │
+  │ 🧠 │
+  └────┘`
+];
+
+const archeologicalMessages = [
+    '🏺 Descifrando jeroglíficos de datos FTC...',
+    '📜 Consultando tablillas de FIRST...',
+    '🗿 Descubriendo inscripciones en TOA...',
+    '🧱 Excavando registros de GraphQL...',
+    '🏛️ Interpretando códices con Groq IA...',
+    '⚱️ Analizando fragmentos de estadísticas...'
+];
+
+let glyphInterval;
+let messageInterval;
+
+function showLoadingModal(customMessage = null) {
+    const modal = document.getElementById('loadingModal');
+    const messageElement = document.getElementById('loadingMessage');
+    
+    modal.style.display = 'flex';
+    
+    // Rotate messages
+    let messageIndex = 0;
+    messageElement.textContent = customMessage || archeologicalMessages[messageIndex];
+    if (!customMessage) {
+        messageInterval = setInterval(() => {
+            messageIndex = (messageIndex + 1) % archeologicalMessages.length;
+            messageElement.textContent = archeologicalMessages[messageIndex];
+        }, 3000);
+    }
+}
+
+function hideLoadingModal() {
+    const modal = document.getElementById('loadingModal');
+    modal.style.display = 'none';
+    
+    clearInterval(messageInterval);
+}
+
+// ========================================
+// QUETZAL-BOT FUNCTIONS
+// ========================================
+let conversationHistory = [];
+
+function askQuetzal(question) {
+    document.getElementById('chat-input').value = question;
+    sendQuetzalMessage();
+}
+
+async function sendQuetzalMessage() {
+    const input = document.getElementById('chat-input');
+    const question = input.value.trim();
+    
+    if (!question) return;
+    
+    // Add user message to chat
+    addMessageToChat('user', question);
+    input.value = '';
+    
+    // Show loading animation
+    showLoadingModal('🧠 Consultando códice de reglas DECODE...');
+    
+    try {
+        const response = await fetch('/api/quetzal-bot', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                question: question,
+                history: conversationHistory
+            })
+        });
+        
+        const data = await response.json();
+        
+        // Hide loading modal
+        hideLoadingModal();
+        
+        // Add bot response
+        if (data.success) {
+            addMessageToChat('bot', data.response);
+            
+            // Update history
+            conversationHistory.push(
+                { role: 'user', content: question },
+                { role: 'assistant', content: data.response }
+            );
+            
+            // Keep only last 8 messages
+            if (conversationHistory.length > 8) {
+                conversationHistory = conversationHistory.slice(-8);
+            }
+        } else {
+            addMessageToChat('bot', `❌ Error: ${data.error}`);
+        }
+        
+    } catch (error) {
+        hideLoadingModal();
+        addMessageToChat('bot', `❌ Error de conexión: ${error.message}`);
+    }
+}
+
+function addMessageToChat(role, content) {
+    const messagesContainer = document.getElementById('chat-messages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `chat-message ${role}`;
+    
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'message-content';
+    contentDiv.textContent = content;
+    
+    messageDiv.appendChild(contentDiv);
+    messagesContainer.appendChild(messageDiv);
+    
+    // Scroll to bottom
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+// ========================================
+// EL ORÁCULO FUNCTIONS
+// ========================================
+async function simulateMatch() {
+    const redAlliance = [
+        parseInt(document.getElementById('red1').value),
+        parseInt(document.getElementById('red2').value)
+    ];
+    
+    const blueAlliance = [
+        parseInt(document.getElementById('blue1').value),
+        parseInt(document.getElementById('blue2').value)
+    ];
+    
+    // Validation
+    if (redAlliance.some(isNaN) || blueAlliance.some(isNaN)) {
+        alert('Por favor, ingresa los 4 números de equipo (2 por alianza)');
+        return;
+    }
+    
+    // Show loading animation
+    showLoadingModal('🔮 Consultando oráculos y simulando batalla...');
+    const resultsDiv = document.getElementById('simulation-results');
+    resultsDiv.style.display = 'none';
+    
+    try {
+        const response = await fetch('/api/oraculo/simulate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                red_alliance: redAlliance,
+                blue_alliance: blueAlliance
+            })
+        });
+        
+        const data = await response.json();
+        
+        hideLoadingModal();
+        resultsDiv.style.display = 'block';
+        
+        if (data.success) {
+            displaySimulationResults(data);
+        } else {
+            resultsDiv.innerHTML = `<div class="error-message">❌ Error: ${data.error}</div>`;
+        }
+        
+    } catch (error) {
+        hideLoadingModal();
+        resultsDiv.style.display = 'block';
+        resultsDiv.innerHTML = `<div class="error-message">❌ Error de conexión: ${error.message}</div>`;
+    }
+}
+
+function displaySimulationResults(data) {
+    const pred = data.prediction;
+    const winnerClass = pred.winner === 'red' ? 'red-wins' : 'blue-wins';
+    const winnerText = pred.winner === 'red' ? '🔴 ALIANZA ROJA' : '🔵 ALIANZA AZUL';
+    
+    let html = `
+        <div class="prediction-banner ${winnerClass}">
+            <div class="winner-text">${winnerText} FAVORITA</div>
+            <div class="probability-text">
+                ${pred.winner === 'red' ? pred.red_win_probability : pred.blue_win_probability}% probabilidad de victoria
+            </div>
+            <div style="margin-top:1rem;color:var(--plata-lunar)">
+                Confianza: ${pred.confidence}
+            </div>
+        </div>
+        
+        <div class="score-prediction">
+            <div class="alliance-score red">
+                <h4>🔴 ALIANZA ROJA</h4>
+                <div class="score-number">${pred.red_estimated_score}</div>
+                <div style="color:var(--plata-lunar);margin-top:0.5rem">
+                    ${pred.red_win_probability}% prob.
+                </div>
+                <div style="margin-top:1rem;font-size:0.9rem">
+                    OPR Total: ${data.red_alliance.total_opr}
+                </div>
+                <div style="margin-top:0.5rem;font-size:0.85rem;color:#ccc">
+                    ${data.red_alliance.teams.join(', ')}
+                </div>
+            </div>
+            
+            <div class="vs-indicator">VS</div>
+            
+            <div class="alliance-score blue">
+                <h4>🔵 ALIANZA AZUL</h4>
+                <div class="score-number">${pred.blue_estimated_score}</div>
+                <div style="color:var(--plata-lunar);margin-top:0.5rem">
+                    ${pred.blue_win_probability}% prob.
+                </div>
+                <div style="margin-top:1rem;font-size:0.9rem">
+                    OPR Total: ${data.blue_alliance.total_opr}
+                </div>
+                <div style="margin-top:0.5rem;font-size:0.85rem;color:#ccc">
+                    ${data.blue_alliance.teams.join(', ')}
+                </div>
+            </div>
+        </div>
+    `;
+    
+    if (data.ai_analysis) {
+        html += `
+            <div class="ai-match-analysis">
+                <h3>🤖 Análisis de IA</h3>
+                <div class="ai-analysis-text">${data.ai_analysis}</div>
+            </div>
+        `;
+    }
+    
+    document.getElementById('simulation-results').innerHTML = html;
+}
+
+// ========================================
+// SPIDER CHARTS FUNCTIONS
+// ========================================
+let spiderChartInstance = null;
+
+async function generateSpiderChart() {
+    const team1 = parseInt(document.getElementById('spider-team1').value);
+    const team2 = parseInt(document.getElementById('spider-team2').value);
+    const statusDiv = document.getElementById('spider-status');
+    
+    if (isNaN(team1) || isNaN(team2)) {
+        statusDiv.innerHTML = '⚠️ Por favor, ingresa ambos números de equipo';
+        statusDiv.style.color = '#ff6b6b';
+        return;
+    }
+    
+    // Show loading animation
+    showLoadingModal('🕸️ Tejiendo mapa de habilidades...');
+    statusDiv.innerHTML = '';
+    
+    try {
+        const response = await fetch('/api/spider-chart/compare', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ team1, team2 })
+        });
+        
+        const data = await response.json();
+        
+        hideLoadingModal();
+        
+        if (data.success) {
+            statusDiv.innerHTML = '✅ Gráfica generada exitosamente';
+            statusDiv.style.color = '#00a86b';
+            renderSpiderChart(data);
+        } else {
+            statusDiv.innerHTML = `❌ Error: ${data.error}`;
+            statusDiv.style.color = '#ff6b6b';
+        }
+        
+    } catch (error) {
+        hideLoadingModal();
+        statusDiv.innerHTML = `❌ Error de conexión: ${error.message}`;
+        statusDiv.style.color = '#ff6b6b';
+        console.error('Spider Chart Error:', error);
+    }
+}
+
+function renderSpiderChart(data) {
+    const ctx = document.getElementById('spiderChart').getContext('2d');
+    
+    // Destroy previous chart if exists
+    if (spiderChartInstance) {
+        spiderChartInstance.destroy();
+    }
+    
+    const chartData = {
+        labels: data.axes,
+        datasets: [
+            {
+                label: `🔴 #${data.team1.number} ${data.team1.name}`,
+                data: [
+                    data.team1.metrics.autonomo,
+                    data.team1.metrics.teleop,
+                    data.team1.metrics.endgame,
+                    data.team1.metrics.fiabilidad,
+                    data.team1.metrics.defensa
+                ],
+                backgroundColor: 'rgba(239, 68, 68, 0.25)',
+                borderColor: 'rgba(239, 68, 68, 1)',
+                borderWidth: 3,
+                pointBackgroundColor: 'rgba(239, 68, 68, 1)',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 5,
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgba(239, 68, 68, 1)',
+                pointHoverRadius: 7
+            },
+            {
+                label: `🔵 #${data.team2.number} ${data.team2.name}`,
+                data: [
+                    data.team2.metrics.autonomo,
+                    data.team2.metrics.teleop,
+                    data.team2.metrics.endgame,
+                    data.team2.metrics.fiabilidad,
+                    data.team2.metrics.defensa
+                ],
+                backgroundColor: 'rgba(6, 182, 212, 0.25)',
+                borderColor: 'rgba(6, 182, 212, 1)',
+                borderWidth: 3,
+                pointBackgroundColor: 'rgba(6, 182, 212, 1)',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 5,
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgba(6, 182, 212, 1)',
+                pointHoverRadius: 7
+            }
+        ]
+    };
+    
+    spiderChartInstance = new Chart(ctx, {
+        type: 'radar',
+        data: chartData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+                r: {
+                    angleLines: { color: 'rgba(255, 255, 255, 0.2)' },
+                    grid: { color: 'rgba(255, 255, 255, 0.2)' },
+                    pointLabels: {
+                        color: '#00a86b',
+                        font: { size: 14, weight: 'bold' }
+                    },
+                    ticks: {
+                        color: '#ccc',
+                        backdropColor: 'transparent',
+                        beginAtZero: true,
+                        max: 100,
+                        stepSize: 20
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#fff',
+                        font: { size: 14, weight: 'bold' }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: '#ffd700',
+                    bodyColor: '#fff',
+                    borderColor: '#00a86b',
+                    borderWidth: 1
+                }
+            }
+        }
+    });
+}
+
+// ========================================
+// PREDICTOR DE REGIONAL
+// ========================================
+
+// FUNCIÓN AUTOMÁTICA: Carga TODOS los equipos del regional desde APIs
+async function autoLoadRegional() {
+    const statusDiv = document.getElementById('regional-status');
+    const teamsTextarea = document.getElementById('regional-teams');
+    const eventNameInput = document.getElementById('regional-name');
+    
+    const eventName = eventNameInput.value.trim() || 'Regional Toluca 2025';
+    
+    // Show loading modal
+    showLoadingModal(`🏆 Excavando equipos de ${eventName}...`);
+    statusDiv.innerHTML = `⏳ Obteniendo equipos de ${eventName} desde las APIs...`;
+    statusDiv.style.color = '#00a86b';
+    
+    try {
+        // Llamar al endpoint que obtiene equipos del regional
+        const response = await fetch('/api/get-regional-teams', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ event_name: eventName })
+        });
+        
+        if (!response.ok) {
+            throw new Error('No se pudieron obtener equipos');
+        }
+        
+        const data = await response.json();
+        
+        hideLoadingModal();
+        
+        if (data.success && data.teams && data.teams.length >= 4) {
+            // Llenar textarea con TODOS los equipos del regional
+            const teamNumbers = data.teams.map(t => t.team_number).join(', ');
+            teamsTextarea.value = teamNumbers;
+            
+            // DEBUG: Mostrar en consola cuántos equipos se obtuvieron
+            console.log(`✅ Equipos obtenidos: ${data.teams.length}`);
+            console.log('Equipos:', data.teams);
+            
+            statusDiv.innerHTML = `✅ ${data.teams.length} equipos cargados de ${data.event_name}`;
+            statusDiv.style.color = '#00a86b';
+            
+            // Esperar 800ms y predecir automáticamente
+            setTimeout(() => {
+                statusDiv.innerHTML = '🔮 Iniciando predicción automática...';
+                predictRegional();
+            }, 800);
+            
+        } else {
+            throw new Error('No se encontraron suficientes equipos');
+        }
+        
+    } catch (error) {
+        hideLoadingModal();
+        // Fallback: equipos de ejemplo
+        statusDiv.innerHTML = `⚠️ No se encontró ${eventName}, usando equipos de ejemplo`;
+        statusDiv.style.color = '#ffa500';
+        
+        const exampleTeams = '16818, 28254, 28255, 6584, 17625, 12345, 21033, 19241, 28256, 11854, 10001, 20001';
+        teamsTextarea.value = exampleTeams;
+        
+        setTimeout(() => {
+            statusDiv.innerHTML = '🔮 Prediciendo con equipos de ejemplo...';
+            predictRegional();
+        }, 800);
+    }
+}
+
+async function predictRegional() {
+    const eventName = document.getElementById('regional-name').value.trim();
+    const teamsInput = document.getElementById('regional-teams').value.trim();
+    const statusDiv = document.getElementById('regional-status');
+    const resultsDiv = document.getElementById('regional-results');
+    
+    if (!eventName || !teamsInput) {
+        statusDiv.innerHTML = '⚠️ Por favor, ingresa el nombre del regional y los equipos';
+        statusDiv.style.color = '#ff6b6b';
+        return;
+    }
+    
+    // Parsear equipos
+    const teams = teamsInput.split(',').map(t => parseInt(t.trim())).filter(t => !isNaN(t));
+    
+    if (teams.length < 4) {
+        statusDiv.innerHTML = '⚠️ Se requieren al menos 4 equipos para la predicción';
+        statusDiv.style.color = '#ff6b6b';
+        return;
+    }
+    
+    // ANIMACIÓN DE CARGA CON ETAPAS DEL PROCESO
+    const loadingStages = [
+        { icon: '🔍', text: `Extrayendo datos de ${teams.length} equipos desde APIs TRIDENT...`, delay: 0 },
+        { icon: '📊', text: 'Analizando OPR, récords, consistencia y tendencias...', delay: 2000 },
+        { icon: '🤖', text: 'IA prediciendo ranking con Llama 3.3 70B Versatile...', delay: 4000 },
+        { icon: '🤝', text: 'IA formando alianzas estratégicas de 4 capitanes...', delay: 6500 },
+        { icon: '🏆', text: 'IA simulando playoffs y prediciendo ganador...', delay: 9000 },
+        { icon: '🌟', text: 'IA asignando premios especiales (Inspire, Control, Innovate)...', delay: 11000 },
+        { icon: '✍️', text: 'IA generando análisis completo de 1500 palabras...', delay: 13000 }
+    ];
+    
+    resultsDiv.style.display = 'none';
+    
+    // Show modal with first stage
+    showLoadingModal(loadingStages[0].text);
+    
+    // Mostrar etapas de carga en secuencia en el modal
+    let currentStage = 0;
+    const loadingMessageElement = document.getElementById('loadingMessage');
+    const showLoadingStage = () => {
+        if (currentStage < loadingStages.length) {
+            const stage = loadingStages[currentStage];
+            loadingMessageElement.textContent = `${stage.icon} ${stage.text}`;
+            statusDiv.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px; animation: pulse 1.5s infinite;">
+                    <span style="font-size: 24px;">${stage.icon}</span>
+                    <span>${stage.text}</span>
+                    <span class="loading-dots">...</span>
+                </div>
+            `;
+            statusDiv.style.color = '#00a86b';
+            currentStage++;
+        }
+    };
+    
+    // Iniciar animación de etapas
+    loadingStages.forEach((stage, index) => {
+        setTimeout(() => showLoadingStage(), stage.delay);
+    });
+    
+    try {
+        const response = await fetch('/api/regional-predictor/predict', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ teams, event_name: eventName })
+        });
+        
+        const data = await response.json();
+        
+        hideLoadingModal();
+        
+        if (data.success) {
+            statusDiv.innerHTML = '✅ Predicción completada';
+            statusDiv.style.color = '#00a86b';
+            renderRegionalPrediction(data);
+        } else {
+            statusDiv.innerHTML = `❌ Error: ${data.error}`;
+            statusDiv.style.color = '#ff6b6b';
+        }
+        
+    } catch (error) {
+        hideLoadingModal();
+        statusDiv.innerHTML = `❌ Error de conexión: ${error.message}`;
+        statusDiv.style.color = '#ff6b6b';
+        console.error('Regional Predictor Error:', error);
+    }
+}
+
+function renderRegionalPrediction(data) {
+    const resultsDiv = document.getElementById('regional-results');
+    resultsDiv.style.display = 'block';
+    
+    // Ranking
+    const rankingHTML = data.predicted_ranking.map(team => `
+        <div class="rank-row ${team.rank <= 4 ? 'top-4' : ''}">
+            <div class="rank-number">${team.rank}</div>
+            <div class="team-info">
+                <span class="team-number-name">#${team.team_number} ${team.team_name}</span>
+                <span class="team-opr">OPR: ${team.opr} ${team.worlds_qualified ? '🏆' : ''}</span>
+            </div>
+            <div class="predicted-rp">${team.predicted_rp} RP</div>
+            <div class="predicted-record">${team.predicted_record}</div>
+        </div>
+    `).join('');
+    document.getElementById('predicted-ranking').innerHTML = rankingHTML;
+    
+    // Alianzas
+    const alliancesHTML = data.predicted_alliances.map(alliance => `
+        <div class="alliance-card">
+            <div class="alliance-header">Alianza #${alliance.alliance_number}</div>
+            <div class="alliance-team captain">
+                👑 #${alliance.captain.team_number} ${alliance.captain.team_name}
+                <br><small>${alliance.captain.predicted_rp} RP</small>
+            </div>
+            ${alliance.pick1 ? `
+                <div class="alliance-team">
+                    #${alliance.pick1.team_number} ${alliance.pick1.team_name}
+                    <br><small>${alliance.pick1.predicted_rp} RP</small>
+                </div>
+            ` : ''}
+            ${alliance.pick2 ? `
+                <div class="alliance-team">
+                    #${alliance.pick2.team_number} ${alliance.pick2.team_name}
+                    <br><small>${alliance.pick2.predicted_rp} RP</small>
+                </div>
+            ` : ''}
+        </div>
+    `).join('');
+    document.getElementById('predicted-alliances').innerHTML = alliancesHTML;
+    
+    // Ganador
+    const winnerHTML = `
+        <div class="winner-trophy">🏆</div>
+        <div class="winner-team">
+            CAMPEÓN: #${data.predicted_winner.winner.captain.team_number} 
+            ${data.predicted_winner.winner.captain.team_name}
+        </div>
+        <div class="finalist-team">
+            Finalista: #${data.predicted_winner.finalist.captain.team_number} 
+            ${data.predicted_winner.finalist.captain.team_name}
+        </div>
+    `;
+    document.getElementById('predicted-winner').innerHTML = winnerHTML;
+    
+    // Premios
+    const awardsHTML = `
+        <div class="award-item">
+            <div class="award-name">🏆 Inspire Award</div>
+            <div class="award-winner">${data.special_awards.inspire_award}</div>
+        </div>
+        <div class="award-item">
+            <div class="award-name">🎮 Control Award</div>
+            <div class="award-winner">${data.special_awards.control_award}</div>
+        </div>
+        <div class="award-item">
+            <div class="award-name">💡 Innovate Award</div>
+            <div class="award-winner">${data.special_awards.innovate_award}</div>
+        </div>
+    `;
+    document.getElementById('predicted-awards').innerHTML = awardsHTML;
+    
+    // Análisis IA
+    document.getElementById('regional-ai-analysis').textContent = data.ai_analysis || 'Análisis no disponible';
+    
+    // Scroll a resultados
+    resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    // Welcome message in Quetzal-Bot
+    addMessageToChat('bot', '¡Hola! Soy Quetzal-Bot 🧠 Pregúntame sobre las reglas de DECODE INTO THE DEEP 2025-2026');
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,95 @@
+{
+  "app_name": "Aztlán Decode",
+  "tagline": "FTC Analysis System",
+  "navigation": {
+    "home": "Home",
+    "scouting": "Scouting",
+    "astronomy": "Astronomy",
+    "comparison": "Comparison",
+    "about": "About"
+  },
+  "common": {
+    "search": "Search",
+    "analyze": "Analyze",
+    "compare": "Compare",
+    "export": "Export",
+    "download": "Download",
+    "share": "Share",
+    "favorite": "Favorite",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "close": "Close",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit"
+  },
+  "scouting": {
+    "title": "Digital Excavation",
+    "subtitle": "TRIDENTE Competitive Intelligence System",
+    "team_number": "FTC Team Number",
+    "analyze_team": "Analyze Team",
+    "team_info": "Team Information",
+    "performance_metrics": "Performance Metrics",
+    "ai_analysis": "AI Analysis",
+    "strategic_recommendations": "Strategic Recommendations",
+    "tridente_consensus": "TRIDENTE Consensus"
+  },
+  "astronomy": {
+    "title": "Exoplanet Exploration",
+    "subtitle": "Habitable World Search Simulation",
+    "distance": "Distance (light years)",
+    "radius": "Radius (Earths)",
+    "temperature": "Temperature (K)",
+    "orbital_period": "Orbital Period (days)",
+    "simulate": "Simulate Search",
+    "habitable_zone": "Habitable Zone",
+    "habitability_score": "Habitability Score"
+  },
+  "comparison": {
+    "title": "Battlefield",
+    "subtitle": "Direct Team Comparison",
+    "team1": "Team 1",
+    "team2": "Team 2",
+    "compare_teams": "Compare Teams",
+    "winner_prediction": "Winner Prediction",
+    "win_probability": "Win Probability",
+    "strategic_analysis": "Strategic Analysis"
+  },
+  "export": {
+    "export_pdf": "Export to PDF",
+    "export_csv": "Export to CSV",
+    "export_excel": "Export to Excel",
+    "export_success": "Export successful",
+    "export_error": "Export error"
+  },
+  "chatbot": {
+    "title": "AI Assistant",
+    "placeholder": "Ask something about FTC or exoplanets...",
+    "send": "Send",
+    "thinking": "Thinking...",
+    "error": "Error processing your message"
+  },
+  "stats": {
+    "total_searches": "Total Searches",
+    "total_analyses": "Total Analyses",
+    "most_searched": "Most Searched",
+    "recent_activity": "Recent Activity"
+  },
+  "errors": {
+    "team_not_found": "Team not found",
+    "invalid_team_number": "Invalid team number",
+    "api_error": "API error",
+    "network_error": "Connection error",
+    "database_error": "Database error",
+    "export_error": "Export error"
+  },
+  "success": {
+    "analysis_complete": "Analysis complete",
+    "export_complete": "Export complete",
+    "favorite_added": "Added to favorites",
+    "favorite_removed": "Removed from favorites"
+  }
+}

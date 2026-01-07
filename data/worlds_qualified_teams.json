@@ -1,0 +1,55 @@
+{
+  "season": "2025-2026",
+  "last_updated": "2025-12-30",
+  "description": "Equipos clasificados al Nacional por Ranking Points en Regionales - 28 PASES TOTALES (27 equipos únicos)",
+  "regionals": {
+    "Torreón": {
+      "qualified_teams": [
+        {"team_number": 17755, "team_name": "CERBOTICS - BLUE", "ranking_points": 88, "rank": 1},
+        {"team_number": 12887, "team_name": "Devolt Phobos", "ranking_points": 86, "rank": 2},
+        {"team_number": 15600, "team_name": "CERBOTICS - RED", "ranking_points": 69, "rank": 3},
+        {"team_number": 13531, "team_name": "Botbusters Black", "ranking_points": 59, "rank": 4},
+        {"team_number": 17614, "team_name": "Devolt Kova", "ranking_points": 58, "rank": 5},
+        {"team_number": 25951, "team_name": "DESERT EAGLES - JOHN DEERE", "ranking_points": 57, "rank": 6},
+        {"team_number": 23619, "team_name": "PrepaTec - OVERTURE Purple", "ranking_points": 54, "rank": 7}
+      ]
+    },
+    "Cuautitlán": {
+      "qualified_teams": [
+        {"team_number": 17625, "team_name": "Aztech Robotics I", "ranking_points": 107, "rank": 1},
+        {"team_number": 16818, "team_name": "Hype-Birds", "ranking_points": 88, "rank": 2},
+        {"team_number": 6584, "team_name": "Rhinos", "ranking_points": 82, "rank": 3},
+        {"team_number": 21735, "team_name": "Nautilus", "ranking_points": 69, "rank": 4},
+        {"team_number": 31546, "team_name": "Next Gen Rhinos", "ranking_points": 50, "rank": 5},
+        {"team_number": 28255, "team_name": "Tēchkalli", "ranking_points": 42, "rank": 6}
+      ]
+    },
+    "Cancún": {
+      "qualified_teams": [
+        {"team_number": 15912, "team_name": "Tecmilenio Tesla", "ranking_points": 116, "rank": 1},
+        {"team_number": 26961, "team_name": "Xibalbots", "ranking_points": 80, "rank": 2},
+        {"team_number": 22571, "team_name": "Aztecbot", "ranking_points": 69, "rank": 3}
+      ]
+    },
+    "Guadalajara": {
+      "qualified_teams": [
+        {"team_number": 30311, "team_name": "Iron Lion", "ranking_points": 135, "rank": 1},
+        {"team_number": 16255, "team_name": "Minerva Warriors", "ranking_points": 88, "rank": 2},
+        {"team_number": 23837, "team_name": "Imperium Fons", "ranking_points": 62, "rank": 3},
+        {"team_number": 16508, "team_name": "Minerva Legion", "ranking_points": 55, "rank": 4}
+      ]
+    },
+    "CDMX": {
+      "qualified_teams": [
+        {"team_number": 17627, "team_name": "Aztech Robotics III", "ranking_points": 88, "rank": 1},
+        {"team_number": 17626, "team_name": "Aztech Robotics II", "ranking_points": 70, "rank": 2},
+        {"team_number": 23660, "team_name": "TecDroid - Ilios", "ranking_points": 66, "rank": 3},
+        {"team_number": 21704, "team_name": "Lobos Negros Alpha", "ranking_points": 65, "rank": 4},
+        {"team_number": 24976, "team_name": "Lobos Negros Bravo", "ranking_points": 51, "rank": 5},
+        {"team_number": 28254, "team_name": "Waachma", "ranking_points": 45, "rank": 6},
+        {"team_number": 26333, "team_name": "PrepaTec - Low Altitude Robotics", "ranking_points": 45, "rank": 7}
+      ],
+      "notes": "6584 Rhinos (87 pts, rank 2) ya clasificó en Regional Cuautitlán"
+    }
+  }
+}

@@ -1,0 +1,237 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="fade-in">
+    <!-- Dashboard Header con Hero -->
+    <div class="hero-section" style="background: linear-gradient(135deg, rgba(0, 168, 107, 0.2), rgba(0, 243, 255, 0.1)); border-radius: 16px; padding: 3rem 2rem; margin-bottom: 2rem; text-align: center;">
+        <h1 style="color: var(--oro-neon); font-size: 2.5rem; margin-bottom: 1rem;">
+            🚀 CENTRO DE COMANDO AZTLÁN
+        </h1>
+        <p style="color: var(--plata-lunar); font-size: 1.2rem;">
+            Tu hub personalizado de análisis avanzado
+        </p>
+    </div>
+    
+    <!-- Dashboard Ejecutivo -->
+    <div id="executive-dashboard"></div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-top: 2rem;">
+        <!-- Historial de Búsquedas -->
+        <div class="module-card" style="grid-column: span 1;">
+            <div id="search-history"></div>
+        </div>
+        
+        <!-- Favoritos Quick Access -->
+        <div class="module-card" style="grid-column: span 1;">
+            <h3 style="color: var(--oro-neon); margin-bottom: 1rem;">⭐ Equipos Favoritos</h3>
+            <div id="favorites-sidebar"></div>
+            <div style="margin-top: 1rem;">
+                <button onclick="favoritesManager.compareAllFavorites()" class="btn-cyber">
+                    ⚔️ Comparar Todos
+                </button>
+                <button onclick="favoritesManager.exportFavorites()" class="btn-cyber" style="margin-left: 0.5rem;">
+                    📤 Exportar
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Módulos Principales -->
+    <div style="margin-top: 3rem;">
+        <h2 style="color: var(--turquesa-neon); text-align: center; margin-bottom: 2rem; font-size: 2rem;">
+            🎯 MÓDULOS DISPONIBLES
+        </h2>
+        
+        <div class="modules-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <!-- Módulo AstronomIA -->
+            <a href="{{ url_for('astronomy') }}" class="module-card" style="text-decoration: none; color: inherit; display: block;">
+                <div style="text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">🌌</div>
+                    <h3 style="color: var(--oro-neon); margin-bottom: 0.5rem;">AstronomIA</h3>
+                    <p style="color: var(--plata-lunar); font-size: 0.95rem;">
+                        Detección de exoplanetas con Machine Learning
+                    </p>
+                    <div style="margin-top: 1rem;">
+                        <span class="badge">🪐 Renderizado 3D</span>
+                        <span class="badge">🧬 ESI Calculator</span>
+                        <span class="badge">📉 Light Curves</span>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Módulo Scouting FTC -->
+            <a href="{{ url_for('scouting') }}" class="module-card" style="text-decoration: none; color: inherit; display: block;">
+                <div style="text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">🤖</div>
+                    <h3 style="color: var(--oro-neon); margin-bottom: 0.5rem;">Scouting FTC</h3>
+                    <p style="color: var(--plata-lunar); font-size: 0.95rem;">
+                        Análisis TRIDENTE de equipos robóticos
+                    </p>
+                    <div style="margin-top: 1rem;">
+                        <span class="badge">🔱 TRIDENT APIs</span>
+                        <span class="badge">📊 Estadísticas</span>
+                        <span class="badge">🏆 Predicciones</span>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Módulo Comparación Avanzada -->
+            <a href="{{ url_for('comparison') }}" class="module-card" style="text-decoration: none; color: inherit; display: block;">
+                <div style="text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">⚔️</div>
+                    <h3 style="color: var(--oro-neon); margin-bottom: 0.5rem;">Centro de Análisis</h3>
+                    <p style="color: var(--plata-lunar); font-size: 0.95rem;">
+                        Comparaciones avanzadas con IA
+                    </p>
+                    <div style="margin-top: 1rem;">
+                        <span class="badge">🧠 Quetzal-Bot</span>
+                        <span class="badge">🔮 El Oráculo</span>
+                        <span class="badge">🕸️ Spider Charts</span>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Módulo Data Explorer -->
+            <a href="/data-explorer" class="module-card" style="text-decoration: none; color: inherit; display: block;">
+                <div style="text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">📊</div>
+                    <h3 style="color: var(--oro-neon); margin-bottom: 0.5rem;">Data Explorer</h3>
+                    <p style="color: var(--plata-lunar); font-size: 0.95rem;">
+                        Explorador de datos NASA y FTC
+                    </p>
+                    <div style="margin-top: 1rem;">
+                        <span class="badge">🌍 NASA Archive</span>
+                        <span class="badge">🤖 FTC Scout</span>
+                        <span class="badge">📈 Visualizaciones</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Tips y Features Destacadas -->
+    <div style="margin-top: 3rem; background: rgba(0, 168, 107, 0.1); border: 2px solid var(--jade-azteca); border-radius: 16px; padding: 2rem;">
+        <h3 style="color: var(--turquesa-neon); margin-bottom: 1.5rem; text-align: center;">
+            ⚡ FUNCIONALIDADES AVANZADAS
+        </h3>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+            <div style="background: rgba(0, 0, 0, 0.5); padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--jade-azteca);">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">⭐</div>
+                <h4 style="color: var(--oro-neon); margin-bottom: 0.5rem;">Sistema de Favoritos</h4>
+                <p style="color: var(--plata-lunar); font-size: 0.9rem;">
+                    Guarda tus equipos favoritos y compáralos fácilmente. Haz clic en ☆ junto a cualquier equipo.
+                </p>
+            </div>
+            
+            <div style="background: rgba(0, 0, 0, 0.5); padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--jade-azteca);">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📝</div>
+                <h4 style="color: var(--oro-neon); margin-bottom: 0.5rem;">Notas Personalizadas</h4>
+                <p style="color: var(--plata-lunar); font-size: 0.9rem;">
+                    Añade notas, tags y calificaciones a cada equipo. Click en 📝 para comenzar.
+                </p>
+            </div>
+            
+            <div style="background: rgba(0, 0, 0, 0.5); padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--jade-azteca);">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📤</div>
+                <h4 style="color: var(--oro-neon); margin-bottom: 0.5rem;">Exportación</h4>
+                <p style="color: var(--plata-lunar); font-size: 0.9rem;">
+                    Exporta análisis en CSV, JSON o TXT. Ideal para compartir con tu equipo.
+                </p>
+            </div>
+            
+            <div style="background: rgba(0, 0, 0, 0.5); padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--jade-azteca);">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">☀️/🌙</div>
+                <h4 style="color: var(--oro-neon); margin-bottom: 0.5rem;">Modo Claro/Oscuro</h4>
+                <p style="color: var(--plata-lunar); font-size: 0.9rem;">
+                    Cambia el tema visual según tu preferencia. Botón en la esquina superior derecha.
+                </p>
+            </div>
+            
+            <div style="background: rgba(0, 0, 0, 0.5); padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--jade-azteca);">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏅</div>
+                <h4 style="color: var(--oro-neon); margin-bottom: 0.5rem;">Sistema de Logros</h4>
+                <p style="color: var(--plata-lunar); font-size: 0.9rem;">
+                    Desbloquea logros mientras usas el sistema. ¿Puedes llegar a LEYENDA AZTLÁN?
+                </p>
+            </div>
+            
+            <div style="background: rgba(0, 0, 0, 0.5); padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--jade-azteca);">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📜</div>
+                <h4 style="color: var(--oro-neon); margin-bottom: 0.5rem;">Historial Inteligente</h4>
+                <p style="color: var(--plata-lunar); font-size: 0.9rem;">
+                    Acceso rápido a tus búsquedas recientes. Nunca pierdas un análisis importante.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Call to Action -->
+    <div style="margin-top: 3rem; text-align: center; background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(0, 168, 107, 0.1)); padding: 3rem 2rem; border-radius: 16px; border: 3px solid var(--oro-neon);">
+        <h2 style="color: var(--oro-neon); font-size: 2rem; margin-bottom: 1rem;">
+            🚀 ¿Listo para dominar la competencia?
+        </h2>
+        <p style="color: var(--plata-lunar); font-size: 1.1rem; margin-bottom: 2rem;">
+            Explora los módulos y descubre el poder del análisis impulsado por IA
+        </p>
+        <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+            <a href="{{ url_for('astronomy') }}" class="btn-cyber" style="text-decoration: none;">
+                🌌 Explorar AstronomIA
+            </a>
+            <a href="{{ url_for('scouting') }}" class="btn-cyber" style="text-decoration: none;">
+                🤖 Analizar Equipos FTC
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+.badge {
+    display: inline-block;
+    background: rgba(0, 168, 107, 0.3);
+    border: 1px solid var(--jade-azteca);
+    color: var(--jade-azteca);
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    margin: 0.2rem;
+}
+
+.module-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 168, 107, 0.4);
+}
+
+.btn-cyber {
+    background: linear-gradient(135deg, var(--jade-azteca), var(--turquesa-neon));
+    border: 2px solid var(--jade-azteca);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-transform: uppercase;
+}
+
+.btn-cyber:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 168, 107, 0.5);
+}
+</style>
+
+<script>
+// Render dashboard on load
+document.addEventListener('DOMContentLoaded', () => {
+    const dashboardContainer = document.getElementById('executive-dashboard');
+    if (dashboardContainer) {
+        dashboardContainer.innerHTML = dashboardManager.renderDashboard();
+    }
+    
+    // Track page view
+    dashboardManager.trackEvent('search', {});
+});
+</script>
+{% endblock %}
