@@ -304,6 +304,42 @@ class ThemeManager {
         }
         
         if (scene) {
+            // Agregar transición suave
+            scene.style.transition = 'all 3s cubic-bezier(0.4, 0, 0.2, 1)';
+            
+            // Cambiar clases con delay para mejor efecto
+            scene.classList.remove('day-mode', 'night-mode');
+            
+            setTimeout(() => {
+                scene.classList.add(this.isNightMode ? 'night-mode' : 'day-mode');
+            }, 50);
+        }
+
+        // Actualizar botón con animación
+        const button = document.querySelector('.theme-toggle');
+        if (button) {
+            button.style.transform = 'scale(0.9)';
+            button.style.transition = 'transform 0.2s ease';
+            
+            setTimeout(() => {
+                button.innerHTML = `
+                    <span class="theme-toggle-icon">${this.isNightMode ? '🌙' : '☀️'}</span>
+                    <span class="theme-toggle-text">${this.isNightMode ? 'Modo Noche' : 'Modo Día'}</span>
+                `;
+                button.style.transform = 'scale(1)';
+            }, 150);
+        }
+
+        // Guardar preferencia
+        localStorage.setItem('aztlan-night-mode', this.isNightMode);
+    }
+        } else if (this.currentPage === 'astronomy') {
+            scene = document.querySelector('.cosmic-scene');
+        } else if (this.currentPage === 'comparison') {
+            scene = document.querySelector('.battlefield-scene');
+        }
+        
+        if (scene) {
             scene.classList.remove('day-mode', 'night-mode');
             scene.classList.add(this.isNightMode ? 'night-mode' : 'day-mode');
         }

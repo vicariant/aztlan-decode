@@ -34,18 +34,31 @@ body[data-page="comparison"] > *:not(.battlefield-scene) {
     height: 100%;
     z-index: 1;
     overflow: hidden;
-    transition: filter 2s ease;
+    transition: filter 3s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none; /* No bloquear clics */
+    will-change: filter;
 }
 
 /* Filtro de día - Más brillante */
 .archaeological-scene.day-mode {
-    filter: brightness(1.1) saturate(1.2);
+    filter: brightness(1.15) saturate(1.3) contrast(1.05);
+    animation: dayGlow 4s ease-in-out infinite;
 }
 
 /* Filtro de noche - Más oscuro */
 .archaeological-scene.night-mode {
-    filter: brightness(0.7) saturate(0.9);
+    filter: brightness(0.6) saturate(0.8) contrast(1.15);
+    animation: nightAmbient 6s ease-in-out infinite;
+}
+
+@keyframes dayGlow {
+    0%, 100% { filter: brightness(1.15) saturate(1.3) contrast(1.05); }
+    50% { filter: brightness(1.2) saturate(1.4) contrast(1.08); }
+}
+
+@keyframes nightAmbient {
+    0%, 100% { filter: brightness(0.6) saturate(0.8) contrast(1.15); }
+    50% { filter: brightness(0.65) saturate(0.85) contrast(1.2); }
 }
 
 /* Cielo - Cambia según hora */
@@ -53,74 +66,105 @@ body[data-page="comparison"] > *:not(.battlefield-scene) {
     position: absolute;
     width: 100%;
     height: 100%;
-    transition: background 2s ease;
+    transition: background 3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Modo DÍA - Cielo azul brillante con sol */
 .archaeological-scene.day-mode .sky {
     background: linear-gradient(
         to bottom,
-        #87CEEB 0%,
-        #B0E2FF 30%,
-        #E0F6FF 60%,
+        #4A90E2 0%,
+        #87CEEB 20%,
+        #B0E2FF 50%,
+        #E0F6FF 75%,
         #FFE5B4 100%
     );
+    animation: skyBreathing 8s ease-in-out infinite;
 }
 
 /* Modo NOCHE - Cielo oscuro profundo con luna */
 .archaeological-scene.night-mode .sky {
     background: linear-gradient(
         to bottom,
-        #050818 0%,
-        #0f1428 30%,
-        #1a1b3e 60%,
+        #000428 0%,
+        #050818 20%,
+        #0f1428 50%,
+        #1a1b3e 75%,
         #1e1e2e 100%
     );
+    animation: nightSky 10s ease-in-out infinite;
+}
+
+@keyframes skyBreathing {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.95; }
+}
+
+@keyframes nightSky {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.92; }
 }
 
 /* Sol */
 .archaeological-scene .sun {
     position: absolute;
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle, #FFD700 0%, #FFA500 100%);
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, #FFF9E6 0%, #FFD700 40%, #FFA500 100%);
     border-radius: 50%;
     top: 10%;
     right: 15%;
-    box-shadow: 0 0 60px #FFD700,
-                0 0 100px rgba(255, 215, 0, 0.5);
-    animation: sunPulse 4s ease-in-out infinite;
+    box-shadow: 0 0 80px rgba(255, 215, 0, 0.9),
+                0 0 120px rgba(255, 215, 0, 0.6),
+                0 0 160px rgba(255, 165, 0, 0.3);
+    animation: sunPulse 6s ease-in-out infinite, sunFloat 12s ease-in-out infinite;
     opacity: 0;
-    transition: opacity 2s;
+    transition: opacity 3s cubic-bezier(0.4, 0, 0.2, 1), transform 3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .archaeological-scene.day-mode .sun {
     opacity: 1;
+    transform: scale(1);
 }
 
 @keyframes sunPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+    0%, 100% { 
+        box-shadow: 0 0 80px rgba(255, 215, 0, 0.9),
+                    0 0 120px rgba(255, 215, 0, 0.6),
+                    0 0 160px rgba(255, 165, 0, 0.3);
+    }
+    50% { 
+        box-shadow: 0 0 100px rgba(255, 215, 0, 1),
+                    0 0 150px rgba(255, 215, 0, 0.7),
+                    0 0 200px rgba(255, 165, 0, 0.4);
+    }
+}
+
+@keyframes sunFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
 }
 
 /* Luna */
 .archaeological-scene .moon {
     position: absolute;
-    width: 100px;
-    height: 100px;
-    background: radial-gradient(circle at 30% 30%, #f8f8ff 0%, #c0c0c0 100%);
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle at 30% 30%, #FFFFFF 0%, #f8f8ff 30%, #d0d0d0 80%, #a0a0a0 100%);
     border-radius: 50%;
     top: 12%;
     right: 18%;
-    box-shadow: 0 0 40px rgba(255, 255, 255, 0.6),
-                0 0 80px rgba(200, 200, 255, 0.3);
+    box-shadow: 0 0 60px rgba(255, 255, 255, 0.8),
+                0 0 100px rgba(200, 200, 255, 0.5),
+                0 0 140px rgba(180, 180, 255, 0.3),
+                inset -15px -15px 30px rgba(0, 0, 0, 0.2);
     opacity: 0;
-    transition: opacity 2s;
+    transition: opacity 3s cubic-bezier(0.4, 0, 0.2, 1), transform 3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .archaeological-scene.night-mode .moon {
     opacity: 1;
-    animation: moonGlow 3s ease-in-out infinite;
+    animation: moonGlow 4s ease-in-out infinite, moonFloat 10s ease-in-out infinite;
 }
 
 /* Cráteres de la luna */
@@ -182,14 +226,24 @@ body[data-page="comparison"] > *:not(.battlefield-scene) {
 
 @keyframes starTwinkle {
     0%, 100% { 
-        opacity: 0.5; 
+        opacity: 0.4; 
         transform: scale(1);
-        box-shadow: 0 0 4px #FFFFFF, 0 0 8px rgba(255, 255, 255, 0.5);
+        box-shadow: 0 0 3px #FFFFFF, 0 0 6px rgba(255, 255, 255, 0.4);
+    }
+    25% { 
+        opacity: 0.7; 
+        transform: scale(1.4);
+        box-shadow: 0 0 6px #FFFFFF, 0 0 10px rgba(255, 255, 255, 0.6);
     }
     50% { 
         opacity: 1; 
-        transform: scale(1.8);
-        box-shadow: 0 0 8px #FFFFFF, 0 0 16px rgba(255, 255, 255, 0.8);
+        transform: scale(2);
+        box-shadow: 0 0 10px #FFFFFF, 0 0 18px rgba(255, 255, 255, 0.9);
+    }
+    75% { 
+        opacity: 0.7; 
+        transform: scale(1.4);
+        box-shadow: 0 0 6px #FFFFFF, 0 0 10px rgba(255, 255, 255, 0.6);
     }
 }
 
@@ -347,18 +401,31 @@ body[data-page="astronomy"] {
     height: 100%;
     z-index: 1;
     overflow: hidden;
-    transition: background 2s ease, filter 2s ease;
+    transition: background 3s cubic-bezier(0.4, 0, 0.2, 1), filter 3s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none; /* No bloquear clics */
+    will-change: filter, background;
 }
 
 /* Filtro de día - Brillante */
 .cosmic-scene.day-mode {
-    filter: brightness(1.2) saturate(1.3);
+    filter: brightness(1.25) saturate(1.4) contrast(1.08);
+    animation: cosmicDayPulse 8s ease-in-out infinite;
 }
 
 /* Filtro de noche - Oscuro */
 .cosmic-scene.night-mode {
-    filter: brightness(0.6) saturate(0.8);
+    filter: brightness(0.65) saturate(0.85) contrast(1.2);
+    animation: cosmicNightPulse 10s ease-in-out infinite;
+}
+
+@keyframes cosmicDayPulse {
+    0%, 100% { filter: brightness(1.25) saturate(1.4) contrast(1.08); }
+    50% { filter: brightness(1.3) saturate(1.5) contrast(1.1); }
+}
+
+@keyframes cosmicNightPulse {
+    0%, 100% { filter: brightness(0.65) saturate(0.85) contrast(1.2); }
+    50% { filter: brightness(0.7) saturate(0.9) contrast(1.25); }
 }
 
 /* Astronomy - Modo Día (con sol) - CIELO AZUL BRILLANTE */
@@ -393,18 +460,40 @@ body[data-page="astronomy"] {
 
 .cosmic-sun {
     position: absolute;
-    width: 250px;
-    height: 250px;
-    background: radial-gradient(circle, #FFEB3B 0%, #FFC107 50%, #FF9800 100%);
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, #FFFEF0 0%, #FFEB3B 30%, #FFC107 60%, #FF9800 100%);
     border-radius: 50%;
     top: 8%;
     right: 12%;
     box-shadow: 
-        0 0 100px rgba(255, 235, 59, 1),
-        0 0 200px rgba(255, 193, 7, 0.8),
-        0 0 300px rgba(255, 152, 0, 0.6);
-    animation: sunPulse 4s ease-in-out infinite;
-    filter: brightness(1.2);
+        0 0 120px rgba(255, 235, 59, 1),
+        0 0 240px rgba(255, 193, 7, 0.8),
+        0 0 360px rgba(255, 152, 0, 0.6);
+    animation: cosmicSunPulse 6s ease-in-out infinite, cosmicSunFloat 14s ease-in-out infinite;
+    filter: brightness(1.3);
+    transition: opacity 3s cubic-bezier(0.4, 0, 0.2, 1), transform 3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes cosmicSunPulse {
+    0%, 100% { 
+        box-shadow: 
+            0 0 120px rgba(255, 235, 59, 1),
+            0 0 240px rgba(255, 193, 7, 0.8),
+            0 0 360px rgba(255, 152, 0, 0.6);
+    }
+    50% { 
+        box-shadow: 
+            0 0 160px rgba(255, 235, 59, 1),
+            0 0 300px rgba(255, 193, 7, 0.9),
+            0 0 440px rgba(255, 152, 0, 0.7);
+    }
+}
+
+@keyframes cosmicSunFloat {
+    0%, 100% { transform: translate(0, 0); }
+    33% { transform: translate(20px, -10px); }
+    66% { transform: translate(-15px, -20px); }
 }
 
 /* Luna llena grande (solo modo noche) */
@@ -418,17 +507,42 @@ body[data-page="astronomy"] {
 
 .cosmic-scene .full-moon {
     position: absolute;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle at 35% 35%, #ffffff 0%, #d0d0d0 100%);
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle at 35% 35%, #FFFFFF 0%, #F0F0F0 40%, #d0d0d0 80%, #b0b0b0 100%);
     border-radius: 50%;
     top: 15%;
     right: 10%;
     box-shadow: 
-        0 0 80px rgba(255, 255, 255, 0.8),
-        0 0 150px rgba(200, 200, 255, 0.6),
-        inset -20px -20px 40px rgba(0, 0, 0, 0.2);
-    animation: moonFloat 8s ease-in-out infinite;
+        0 0 100px rgba(255, 255, 255, 0.9),
+        0 0 180px rgba(200, 200, 255, 0.7),
+        0 0 240px rgba(180, 180, 255, 0.5),
+        inset -25px -25px 50px rgba(0, 0, 0, 0.25);
+    animation: fullMoonFloat 10s ease-in-out infinite, fullMoonGlow 6s ease-in-out infinite;
+    transition: opacity 3s cubic-bezier(0.4, 0, 0.2, 1), transform 3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fullMoonFloat {
+    0%, 100% { transform: translate(0, 0); }
+    33% { transform: translate(-15px, -25px); }
+    66% { transform: translate(10px, -15px); }
+}
+
+@keyframes fullMoonGlow {
+    0%, 100% { 
+        box-shadow: 
+            0 0 100px rgba(255, 255, 255, 0.9),
+            0 0 180px rgba(200, 200, 255, 0.7),
+            0 0 240px rgba(180, 180, 255, 0.5),
+            inset -25px -25px 50px rgba(0, 0, 0, 0.25);
+    }
+    50% { 
+        box-shadow: 
+            0 0 130px rgba(255, 255, 255, 1),
+            0 0 220px rgba(200, 200, 255, 0.8),
+            0 0 300px rgba(180, 180, 255, 0.6),
+            inset -25px -25px 50px rgba(0, 0, 0, 0.25);
+    }
 }
 
 /* Cráteres detallados */
@@ -446,8 +560,17 @@ body[data-page="astronomy"] {
 .crater:nth-child(5) { width: 20px; height: 20px; top: 70%; left: 55%; }
 
 @keyframes moonFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
+    0%, 100% { transform: translate(0, 0); }
+    33% { transform: translate(-10px, -20px); }
+    66% { transform: translate(10px, -15px); }
+}
+
+/* Agregar un brillo místico a la luna */
+.moon::before,
+.moon::after,
+.full-moon::before,
+.battle-moon::before {
+    animation-delay: 1.5s;
 }
 
 /* Estrellas del espacio profundo */
@@ -476,24 +599,35 @@ body[data-page="astronomy"] {
 /* Nebulosa */
 .nebula {
     position: absolute;
-    width: 600px;
-    height: 600px;
-    top: -100px;
-    left: -100px;
+    width: 700px;
+    height: 700px;
+    top: -150px;
+    left: -150px;
     background: radial-gradient(
         ellipse at center,
-        rgba(138, 43, 226, 0.3) 0%,
-        rgba(75, 0, 130, 0.2) 40%,
-        transparent 70%
+        rgba(138, 43, 226, 0.4) 0%,
+        rgba(75, 0, 130, 0.3) 30%,
+        rgba(148, 0, 211, 0.2) 50%,
+        transparent 75%
     );
     border-radius: 50%;
-    filter: blur(60px);
-    animation: nebulaFloat 20s ease-in-out infinite;
+    filter: blur(70px);
+    animation: nebulaFloat 25s ease-in-out infinite;
 }
 
 @keyframes nebulaFloat {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(100px, 50px) scale(1.1); }
+    0%, 100% { 
+        transform: translate(0, 0) scale(1) rotate(0deg);
+        opacity: 0.6;
+    }
+    33% { 
+        transform: translate(100px, 50px) scale(1.1) rotate(120deg);
+        opacity: 0.8;
+    }
+    66% { 
+        transform: translate(50px, 100px) scale(1.05) rotate(240deg);
+        opacity: 0.7;
+    }
 }
 
 /* Galaxia espiral */
@@ -576,18 +710,31 @@ body[data-page="comparison"] {
     height: 100%;
     z-index: 1;
     overflow: hidden;
-    transition: background 2s ease, filter 2s ease;
+    transition: background 3s cubic-bezier(0.4, 0, 0.2, 1), filter 3s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none; /* No bloquear clics */
+    will-change: filter, background;
 }
 
 /* Filtro de día - Muy brillante y cálido */
 .battlefield-scene.day-mode {
-    filter: brightness(1.15) saturate(1.4) contrast(1.1);
+    filter: brightness(1.2) saturate(1.5) contrast(1.15);
+    animation: battleDayIntensity 7s ease-in-out infinite;
 }
 
 /* Filtro de noche - Oscuro y frío */
 .battlefield-scene.night-mode {
-    filter: brightness(0.5) saturate(0.7) contrast(1.2);
+    filter: brightness(0.55) saturate(0.75) contrast(1.25);
+    animation: battleNightAmbient 9s ease-in-out infinite;
+}
+
+@keyframes battleDayIntensity {
+    0%, 100% { filter: brightness(1.2) saturate(1.5) contrast(1.15); }
+    50% { filter: brightness(1.25) saturate(1.6) contrast(1.18); }
+}
+
+@keyframes battleNightAmbient {
+    0%, 100% { filter: brightness(0.55) saturate(0.75) contrast(1.25); }
+    50% { filter: brightness(0.6) saturate(0.8) contrast(1.3); }
 }
 
 /* Comparison - Modo Día (con sol) - CIELO NARANJA INTENSO */
@@ -624,18 +771,39 @@ body[data-page="comparison"] {
 
 .battlefield-scene .bright-sun {
     position: absolute;
-    width: 150px;
-    height: 150px;
-    background: radial-gradient(circle, #fff700 0%, #ffaa00 70%, #ff6600 100%);
+    width: 170px;
+    height: 170px;
+    background: radial-gradient(circle, #FFFDF0 0%, #fff700 30%, #ffaa00 70%, #ff6600 100%);
     border-radius: 50%;
     top: 8%;
     left: 50%;
     transform: translateX(-50%);
     box-shadow: 
-        0 0 100px rgba(255, 200, 0, 0.8),
-        0 0 200px rgba(255, 150, 0, 0.6),
-        0 0 300px rgba(255, 100, 0, 0.4);
-    animation: sunIntense 5s ease-in-out infinite;
+        0 0 120px rgba(255, 247, 0, 0.9),
+        0 0 240px rgba(255, 200, 0, 0.7),
+        0 0 360px rgba(255, 100, 0, 0.5);
+    animation: battleSunIntense 7s ease-in-out infinite, battleSunFloat 13s ease-in-out infinite;
+    transition: opacity 3s cubic-bezier(0.4, 0, 0.2, 1), transform 3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes battleSunIntense {
+    0%, 100% { 
+        box-shadow: 
+            0 0 120px rgba(255, 247, 0, 0.9),
+            0 0 240px rgba(255, 200, 0, 0.7),
+            0 0 360px rgba(255, 100, 0, 0.5);
+    }
+    50% { 
+        box-shadow: 
+            0 0 160px rgba(255, 247, 0, 1),
+            0 0 300px rgba(255, 200, 0, 0.8),
+            0 0 440px rgba(255, 100, 0, 0.6);
+    }
+}
+
+@keyframes battleSunFloat {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-20px); }
 }
 
 /* Luna para modo noche en battlefield */
@@ -649,17 +817,42 @@ body[data-page="comparison"] {
 
 .battle-moon {
     position: absolute;
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle at 30% 30%, #f8f8ff 0%, #c0c0c0 100%);
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle at 30% 30%, #FFFFFF 0%, #f8f8ff 35%, #c0c0c0 75%, #a0a0a0 100%);
     border-radius: 50%;
     top: 10%;
     left: 50%;
     transform: translateX(-50%);
     box-shadow: 
-        0 0 60px rgba(255, 255, 255, 0.6),
-        0 0 100px rgba(200, 200, 255, 0.4);
-    animation: moonGlow 3s ease-in-out infinite;
+        0 0 80px rgba(255, 255, 255, 0.8),
+        0 0 140px rgba(200, 200, 255, 0.6),
+        0 0 200px rgba(180, 180, 255, 0.4),
+        inset -18px -18px 35px rgba(0, 0, 0, 0.25);
+    animation: battleMoonGlow 5s ease-in-out infinite, battleMoonFloat 11s ease-in-out infinite;
+    transition: opacity 3s cubic-bezier(0.4, 0, 0.2, 1), transform 3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes battleMoonFloat {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-18px); }
+}
+
+@keyframes battleMoonGlow {
+    0%, 100% { 
+        box-shadow: 
+            0 0 80px rgba(255, 255, 255, 0.8),
+            0 0 140px rgba(200, 200, 255, 0.6),
+            0 0 200px rgba(180, 180, 255, 0.4),
+            inset -18px -18px 35px rgba(0, 0, 0, 0.25);
+    }
+    50% { 
+        box-shadow: 
+            0 0 110px rgba(255, 255, 255, 0.9),
+            0 0 180px rgba(200, 200, 255, 0.7),
+            0 0 250px rgba(180, 180, 255, 0.5),
+            inset -18px -18px 35px rgba(0, 0, 0, 0.25);
+    }
 }
 
 /* Estrellas para modo noche en battlefield */
@@ -675,17 +868,6 @@ body[data-page="comparison"] {
     position: absolute;
     width: 100%;
     height: 100%;
-}
-
-@keyframes sunIntense {
-    0%, 100% { 
-        transform: translateX(-50%) scale(1);
-        filter: brightness(1);
-    }
-    50% { 
-        transform: translateX(-50%) scale(1.05);
-        filter: brightness(1.2);
-    }
 }
 
 /* Rayos de sol */
@@ -838,20 +1020,27 @@ body[data-page="comparison"] {
     top: 80px;
     right: 20px;
     z-index: 1000;
-    background: rgba(0, 0, 0, 0.5);
-    border: 2px solid rgba(255, 215, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(255, 215, 0, 0.6);
     border-radius: 30px;
-    padding: 10px 20px;
+    padding: 12px 24px;
     color: white;
     cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    font-weight: 600;
 }
 
 .theme-toggle:hover {
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.8);
     border-color: #ffd700;
-    transform: scale(1.05);
+    transform: scale(1.08) translateY(-2px);
+    box-shadow: 0 6px 30px rgba(255, 215, 0, 0.4);
+}
+
+.theme-toggle:active {
+    transform: scale(0.98);
 }
 
 .theme-toggle-icon {
