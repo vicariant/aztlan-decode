@@ -7,7 +7,7 @@
                 <h3>Protección de Menores Activa</h3>
                 <p>Cumplimiento: Reino Unido (Online Safety Act), California (AADC), COPPA (USA) y GDPR (EU)</p>
             </div>
-            <button onclick="closeBanner()" class="banner-close" aria-label="Cerrar banner">
+            <button id="closeBannerBtn" class="banner-close" aria-label="Cerrar banner">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
@@ -42,13 +42,13 @@
         </div>
         
         <div class="banner-actions">
-            <button onclick="showPrivacyPolicy()" class="btn btn-secondary btn-sm">
+            <button id="privacyBtn" class="btn btn-secondary btn-sm">
                 📄 Política de Privacidad
             </button>
-            <button onclick="showParentalControls()" class="btn btn-secondary btn-sm">
+            <button id="parentalBtn" class="btn btn-secondary btn-sm">
                 👨‍👩‍👧 Controles Parentales
             </button>
-            <button onclick="contactSupport()" class="btn btn-secondary btn-sm">
+            <button id="supportBtn" class="btn btn-secondary btn-sm">
                 📧 Contactar Soporte
             </button>
         </div>
@@ -225,50 +225,66 @@
 </style>
 
 <script>
-// Función para cerrar el banner
-window.closeBanner = function() {
+// Esperar a que el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
     var banner = document.getElementById('complianceBanner');
-    if (banner) {
-        banner.style.animation = 'slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-        setTimeout(function() {
-            banner.style.display = 'none';
-            localStorage.setItem('complianceBannerClosed', 'true');
-        }, 300);
-    }
-};
-
-window.showPrivacyPolicy = function() {
-    alert('📄 Política de Privacidad\n\n' +
-          '🔒 Protegemos tus datos con:\n' +
-          '  • Encriptación AES-256\n' +
-          '  • Sin venta de datos a terceros\n' +
-          '  • Control total sobre tu información\n' +
-          '  • Cumplimiento GDPR, COPPA, AADC\n\n' +
-          '📧 Para más información: privacy@aztlan-decode.com');
-};
-
-window.showParentalControls = function() {
-    alert('👨‍👩‍👧 Controles Parentales\n\n' +
-          '⚙️ Configura:\n' +
-          '  • Límites de tiempo de uso\n' +
-          '  • Filtros de contenido\n' +
-          '  • Monitoreo de actividad\n' +
-          '  • Reportes semanales\n\n' +
-          '📧 Contacta soporte para activarlos:\n' +
-          '   parental@aztlan-decode.com');
-};
-
-window.contactSupport = function() {
-    window.location.href = 'mailto:support@aztlan-decode.com?subject=Consulta sobre Protección de Menores';
-};
-
-// Verificar si el banner ya fue cerrado al cargar la página
-(function() {
-    var bannerClosed = localStorage.getItem('complianceBannerClosed');
-    var banner = document.getElementById('complianceBanner');
+    var closeBtn = document.getElementById('closeBannerBtn');
+    var privacyBtn = document.getElementById('privacyBtn');
+    var parentalBtn = document.getElementById('parentalBtn');
+    var supportBtn = document.getElementById('supportBtn');
     
+    // Verificar si el banner ya fue cerrado
+    var bannerClosed = localStorage.getItem('complianceBannerClosed');
     if (bannerClosed === 'true' && banner) {
         banner.style.display = 'none';
     }
-})();
+    
+    // Función para cerrar el banner
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (banner) {
+                banner.style.animation = 'slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                setTimeout(function() {
+                    banner.style.display = 'none';
+                    localStorage.setItem('complianceBannerClosed', 'true');
+                }, 300);
+            }
+        });
+    }
+    
+    // Botón política de privacidad
+    if (privacyBtn) {
+        privacyBtn.addEventListener('click', function() {
+            alert('📄 Política de Privacidad\n\n' +
+                  '🔒 Protegemos tus datos con:\n' +
+                  '  • Encriptación AES-256\n' +
+                  '  • Sin venta de datos a terceros\n' +
+                  '  • Control total sobre tu información\n' +
+                  '  • Cumplimiento GDPR, COPPA, AADC\n\n' +
+                  '📧 Para más información: privacy@aztlan-decode.com');
+        });
+    }
+    
+    // Botón controles parentales
+    if (parentalBtn) {
+        parentalBtn.addEventListener('click', function() {
+            alert('👨‍👩‍👧 Controles Parentales\n\n' +
+                  '⚙️ Configura:\n' +
+                  '  • Límites de tiempo de uso\n' +
+                  '  • Filtros de contenido\n' +
+                  '  • Monitoreo de actividad\n' +
+                  '  • Reportes semanales\n\n' +
+                  '📧 Contacta soporte para activarlos:\n' +
+                  '   parental@aztlan-decode.com');
+        });
+    }
+    
+    // Botón contactar soporte
+    if (supportBtn) {
+        supportBtn.addEventListener('click', function() {
+            window.location.href = 'mailto:support@aztlan-decode.com?subject=Consulta sobre Protección de Menores';
+        });
+    }
+});
 </script>
