@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aztlán Decode - Plataforma de análisis avanzado con IA para FTC Robotics y Astronomía">
+    <title>{% if page_title %}{{ page_title }} | {% endif %}Aztlán Decode</title>
+    
+    <!-- Professional Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Enterprise UI System -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/enterprise-ui.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/advanced-features.css') }}">
+    
+    <style>
+        /* Theme System - FTC & Astronomy */
+        :root {
+            /* Light Mode - Default */
+            --bg-primary: #ffffff;
+            --bg-secondary: #fafafa;
+            --bg-gradient-start: #fafafa;
+            --bg-gradient-end: #ffffff;
+            --text-primary: #171717;
+            --text-secondary: #525252;
+            --border-color: #e5e5e5;
+            --card-bg: #ffffff;
+            --card-border: #e5e5e5;
+            --card-hover-shadow: rgba(0, 0, 0, 0.08);
+            
+            /* FTC Accent Colors */
+            --ftc-orange: #ff6b35;
+            --ftc-blue: #0ea5e9;
+            --ftc-gradient: linear-gradient(135deg, #ff6b35 0%, #0ea5e9 100%);
+            
+            /* Astronomy Colors */
+            --space-purple: #8b5cf6;
+            --space-blue: #3b82f6;
+            --space-gradient: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
+            
+            /* Alert Colors - Light */
+            --success-bg: #dcfce7;
+            --success-text: #166534;
+            --success-border: #86efac;
+            --error-bg: #fee2e2;
+            --error-text: #991b1b;
+            --error-border: #fca5a5;
+            --warning-bg: #fef3c7;
+            --warning-text: #92400e;
+            --warning-border: #fde047;
+        }
+        
+        /* Dark Mode Theme */
+        [data-theme="dark"] {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-gradient-start: #1a1a1a;
+            --bg-gradient-end: #0f0f0f;
+            --text-primary: #fafafa;
+            --text-secondary: #a3a3a3;
+            --border-color: #262626;
+            --card-bg: #1a1a1a;
+            --card-border: #262626;
+            --card-hover-shadow: rgba(255, 255, 255, 0.05);
+            
+            /* Alert Colors - Dark */
+            --success-bg: rgba(34, 197, 94, 0.15);
+            --success-text: #86efac;
+            --success-border: rgba(134, 239, 172, 0.3);
+            --error-bg: rgba(239, 68, 68, 0.15);
+            --error-text: #fca5a5;
+            --error-border: rgba(252, 165, 165, 0.3);
+            --warning-bg: rgba(251, 191, 36, 0.15);
+            --warning-text: #fde047;
+            --warning-border: rgba(253, 224, 71, 0.3);
+        }
+        
+        /* Animated Background - Subtle Stars */
+        [data-theme="dark"] body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.2), transparent),
+                radial-gradient(2px 2px at 60px 70px, rgba(255,255,255,0.15), transparent),
+                radial-gradient(1px 1px at 50px 50px, rgba(255,255,255,0.1), transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.15), transparent),
+                radial-gradient(2px 2px at 90px 10px, rgba(255,255,255,0.2), transparent);
+            background-size: 200px 200px;
+            background-repeat: repeat;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+            animation: starTwinkle 20s infinite linear;
+        }
+        
+        @keyframes starTwinkle {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.5; }
+            100% { opacity: 0.3; }
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            position: relative;
+        }
+        
+        .hero-section {
+            text-align: center;
+            padding: 80px 24px 64px;
+            background: linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* FTC/Astronomy Accent Line */
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--ftc-gradient);
+            opacity: 0.6;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            background: var(--ftc-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 32px;
+            line-height: 1.6;
+        }
+        
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+        
+        .module-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* FTC Card Accent */
+        .module-card.ftc-module::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--ftc-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        /* Astronomy Card Accent */
+        .module-card.astro-module::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--space-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .module-card:hover {
+            box-shadow: 0 10px 40px var(--card-hover-shadow);
+            transform: translateY(-4px);
+            border-color: var(--ftc-blue);
+        }
+        
+        .module-card:hover::before {
+            opacity: 1;
+        }
+        
+        .module-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+        
+        .module-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+        
+        .module-description {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            font-size: 0.8125rem;
+            font-weight: 500;
+            border-radius: 999px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        /* FTC Badge */
+        .badge.ftc-badge {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(14, 165, 233, 0.1) 100%);
+            color: var(--ftc-orange);
+            border-color: var(--ftc-orange);
+        }
+        
+        /* Astronomy Badge */
+        .badge.astro-badge {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            color: var(--space-purple);
+            border-color: var(--space-purple);
+        }
+        
+        /* Alert Messages */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            font-size: 0.9375rem;
+            font-weight: 500;
+        }
+        
+        .alert-success {
+            background: var(--success-bg);
+            color: var(--success-text);
+            border: 1px solid var(--success-border);
+        }
+        
+        .alert-error {
+            background: var(--error-bg);
+            color: var(--error-text);
+            border: 1px solid var(--error-border);
+        }
+        
+        .alert-warning {
+            background: var(--warning-bg);
+            color: var(--warning-text);
+            border: 1px solid var(--warning-border);
+        }
+        
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: absolute;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+        
+        .theme-toggle:hover {
+            background: var(--ftc-blue);
+            border-color: var(--ftc-blue);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .theme-icon {
+            font-size: 1.5rem;
+            transition: opacity 0.3s ease;
+        }
+        
+        .dark-icon {
+            display: none;
+        }
+        
+        [data-theme="dark"] .light-icon {
+            display: none;
+        }
+        
+        [data-theme="dark"] .dark-icon {
+            display: block;
+        }
+        
+        /* Loading State */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.125rem;
+            }
+            
+            .hero-section {
+                padding: 64px 16px 48px;
+            }
+            
+            .module-card {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Professional Navbar -->
+    <nav class="enterprise-navbar">
+        <div class="navbar-container">
+            <a href="{{ url_for('index') }}" class="navbar-brand">
+                <div class="navbar-logo">A</div>
+                <span>Aztlán Decode</span>
+            </a>
+            
+            <!-- Theme Toggle Button -->
+            <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <span class="theme-icon light-icon">☀️</span>
+                <span class="theme-icon dark-icon">🌙</span>
+            </button>
+            
+            <ul class="navbar-nav">
+                <li>
+                    <a href="{{ url_for('index') }}" 
+                       class="navbar-link {% if request.endpoint == 'index' %}active{% endif %}">
+                        <span>🏠</span>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('scouting') }}" 
+                       class="navbar-link {% if request.endpoint == 'scouting' %}active{% endif %}">
+                        <span>🤖</span>
+                        <span>FTC Scouting</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('astronomy') }}" 
+                       class="navbar-link {% if request.endpoint == 'astronomy' %}active{% endif %}">
+                        <span>🌌</span>
+                        <span>AstronomIA</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('comparison') }}" 
+                       class="navbar-link {% if request.endpoint == 'comparison' %}active{% endif %}">
+                        <span>⚔️</span>
+                        <span>Análisis</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="container" style="padding-top: 24px;">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'error' if category == 'error' else 'success' if category == 'success' else 'warning' }} fade-in">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Page Content -->
+        {% if request.endpoint == 'index' %}
+            <!-- Dashboard / Home Page -->
+            <div class="hero-section fade-in">
+                <h1 class="hero-title">Aztlán Decode</h1>
+                <p class="hero-subtitle">
+                    Plataforma profesional de análisis avanzado con inteligencia artificial para FTC Robotics y Astronomía
+                </p>
+            </div>
+            
+            <div class="container">
+                <div class="module-grid">
+                    <!-- FTC Scouting Module -->
+                    <a href="{{ url_for('scouting') }}" class="module-card ftc-module fade-in">
+                        <div class="module-icon">🤖</div>
+                        <h2 class="module-title">FTC Scouting</h2>
+                        <p class="module-description">
+                            Sistema TRIDENTE de inteligencia competitiva. Consulta 3 APIs simultáneamente con algoritmo de consenso único.
+                        </p>
+                        <div>
+                            <span class="badge ftc-badge">🔱 TRIDENT APIs</span>
+                            <span class="badge ftc-badge">📊 Estadísticas</span>
+                            <span class="badge ftc-badge">🏆 Predicciones</span>
+                        </div>
+                    </a>
+                    
+                    <!-- AstronomIA Module -->
+                    <a href="{{ url_for('astronomy') }}" class="module-card astro-module fade-in" style="animation-delay: 100ms;">
+                        <div class="module-icon">🌌</div>
+                        <h2 class="module-title">AstronomIA</h2>
+                        <p class="module-description">
+                            Detección de exoplanetas con Machine Learning avanzado basado en datos Kepler/TESS.
+                        </p>
+                        <div>
+                            <span class="badge astro-badge">🪐 Renderizado 3D</span>
+                            <span class="badge astro-badge">🧬 ESI Calculator</span>
+                            <span class="badge astro-badge">📉 Light Curves</span>
+                        </div>
+                    </a>
+                    
+                    <!-- Analysis Center Module -->
+                    <a href="{{ url_for('comparison') }}" class="module-card fade-in" style="animation-delay: 200ms;">
+                        <div class="module-icon">⚔️</div>
+                        <h2 class="module-title">Centro de Análisis</h2>
+                        <p class="module-description">
+                            Comparaciones avanzadas y predicciones con inteligencia artificial de última generación.
+                        </p>
+                        <div>
+                            <span class="badge">🧠 Quetzal-Bot</span>
+                            <span class="badge">🔮 El Oráculo</span>
+                            <span class="badge">🕸️ Spider Charts</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            <!-- Compliance Banner -->
+            {% include 'components/compliance_banner.html' %}
+            
+            <!-- Subpage Content -->
+            <div class="container">
+                {% block content %}{% endblock %}
+            </div>
+        {% endif %}
+        
+        <!-- Error Message -->
+        {% if error_message %}
+            <div class="container">
+                <div class="alert alert-error fade-in">
+                    {{ error_message }}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Theme Toggle System
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Animate toggle button
+            const toggleBtn = document.getElementById('themeToggle');
+            toggleBtn.style.transform = 'translateY(-50%) rotate(360deg)';
+            setTimeout(() => {
+                toggleBtn.style.transform = 'translateY(-50%)';
+            }, 300);
+        }
+        
+        // Load saved theme on page load
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/theme-manager.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/favorites.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/search-history.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/team-notes.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/export-utils.js') }}"></script>
+</body>
+</html>
