@@ -36,7 +36,9 @@ Asistente IA integrado para FTC y AstronomIA
     position: absolute;
     bottom: 80px;
     right: 0;
-    width: 350px;
+    width: 380px;
+    min-width: 350px;
+    max-width: 90vw;
     height: 500px;
     background: white;
     border-radius: 16px;
@@ -65,16 +67,22 @@ Asistente IA integrado para FTC y AstronomIA
 .chatbot-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    padding: 16px;
+    padding: 16px 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
+    min-height: 56px;
 }
 
 .chatbot-header h3 {
     margin: 0;
     font-size: 18px;
     font-weight: 600;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .chatbot-close {
@@ -84,8 +92,10 @@ Asistente IA integrado para FTC y AstronomIA
     font-size: 24px;
     cursor: pointer;
     padding: 0;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -132,8 +142,10 @@ Asistente IA integrado para FTC y AstronomIA
     display: inline-block;
     padding: 10px 14px;
     border-radius: 18px;
-    max-width: 80%;
+    max-width: 75%;
     word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .chatbot-message.user .message-bubble {
@@ -235,10 +247,12 @@ Asistente IA integrado para FTC y AstronomIA
     background: white;
     border: 1px solid #ddd;
     border-radius: 16px;
-    padding: 6px 12px;
-    font-size: 12px;
+    padding: 8px 14px;
+    font-size: 13px;
     cursor: pointer;
     transition: all 0.2s;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .suggestion-chip:hover {
