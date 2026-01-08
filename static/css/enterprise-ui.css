@@ -162,9 +162,9 @@ body {
     left: 0;
     right: 0;
     height: 64px;
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--card-bg, rgba(255, 255, 255, 0.95));
     backdrop-filter: blur(12px) saturate(180%);
-    border-bottom: 1px solid var(--neutral-200);
+    border-bottom: 1px solid var(--border-color, var(--neutral-200));
     z-index: 1000;
     box-shadow: var(--shadow-sm);
 }
@@ -177,6 +177,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
 }
 
 .navbar-brand {
@@ -184,7 +185,7 @@ body {
     align-items: center;
     gap: var(--space-3);
     text-decoration: none;
-    color: var(--neutral-900);
+    color: var(--text-primary, var(--neutral-900));
     font-weight: 700;
     font-size: 1.25rem;
     transition: opacity var(--transition-fast);
@@ -219,7 +220,7 @@ body {
     align-items: center;
     gap: var(--space-2);
     padding: var(--space-2) var(--space-4);
-    color: var(--neutral-700);
+    color: var(--text-secondary, var(--neutral-700));
     text-decoration: none;
     font-weight: 500;
     font-size: 0.9375rem;
@@ -228,8 +229,8 @@ body {
 }
 
 .navbar-link:hover {
-    background: var(--neutral-100);
-    color: var(--neutral-900);
+    background: var(--bg-secondary, var(--neutral-100));
+    color: var(--text-primary, var(--neutral-900));
 }
 
 .navbar-link.active {
