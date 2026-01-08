@@ -14,11 +14,9 @@ const urlsToCache = [
 
 // Instalación del Service Worker
 self.addEventListener('install', event => {
-  console.log('[Service Worker] Instalando...');
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('[Service Worker] Cacheando recursos');
         return cache.addAll(urlsToCache);
       })
   );
@@ -26,13 +24,11 @@ self.addEventListener('install', event => {
 
 // Activación del Service Worker
 self.addEventListener('activate', event => {
-  console.log('[Service Worker] Activando...');
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cache => {
           if (cache !== CACHE_NAME) {
-            console.log('[Service Worker] Limpiando cache viejo:', cache);
             return caches.delete(cache);
           }
         })
@@ -85,11 +81,8 @@ function syncData() {
   // Sincronizar datos cuando haya conexión
   return fetch('/api/sync')
     .then(response => response.json())
-    .then(data => {
-      console.log('[Service Worker] Datos sincronizados:', data);
-    })
     .catch(error => {
-      console.error('[Service Worker] Error al sincronizar:', error);
+      // Silenciar errores en producción
     });
 }
 

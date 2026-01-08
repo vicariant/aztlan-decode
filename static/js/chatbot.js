@@ -244,7 +244,6 @@ class AztlanChatbot {
 // Inicializar chatbot cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
     window.aztlanChatbot = new AztlanChatbot();
-    console.log('🤖 AZTLÁN AI Chatbot inicializado');
 });
 
 // Función global para actualizar contexto desde otras páginas

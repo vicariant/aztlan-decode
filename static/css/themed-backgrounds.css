@@ -1457,29 +1457,134 @@ body[data-page="comparison"] {
 }
 
 /* ========================================
-   MODO RESPONSIVE
+   MODO RESPONSIVE - OPTIMIZADO PARA M\u00d3VIL
    ======================================== */
 
 @media (max-width: 768px) {
+    /* Simplificar animaciones en m\u00f3vil */
+    .archaeological-scene,
+    .cosmic-scene,
+    .battlefield-scene {
+        will-change: auto; /* Reducir consumo de GPU */
+    }
+    
+    /* Reducir tama\u00f1o de elementos celestes */
     .archaeological-scene .sun,
     .archaeological-scene .moon {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .cosmic-scene .full-moon {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .battlefield-scene .bright-sun {
         width: 80px;
         height: 80px;
     }
     
-    .cosmic-scene .full-moon {
-        width: 200px;
-        height: 200px;
-    }
-    
-    .battlefield-scene .bright-sun {
-        width: 100px;
-        height: 100px;
-    }
-    
+    /* Reducir escala de elementos decorativos */
     .palm-tree,
     .archaeological-scene .ruins {
-        transform: scale(0.7);
+        transform: scale(0.6);
+        opacity: 0.8;
+    }
+    
+    /* Ocultar elementos no esenciales en m\u00f3vil */
+    .dune:nth-child(n+3),
+    .pillar:nth-child(n+3),
+    .star:nth-child(n+30),
+    .planet:nth-child(n+4),
+    .meteor:nth-child(n+4),
+    .palm-tree:nth-child(n+3) {
+        display: none;
+    }
+    
+    /* Simplificar sombras para mejor rendimiento */
+    .archaeological-scene .sun,
+    .archaeological-scene .moon,
+    .cosmic-scene .full-moon {
+        box-shadow: none;
+        animation-duration: 8s; /* M\u00e1s lento = menos CPU */
+    }
+    
+    /* Reducir complejidad de animaciones */
+    @keyframes dayGlow {
+        0%, 100% { filter: brightness(1.1) saturate(1.2); }
+        50% { filter: brightness(1.15) saturate(1.25); }
+    }
+    
+    @keyframes nightAmbient {
+        0%, 100% { filter: brightness(0.65) saturate(0.85); }
+        50% { filter: brightness(0.7) saturate(0.9); }
+    }
+    
+    /* Controles de tema m\u00e1s accesibles en m\u00f3vil */
+    .theme-toggle {
+        top: auto;
+        bottom: 80px;
+        right: 15px;
+        padding: 10px 18px;
+        font-size: 13px;
+    }
+    
+    .theme-toggle-icon {
+        font-size: 18px;
+        margin-right: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Simplificar a\u00fan m\u00e1s en pantallas peque\u00f1as */
+    .archaeological-scene .sun,
+    .archaeological-scene .moon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .cosmic-scene .full-moon {
+        width: 120px;
+        height: 120px;
+    }
+    
+    /* Ocultar m\u00e1s elementos decorativos */
+    .dune:nth-child(n+2),
+    .pillar:nth-child(n+2),
+    .star:nth-child(n+20),
+    .planet:nth-child(n+3),
+    .palm-tree:nth-child(n+2),
+    .nebula,
+    .ruins {
+        display: none;
+    }
+    
+    /* Bot\u00f3n toggle m\u00e1s compacto */
+    .theme-toggle {
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+    
+    .theme-toggle-text {
+        display: none; /* Solo mostrar icono */
+    }
+    
+    .theme-toggle-icon {
+        margin-right: 0;
+        font-size: 20px;
+    }
+}
+
+/* Preferencias de movimiento reducido (accesibilidad) */
+@media (prefers-reduced-motion: reduce) {
+    .archaeological-scene,
+    .cosmic-scene,
+    .battlefield-scene,
+    .sun, .moon, .star, .planet, .meteor,
+    .palm-tree, .dune, .pillar {
+        animation: none !important;
+        transition: none !important;
     }
 }
 
