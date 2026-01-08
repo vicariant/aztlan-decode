@@ -121,16 +121,17 @@ def load_ai_models():
     global model, scaler, model_error
     
     try:
-        import joblib
-        
         model_path = 'models/aztlan_model.pkl'
         scaler_path = 'models/aztlan_scaler.pkl'
         
         if not os.path.exists(model_path) or not os.path.exists(scaler_path):
             model_error = "[ADVERTENCIA] No se encontro el modelo de IA. Ejecuta train_model.py primero."
             print(model_error)
+            model = None
+            scaler = None
             return False
         
+        import joblib
         # Carga optimizada con mmap
         model = joblib.load(model_path, mmap_mode='r')
         scaler = joblib.load(scaler_path, mmap_mode='r')
@@ -141,6 +142,8 @@ def load_ai_models():
     except Exception as e:
         model_error = f"[ERROR] Error al cargar modelos: {str(e)}"
         print(model_error)
+        model = None
+        scaler = None
         return False
 
 def load_trident_system():
@@ -189,8 +192,7 @@ def load_enterprise_systems():
         print("[OK] Match Oracle cargado - Simulaciones de partidos disponibles")
         
         # 6. SPIDER CHARTS (Gráficas Radar)
-        from utils.spider_charts import chart_generator
-        spider_charts = chart_generator
+        from utils.spider_charts import spider_charts
         print("[OK] Spider Charts cargado - Visualizaciones radar disponibles")
         
         # 7. ADVANCED EXPORTER (PDF/Excel Profesional)
