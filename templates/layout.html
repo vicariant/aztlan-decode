@@ -3,733 +3,295 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aztlán Decode - Plataforma de análisis avanzado con IA para FTC Robotics y Astronomía">
     <title>{% if page_title %}{{ page_title }} | {% endif %}Aztlán Decode</title>
     
-    <!-- Google Fonts - Inter (Professional) -->
+    <!-- Professional Fonts - Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Enterprise UI System -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/enterprise-ui.css') }}">
-    
-    <!-- Chatbot CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
-    
-    <!-- Advanced Features CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/advanced-features.css') }}">
     
-    <!-- Themed Backgrounds CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/themed-backgrounds.css') }}">
-    
-    <!-- Responsive Mobile CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive-mobile.css') }}">
-    
     <style>
-        /* Professional Modern Design - Enterprise Level */
+        /* Additional Professional Styles */
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             margin: 0;
             padding: 0;
-            background: #fafafa;
-            color: #262626;
         }
         
-        /* Professional Navbar */
-        .enterprise-navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 64px;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(12px) saturate(180%);
-            border-bottom: 1px solid #e5e5e5;
-            z-index: 1000;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        .hero-section {
+            text-align: center;
+            padding: 80px 24px 64px;
+            background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);
         }
         
-        .navbar-container {
-            max-width: 1280px;
-            height: 100%;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: #171717;
-            font-weight: 700;
-            font-size: 1.125rem;
-            transition: opacity 150ms;
-        }
-        
-        .navbar-brand:hover {
-            opacity: 0.8;
-        }
-        
-        .navbar-logo {
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #0ea5e9, #06b6d4);
-            border-radius: 8px;
-            color: white;
-            font-weight: 800;
-            font-size: 1.125rem;
-        }
-        
-        .navbar-nav {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            list-style: none;
-            margin: 0;
-        }
-        
-        .navbar-link {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            color: #525252;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9375rem;
-            border-radius: 8px;
-            transition: all 150ms;
-        }
-        
-        .navbar-link:hover {
-            background: #f5f5f5;
-            color: #171717;
-        }
-        
-        .navbar-link.active {
-            background: #e0f2fe;
-            color: #0284c7;
-            font-weight: 600;
-        }
-        
-        /* Main Content Area */
-        .main-container {
-            margin-top: 64px;
-            min-height: calc(100vh - 64px);
-        }
-        
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 48px 24px;
-        }
-        
-        /* Professional Cards */
-        .card {
-            background: white;
-            border: 1px solid #e5e5e5;
-            border-radius: 16px;
-            padding: 32px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            transition: all 200ms;
-        }
-        
-        .card:hover {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        /* Professional Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 24px;
-            font-size: 0.9375rem;
-            font-weight: 600;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 150ms;
-            text-decoration: none;
-        }
-        
-        .btn-primary {
-            background: #0284c7;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: #0369a1;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn-secondary {
-            background: #f5f5f5;
-            color: #262626;
-            border: 1px solid #e5e5e5;
-        }
-        
-        .btn-secondary:hover {
-            background: #e5e5e5;
-        }
-        
-        /* Typography */
-        .text-display {
-            font-size: 3rem;
+        .hero-title {
+            font-size: 3.5rem;
             font-weight: 800;
             line-height: 1.1;
             letter-spacing: -0.02em;
             color: #171717;
-        }
-        
-        .text-h1 {
-            font-size: 2.25rem;
-            font-weight: 700;
-            line-height: 1.25;
-            color: #171717;
-        }
-        
-        .text-h2 {
-            font-size: 1.875rem;
-            font-weight: 600;
-            line-height: 1.3;
-            color: #262626;
-        }
-        
-        .text-body {
-            font-size: 1rem;
-            line-height: 1.6;
-            color: #525252;
-        }
-        
-        /* Grid System */
-        .grid {
-            display: grid;
-            gap: 24px;
-        }
-        
-        .grid-cols-2 {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-        
-        .grid-cols-3 {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-        
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .grid-cols-3 {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .text-display {
-                font-size: 2.5rem;
-            }
-            
-            .text-h1 {
-                font-size: 1.875rem;
-            }
-            
-            .navbar-nav {
-                gap: 4px;
-            }
-            
-            .navbar-link {
-                padding: 8px 12px;
-                font-size: 0.875rem;
-            }
-            
-            .grid-cols-2,
-            .grid-cols-3 {
-                grid-template-columns: repeat(1, minmax(0, 1fr));
-            }
-            
-            .container {
-                padding: 32px 16px;
-            }
-        }
-    </style>
-            margin-top: 100px;
-            padding: 2rem;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-            min-height: calc(100vh - 100px);
-        }
-        
-        /* ========================================
-           MÓDULOS CYBER-AZTECA
-           ======================================== */
-        
-        .module-card {
-            background: linear-gradient(145deg, 
-                rgba(255, 215, 0, 0.05) 0%, 
-                rgba(10, 10, 10, 0.85) 50%, 
-                rgba(0, 243, 255, 0.05) 100%);
-            border: 1px solid rgba(255, 215, 0, 0.4);
-            border-radius: 15px;
-            padding: 2rem;
-            margin: 2rem 0;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.1), 0 8px 25px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
-            backdrop-filter: blur(8px);
-        }
-        
-        .module-card:hover {
-            transform: translateY(-3px) scale(1.01);
-            border-color: rgba(0, 243, 255, 0.6);
-            box-shadow: 0 6px 20px rgba(0, 243, 255, 0.15), 0 12px 35px rgba(0, 0, 0, 0.5);
-        }
-        
-        .module-title {
-            font-family: var(--font-primary);
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--oro-neon);
-            text-shadow: 0 0 4px rgba(255, 215, 0, 0.3);
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-        
-        .module-description {
-            font-size: 1.2rem;
-            color: var(--plata-lunar);
-            text-align: center;
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-        
-        /* ========================================
-           BOTONES CYBER-FUTURISTAS
-           ======================================== */
-        
-        .btn-cyber {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: linear-gradient(45deg, var(--oro-neon), var(--cobre-brillante));
-            border: none;
-            border-radius: 10px;
-            color: var(--negro-profundo);
-            font-family: var(--font-primary);
-            font-weight: 700;
-            font-size: 1.1rem;
-            text-decoration: none;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 10px rgba(255, 215, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn-cyber::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-        
-        .btn-cyber:hover::before {
-            left: 100%;
-        }
-        
-        .btn-cyber:hover {
-            transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 0 8px rgba(255, 215, 0, 0.4), 0 6px 20px rgba(255, 215, 0, 0.3);
-            background: linear-gradient(45deg, var(--turquesa-neon), var(--jade-azteca));
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(45deg, var(--turquesa-neon), var(--jade-azteca));
-        }
-        
-        .btn-secondary:hover {
-            background: linear-gradient(45deg, var(--oro-neon), var(--cobre-brillante));
-        }
-        
-        /* ========================================
-           DASHBOARD PRINCIPAL
-           ======================================== */
-        
-        .dashboard {
-            text-align: center;
-            padding: 3rem 0;
-        }
-        
-        .hero-title {
-            font-family: var(--font-primary);
-            font-size: 4rem;
-            font-weight: 900;
-            color: var(--oro-neon);
-            text-shadow: 0 0 4px rgba(255, 215, 0, 0.4);
-            margin-bottom: 1rem;
-            animation: pulse-glow 4s ease-in-out infinite alternate;
-        }
-        
-        @keyframes pulse-glow {
-            from {
-                text-shadow: 0 0 4px rgba(255, 215, 0, 0.4);
-            }
-            to {
-                text-shadow: 0 0 6px rgba(255, 215, 0, 0.6), 0 0 12px rgba(255, 215, 0, 0.3);
-            }
+            margin-bottom: 16px;
         }
         
         .hero-subtitle {
-            font-size: 1.5rem;
-            color: var(--turquesa-neon);
-            text-shadow: 0 0 4px rgba(0, 243, 255, 0.3);
-            margin-bottom: 3rem;
-            font-weight: 300;
+            font-size: 1.25rem;
+            color: #525252;
+            max-width: 600px;
+            margin: 0 auto 32px;
+            line-height: 1.6;
         }
         
-        .modules-grid {
+        .module-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
         }
         
-        /* ========================================
-           FORMULARIOS FUTURISTAS
-           ======================================== */
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-label {
+        .module-card {
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            color: inherit;
             display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--oro-neon);
-            font-size: 1.1rem;
         }
         
-        .form-input {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 215, 0, 0.5);
-            border-radius: 8px;
-            color: var(--plata-lunar);
-            font-size: 1rem;
-            transition: all 0.3s ease;
+        .module-card:hover {
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+            border-color: #0ea5e9;
         }
         
-        .form-input:focus {
-            outline: none;
-            border-color: var(--turquesa-neon);
-            box-shadow: 0 0 6px rgba(0, 243, 255, 0.4);
-            color: var(--oro-neon);
+        .module-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
         }
         
-        /* ========================================
-           ALERTAS Y MENSAJES
-           ======================================== */
+        .module-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #171717;
+            margin-bottom: 12px;
+        }
         
+        .module-description {
+            font-size: 0.9375rem;
+            color: #525252;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #f5f5f5;
+            color: #525252;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            border-radius: 999px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        
+        /* Alert Messages */
         .alert {
-            padding: 1rem 1.5rem;
-            margin: 1rem 0;
-            border-radius: 8px;
-            font-weight: 600;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            font-size: 0.9375rem;
+            font-weight: 500;
         }
         
         .alert-success {
-            background: linear-gradient(45deg, rgba(0, 168, 107, 0.15), rgba(0, 168, 107, 0.08));
-            border: 1px solid rgba(0, 168, 107, 0.6);
-            color: var(--jade-azteca);
-            box-shadow: 0 0 6px rgba(0, 168, 107, 0.3);
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
         }
         
         .alert-error {
-            background: linear-gradient(45deg, rgba(220, 53, 69, 0.15), rgba(220, 53, 69, 0.08));
-            border: 1px solid rgba(220, 53, 69, 0.6);
-            color: #dc3545;
-            box-shadow: 0 0 6px rgba(220, 53, 69, 0.3);
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
         }
         
         .alert-warning {
-            background: linear-gradient(45deg, rgba(255, 193, 7, 0.15), rgba(255, 193, 7, 0.08));
-            border: 1px solid rgba(255, 193, 7, 0.6);
-            color: #ffc107;
-            box-shadow: 0 0 6px rgba(255, 193, 7, 0.3);
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde047;
         }
         
-        /* ========================================
-           EFECTOS ESPECIALES
-           ======================================== */
-        
-        .particle {
-            position: fixed;
-            pointer-events: none;
-            width: 2px;
-            height: 2px;
-            background: rgba(255, 215, 0, 0.4);
-            border-radius: 50%;
-            z-index: -1;
+        /* Loading State */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
         }
         
-        /* ========================================
-           RESPONSIVE DESIGN
-           ======================================== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         
+        /* Responsive */
         @media (max-width: 768px) {
-            .navbar {
-                padding: 1rem;
-            }
-            
-            .nav-links {
-                gap: 1rem;
-            }
-            
-            .nav-link {
-                font-size: 0.9rem;
-                padding: 0.4rem 0.8rem;
-            }
-            
             .hero-title {
                 font-size: 2.5rem;
             }
             
             .hero-subtitle {
-                font-size: 1.2rem;
+                font-size: 1.125rem;
             }
             
-            .modules-grid {
-                grid-template-columns: 1fr;
+            .hero-section {
+                padding: 64px 16px 48px;
             }
             
-            .module-title {
-                font-size: 2rem;
+            .module-card {
+                padding: 24px;
             }
-            
-            .main-container {
-                padding: 1rem;
-            }
-        }
-        
-        /* ========================================
-           UTILIDADES
-           ======================================== */
-        
-        .text-center { text-align: center; }
-        .text-glow { text-shadow: var(--glow-oro); }
-        .mb-2 { margin-bottom: 1rem; }
-        .mt-2 { margin-top: 1rem; }
-        .p-2 { padding: 1rem; }
-        
-        .hidden { display: none; }
-        .visible { display: block; }
-        
-        .fade-in {
-            animation: fadeIn 0.8s ease-in;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
-    <!-- Navbar futurista fijo -->
-    <nav class="navbar">
-        <div class="navbar-content">
-            <a href="{{ url_for('index') }}" class="logo">AZTLÁN DECODE</a>
-            <ul class="nav-links">
+    <!-- Professional Navbar -->
+    <nav class="enterprise-navbar">
+        <div class="navbar-container">
+            <a href="{{ url_for('index') }}" class="navbar-brand">
+                <div class="navbar-logo">A</div>
+                <span>Aztlán Decode</span>
+            </a>
+            
+            <ul class="navbar-nav">
                 <li>
                     <a href="{{ url_for('index') }}" 
-                       class="nav-link {% if current_page == 'dashboard' %}active{% endif %}">
-                        Dashboard
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('astronomy') }}" 
-                       class="nav-link {% if current_page == 'astronomy' %}active{% endif %}">
-                        🏛️ AstronomIA
+                       class="navbar-link {% if request.endpoint == 'index' %}active{% endif %}">
+                        <span>🏠</span>
+                        <span>Home</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ url_for('scouting') }}" 
-                       class="nav-link {% if current_page == 'scouting' %}active{% endif %}">
-                        🤖 Scouting FTC
+                       class="navbar-link {% if request.endpoint == 'scouting' %}active{% endif %}">
+                        <span>🤖</span>
+                        <span>FTC Scouting</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('astronomy') }}" 
+                       class="navbar-link {% if request.endpoint == 'astronomy' %}active{% endif %}">
+                        <span>🌌</span>
+                        <span>AstronomIA</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ url_for('comparison') }}" 
-                       class="nav-link {% if current_page == 'comparison' %}active{% endif %}">
-                        ⚔️ Comparación
+                       class="navbar-link {% if request.endpoint == 'comparison' %}active{% endif %}">
+                        <span>⚔️</span>
+                        <span>Análisis</span>
                     </a>
                 </li>
             </ul>
         </div>
     </nav>
 
-    <!-- Contenido principal -->
+    <!-- Main Content -->
     <div class="main-container">
-        
-        <!-- Mostrar mensajes flash -->
+        <!-- Flash Messages -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ 'error' if category == 'error' else 'success' if category == 'success' else 'warning' }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
+                <div class="container" style="padding-top: 24px;">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'error' if category == 'error' else 'success' if category == 'success' else 'warning' }} fade-in">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
             {% endif %}
         {% endwith %}
         
-        <!-- Contenido específico de la página -->
-        {% if current_page == "dashboard" %}
-            <!-- DASHBOARD PRINCIPAL -->
-            <div class="dashboard text-center">
-                <h1 class="hero-title fade-in">AZTLÁN DECODE</h1>
-                <p class="hero-subtitle fade-in">Plataforma de Inteligencia Artificial & Análisis Competitivo</p>
-                
-                <div class="modules-grid fade-in">
-                    <!-- Módulo AstronomIA -->
-                    <div class="module-card">
-                        <h2 class="module-title">🏛️ AstronomIA</h2>
-                        <p class="module-description">
-                            Predice si una señal astronómica es un <strong>exoplaneta confirmado</strong> o un <strong>falso positivo</strong> usando inteligencia artificial avanzada basada en datos de las misiones Kepler/TESS.
-                        </p>
-                        <a href="{{ url_for('astronomy') }}" class="btn-cyber">
-                            Analizar Señales
-                        </a>
-                    </div>
-                    
-                    <!-- Módulo Scouting FTC -->
-                    <div class="module-card">
-                        <h2 class="module-title">🤖 SCOUTING FTC</h2>
-                        <p class="module-description">
-                            Sistema <strong>TRIDENTE</strong> de inteligencia competitiva que consulta 3 APIs simultáneamente para validar datos de equipos FTC con un algoritmo de consenso único.
-                        </p>
-                        <a href="{{ url_for('scouting') }}" class="btn-cyber btn-secondary">
-                            Analizar Equipos
-                        </a>
-                    </div>
-                </div>
+        <!-- Page Content -->
+        {% if request.endpoint == 'index' %}
+            <!-- Dashboard / Home Page -->
+            <div class="hero-section fade-in">
+                <h1 class="hero-title">Aztlán Decode</h1>
+                <p class="hero-subtitle">
+                    Plataforma profesional de análisis avanzado con inteligencia artificial para FTC Robotics y Astronomía
+                </p>
             </div>
             
+            <div class="container">
+                <div class="module-grid">
+                    <!-- FTC Scouting Module -->
+                    <a href="{{ url_for('scouting') }}" class="module-card fade-in">
+                        <div class="module-icon">🤖</div>
+                        <h2 class="module-title">FTC Scouting</h2>
+                        <p class="module-description">
+                            Sistema TRIDENTE de inteligencia competitiva. Consulta 3 APIs simultáneamente con algoritmo de consenso único.
+                        </p>
+                        <div>
+                            <span class="badge">🔱 TRIDENT APIs</span>
+                            <span class="badge">📊 Estadísticas</span>
+                            <span class="badge">🏆 Predicciones</span>
+                        </div>
+                    </a>
+                    
+                    <!-- AstronomIA Module -->
+                    <a href="{{ url_for('astronomy') }}" class="module-card fade-in" style="animation-delay: 100ms;">
+                        <div class="module-icon">🌌</div>
+                        <h2 class="module-title">AstronomIA</h2>
+                        <p class="module-description">
+                            Detección de exoplanetas con Machine Learning avanzado basado en datos Kepler/TESS.
+                        </p>
+                        <div>
+                            <span class="badge">🪐 Renderizado 3D</span>
+                            <span class="badge">🧬 ESI Calculator</span>
+                            <span class="badge">📉 Light Curves</span>
+                        </div>
+                    </a>
+                    
+                    <!-- Analysis Center Module -->
+                    <a href="{{ url_for('comparison') }}" class="module-card fade-in" style="animation-delay: 200ms;">
+                        <div class="module-icon">⚔️</div>
+                        <h2 class="module-title">Centro de Análisis</h2>
+                        <p class="module-description">
+                            Comparaciones avanzadas y predicciones con inteligencia artificial de última generación.
+                        </p>
+                        <div>
+                            <span class="badge">🧠 Quetzal-Bot</span>
+                            <span class="badge">🔮 El Oráculo</span>
+                            <span class="badge">🕸️ Spider Charts</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
         {% else %}
-            <!-- Banner de Protección de Menores -->
+            <!-- Compliance Banner -->
             {% include 'components/compliance_banner.html' %}
             
-            <!-- Contenido de otras páginas se insertará aquí -->
-            {% block content %}{% endblock %}
+            <!-- Subpage Content -->
+            <div class="container">
+                {% block content %}{% endblock %}
+            </div>
         {% endif %}
         
-        <!-- Mensaje de error si existe -->
+        <!-- Error Message -->
         {% if error_message %}
-            <div class="alert alert-error">
-                {{ error_message }}
+            <div class="container">
+                <div class="alert alert-error fade-in">
+                    {{ error_message }}
+                </div>
             </div>
         {% endif %}
     </div>
 
-    <!-- JavaScript para efectos especiales -->
-    <script>
-        // Crear partículas flotantes
-        function createParticles() {
-            const particleCount = 50;
-            
-            for (let i = 0; i < particleCount; i++) {
-                setTimeout(() => {
-                    const particle = document.createElement('div');
-                    particle.classList.add('particle');
-                    
-                    // Posición aleatoria
-                    particle.style.left = Math.random() * 100 + '%';
-                    particle.style.top = Math.random() * 100 + '%';
-                    
-                    // Animación
-                    particle.style.animation = `float ${3 + Math.random() * 4}s ease-in-out infinite`;
-                    
-                    document.body.appendChild(particle);
-                    
-                    // Eliminar después de la animación
-                    setTimeout(() => {
-                        if (particle.parentNode) {
-                            particle.parentNode.removeChild(particle);
-                        }
-                    }, 7000);
-                }, i * 100);
-            }
-        }
-        
-        // CSS para animación de partículas (añadir dinámicamente)
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes float {
-                0%, 100% {
-                    transform: translateY(0px) rotate(0deg);
-                    opacity: 0.7;
-                }
-                50% {
-                    transform: translateY(-20px) rotate(180deg);
-                    opacity: 1;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-        
-        // Inicializar efectos
-        document.addEventListener('DOMContentLoaded', function() {
-            createParticles();
-            
-            // Recrear partículas cada 10 segundos
-            setInterval(createParticles, 10000);
-            
-            // Efecto de typing para el título
-            const title = document.querySelector('.hero-title');
-            if (title) {
-                title.style.opacity = '0';
-                setTimeout(() => {
-                    title.style.opacity = '1';
-                    title.style.animation = 'fadeIn 2s ease-in';
-                }, 500);
-            }
-        });
-        
-        // Efecto hover para las tarjetas
-        document.querySelectorAll('.module-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-10px) scale(1.03)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0) scale(1)';
-            });
-        });
-    </script>
-    
-    <!-- Chatbot JavaScript -->
+    <!-- Scripts -->
     <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
-    
-    <!-- Theme Manager JavaScript -->
-    <script src="{{ url_for('static', filename='js/theme-manager.js') }}"></script>
-    
-    <!-- Advanced Features JavaScript -->
     <script src="{{ url_for('static', filename='js/theme-manager.js') }}"></script>
     <script src="{{ url_for('static', filename='js/favorites.js') }}"></script>
     <script src="{{ url_for('static', filename='js/search-history.js') }}"></script>
