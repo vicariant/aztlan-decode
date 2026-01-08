@@ -225,7 +225,8 @@
 </style>
 
 <script>
-function closeBanner() {
+// Función para cerrar el banner
+window.closeBanner = function() {
     var banner = document.getElementById('complianceBanner');
     if (banner) {
         banner.style.animation = 'slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -234,9 +235,9 @@ function closeBanner() {
             localStorage.setItem('complianceBannerClosed', 'true');
         }, 300);
     }
-}
+};
 
-function showPrivacyPolicy() {
+window.showPrivacyPolicy = function() {
     alert('📄 Política de Privacidad\n\n' +
           '🔒 Protegemos tus datos con:\n' +
           '  • Encriptación AES-256\n' +
@@ -244,9 +245,9 @@ function showPrivacyPolicy() {
           '  • Control total sobre tu información\n' +
           '  • Cumplimiento GDPR, COPPA, AADC\n\n' +
           '📧 Para más información: privacy@aztlan-decode.com');
-}
+};
 
-function showParentalControls() {
+window.showParentalControls = function() {
     alert('👨‍👩‍👧 Controles Parentales\n\n' +
           '⚙️ Configura:\n' +
           '  • Límites de tiempo de uso\n' +
@@ -255,11 +256,11 @@ function showParentalControls() {
           '  • Reportes semanales\n\n' +
           '📧 Contacta soporte para activarlos:\n' +
           '   parental@aztlan-decode.com');
-}
+};
 
-function contactSupport() {
+window.contactSupport = function() {
     window.location.href = 'mailto:support@aztlan-decode.com?subject=Consulta sobre Protección de Menores';
-}
+};
 
 // Verificar si el banner ya fue cerrado al cargar la página
 (function() {
