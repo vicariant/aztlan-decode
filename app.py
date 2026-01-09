@@ -665,6 +665,16 @@ def api_health():
 def chat():
     """Endpoint del chatbot IA"""
     try:
+        # Verificar que el handler esté disponible
+        try:
+            get_chatbot_response = get_chatbot_handler()
+        except Exception as e:
+            return jsonify({
+                'success': False,
+                'error': 'Chatbot no disponible temporalmente',
+                'response': f'⚠️ El chatbot no está disponible: {str(e)[:100]}'
+            }), 503
+        
         # Verificar que Groq API esté configurada
         groq_key = os.getenv('GROQ_API_KEY', '')
         if not groq_key:
@@ -698,8 +708,14 @@ def chat():
             }), 400
         
         # Obtener respuesta del chatbot
-        get_chatbot_response = get_chatbot_handler()
         response = get_chatbot_response(message, context)
+        
+        if not response or not isinstance(response, dict):
+            return jsonify({
+                'success': False,
+                'error': 'Respuesta inválida del chatbot',
+                'response': 'Error al procesar la respuesta'
+            }), 500
         
         return jsonify(response)
         
@@ -787,7 +803,14 @@ def search_exoplanet():
 def quetzal_bot_query():
     """Endpoint para consultar Quetzal-Bot (RAG system)"""
     try:
-        from utils.rag_system import quetzal_bot
+        # Intentar importar dinámicamente si no está disponible
+        try:
+            from utils.rag_system import quetzal_bot as qb
+        except Exception as import_error:
+            return jsonify({
+                'success': False,
+                'error': f'Quetzal Bot no disponible: {str(import_error)[:100]}'
+            }), 503
         
         data = request.json
         question = data.get('question', '')
