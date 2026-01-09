@@ -202,10 +202,14 @@ def load_enterprise_systems():
         advanced_exporter = exporter
         print("[OK] Advanced Exporter cargado - Exportación PDF/Excel profesional")
         
-        # 8. QUETZAL BOT (Chatbot RAG)
-        from utils.quetzal_bot import quetzal
-        quetzal_bot = quetzal
-        print("[OK] Quetzal Bot cargado - Asistente IA con RAG")
+        # 8. QUETZAL BOT (Chatbot RAG) - Opcional
+        try:
+            from utils.quetzal_bot import quetzal
+            quetzal_bot = quetzal
+            print("[OK] Quetzal Bot cargado - Asistente IA con RAG")
+        except Exception as e:
+            print(f"[ADVERTENCIA] Quetzal Bot no disponible: {str(e)[:80]}")
+            quetzal_bot = None
         
         return True
     except Exception as e:
