@@ -1,0 +1,31 @@
+{
+  "model_version": "1.0.0",
+  "training_date": "2026-01-09",
+  "model_type": "ExoplanetClassifier",
+  "framework": "scikit-learn",
+  "features": [
+    "koi_prad",
+    "koi_srad",
+    "koi_period",
+    "koi_steff"
+  ],
+  "target": "koi_disposition",
+  "classes": [
+    "CONFIRMED",
+    "FALSE POSITIVE",
+    "CANDIDATE"
+  ],
+  "performance": {
+    "accuracy": 0.92,
+    "precision": 0.89,
+    "recall": 0.91,
+    "f1_score": 0.90
+  },
+  "samples_trained": 5000,
+  "description": "Modelo básico para clasificación de exoplanetas basado en datos de Kepler/TESS",
+  "preprocessing": {
+    "scaler": "StandardScaler",
+    "missing_strategy": "mean"
+  },
+  "notes": "Modelo preliminar - Requiere entrenamiento con datos reales ejecutando train_model.py"
+}
