@@ -120,17 +120,19 @@ def get_regional_predictor():
 def load_ai_models():
     global model, scaler, model_error
     
+    model_path = 'models/aztlan_model.pkl'
+    scaler_path = 'models/aztlan_scaler.pkl'
+    
+    # Siempre inicializar como None
+    model = None
+    scaler = None
+    
+    if not os.path.exists(model_path) or not os.path.exists(scaler_path):
+        model_error = "[ADVERTENCIA] No se encontro el modelo de IA. Ejecuta train_model.py primero."
+        print(model_error)
+        return False
+    
     try:
-        model_path = 'models/aztlan_model.pkl'
-        scaler_path = 'models/aztlan_scaler.pkl'
-        
-        if not os.path.exists(model_path) or not os.path.exists(scaler_path):
-            model_error = "[ADVERTENCIA] No se encontro el modelo de IA. Ejecuta train_model.py primero."
-            print(model_error)
-            model = None
-            scaler = None
-            return False
-        
         import joblib
         # Carga optimizada con mmap
         model = joblib.load(model_path, mmap_mode='r')
@@ -140,7 +142,7 @@ def load_ai_models():
         return True
             
     except Exception as e:
-        model_error = f"[ERROR] Error al cargar modelos: {str(e)}"
+        model_error = f"[ADVERTENCIA] Modelos no disponibles: {str(e)[:100]}"
         print(model_error)
         model = None
         scaler = None
