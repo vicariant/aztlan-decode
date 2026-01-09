@@ -74,35 +74,12 @@ visitor_analytics = None
 _chatbot_handler = None
 _regional_predictor = None
 
-# Middleware para tracking de visitantes
+# Middleware para tracking de visitantes - TEMPORALMENTE DESHABILITADO
 @app.before_request
 def track_visitor():
     """Registra cada visita automáticamente"""
-    try:
-        # Inicializar analytics si no existe
-        global visitor_analytics
-        if visitor_analytics is None:
-            try:
-                from utils.visitor_analytics import get_analytics
-                visitor_analytics = get_analytics()
-            except Exception as e:
-                # Si falla, simplemente no trackear
-                logger.debug(f"Analytics no disponible: {e}")
-                return None
-        
-        # Solo trackear páginas HTML (no assets estáticos)
-        if not request.path.startswith('/static/') and not request.path.startswith('/api/'):
-            try:
-                page_title = request.endpoint or 'Unknown'
-                visitor_analytics.track_visit(request.path, page_title)
-            except Exception as e:
-                # No bloquear la request si falla el tracking
-                logger.debug(f"Error tracking: {e}")
-                pass
-    except Exception as e:
-        # No bloquear la aplicación si falla completamente
-        logger.debug(f"Error en tracking middleware: {e}")
-        pass
+    # Deshabilitado temporalmente para debug
+    return None
 
 # Decorador para proteger rutas con contraseña
 def require_analytics_password(f):
