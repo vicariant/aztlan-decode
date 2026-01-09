@@ -16,7 +16,7 @@
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">
                     <div style="background: rgba(138, 43, 226, 0.2); padding: 1rem; border-radius: 8px; border: 1px solid #8a2be2;">
                         <h3 style="color: #00d4ff; font-size: 1rem; margin-bottom: 0.5rem;"> Renderizado Procedural</h3>
-                        <p style="font-size: 0.9rem; opacity: 0.9;">Visualiza el planeta segun temperatura, radio y zona habitable</p>
+                        <p style="font-size: 0.9rem; opacity: 0.9;">Visualiza el planeta según temperatura, radio y zona habitable</p>
                     </div>
                     <div style="background: rgba(138, 43, 226, 0.2); padding: 1rem; border-radius: 8px; border: 1px solid #8a2be2;">
                         <h3 style="color: #00d4ff; font-size: 1rem; margin-bottom: 0.5rem;">ðŸ§¬ Ãndice de Habitabilidad</h3>
@@ -24,12 +24,12 @@
                     </div>
                     <div style="background: rgba(138, 43, 226, 0.2); padding: 1rem; border-radius: 8px; border: 1px solid #8a2be2;">
                         <h3 style="color: #00d4ff; font-size: 1rem; margin-bottom: 0.5rem;">ðŸ“‰ Curvas de Luz</h3>
-                        <p style="font-size: 0.9rem; opacity: 0.9;">Visualiza el mÃ©todo de transito usado para detectar el planeta</p>
+                        <p style="font-size: 0.9rem; opacity: 0.9;">Visualiza el método de tránsito usado para detectar el planeta</p>
                     </div>
                 </div>
             </div>
             <p class="module-description" style="margin-top: 1.5rem; font-size: 1rem; opacity: 0.9;">
-                Sistema de Inteligencia Artificial para analisis de seÃ±ales astronÃ³micas<br>
+                Sistema de Inteligencia Artificial para Análisis de señales astronómicas<br>
                 <strong style="color: #ffd700;">Basado en datos de las misiones Kepler/TESS + IA Predictiva</strong>
             </p>
         </div>
@@ -51,7 +51,7 @@
                                max="50" 
                                placeholder="2.5" 
                                required>
-                        <small class="form-help">Rango tÃ­pico: 0.5 - 10.0 (Tierra = 1.0)</small>
+                        <small class="form-help">Rango típico: 0.5 - 10.0 (Tierra = 1.0)</small>
                     </div>
                     
                     <div class="form-group">
@@ -67,12 +67,12 @@
                                max="5" 
                                placeholder="1.1" 
                                required>
-                        <small class="form-help">Rango tÃ­pico: 0.5 - 2.0 (Sol = 1.0)</small>
+                        <small class="form-help">Rango típico: 0.5 - 2.0 (Sol = 1.0)</small>
                     </div>
                     
                     <div class="form-group">
                         <label for="koi_period" class="form-label">
-                            ðŸ”„ Periodo Orbital (dÃ­as)
+                            ðŸ”„ Periodo Orbital (días)
                         </label>
                         <input type="number" 
                                id="koi_period" 
@@ -83,7 +83,7 @@
                                max="5000" 
                                placeholder="365.25" 
                                required>
-                        <small class="form-help">Rango tÃ­pico: 1 - 1000 dÃ­as (Tierra = 365.25)</small>
+                        <small class="form-help">Rango típico: 1 - 1000 días (Tierra = 365.25)</small>
                     </div>
                     
                     <div class="form-group">
@@ -99,7 +99,7 @@
                                max="10000" 
                                placeholder="5778" 
                                required>
-                        <small class="form-help">Rango tÃ­pico: 3000 - 7000 K (Sol = 5778 K)</small>
+                        <small class="form-help">Rango típico: 3000 - 7000 K (Sol = 5778 K)</small>
                     </div>
                 </div>
                 
@@ -143,13 +143,13 @@
                             ðŸŒ Tipo Tierra
                         </button>
                         <button type="button" class="example-btn" onclick="loadExample('jupiter')">
-                             Tipo JÃºpiter
+                             Tipo Júpiter
                         </button>
                         <button type="button" class="example-btn" onclick="loadExample('super_earth')">
                             ðŸŒŽ Super-Tierra
                         </button>
                         <button type="button" class="example-btn" onclick="loadExample('hot_jupiter')">
-                            ðŸ”¥ JÃºpiter Caliente
+                            ðŸ”¥ Júpiter Caliente
                         </button>
                     </div>
                 </div>
@@ -163,7 +163,7 @@
                     "âœ¨ Los datos han hablado desde el espacio profundo..."
                 </p>
                 
-                <!-- Estado de la predicciÃ³n -->
+                <!-- Estado de la predicción -->
                 <div class="prediction-card {{ 'confirmed-planet' if prediction_result.prediction == 'PLANETA CONFIRMADO' else 'false-positive' }}">
                     <div class="prediction-icon">
                         {% if prediction_result.prediction == "PLANETA CONFIRMADO" %}
@@ -181,7 +181,7 @@
                     </div>
                 </div>
                 
-                <!-- Detalles probabilÃ­sticos -->
+                <!-- Detalles probabilísticos -->
                 <div class="probability-details">
                     <div class="prob-item">
                         <span class="prob-label"> Probabilidad de Planeta:</span>
@@ -207,7 +207,7 @@
                         </div>
                         <div class="input-item">
                             <span class="input-label">Periodo Orbital:</span>
-                            <span class="input-value">{{ prediction_result.input_data.koi_period }} dÃ­as</span>
+                            <span class="input-value">{{ prediction_result.input_data.koi_period }} días</span>
                         </div>
                         <div class="input-item">
                             <span class="input-label">Temperatura Estelar:</span>
@@ -216,34 +216,34 @@
                     </div>
                 </div>
                 
-                <!-- InterpretaciÃ³n cientÃ­fica -->
+                <!-- Interpretación científica -->
                 <div class="interpretation">
-                    <h4>ðŸ”­ analisis AstrofÃ­sico (IA)</h4>
+                    <h4>ðŸ”­ Análisis Astrofísico (IA)</h4>
                     <div class="interpretation-content">
                         {% if prediction_result.prediction == "PLANETA CONFIRMADO" %}
                             <p class="interpretation-text success">
-                                âœ¨ <strong>"AsÃ­ lo revela el cosmos:"</strong> Las seÃ±ales cÃ³smicas confirman la existencia de este mundo distante. 
-                                Los parÃ¡metros orbitales coinciden con las predicciones de nuestros algoritmos entrenados con datos de Kepler/TESS, 
-                                validados por observaciones espectroscÃ³picas y fotomÃ©tricas.
+                                âœ¨ <strong>"Así lo revela el cosmos:"</strong> Las señales cósmicas confirman la existencia de este mundo distante. 
+                                Los parámetros orbitales coinciden con las predicciones de nuestros algoritmos entrenados con datos de Kepler/TESS, 
+                                validados por observaciones espectroscópicas y fotométricas.
                             </p>
                             {% if prediction_result.input_data.koi_period >= 200 and prediction_result.input_data.koi_period <= 400 %}
-                                <p class="zone-info habitable">ðŸŒ± <strong>"Zona Habitable:"</strong> Este planeta reside en la regiÃ³n donde el agua lÃ­quida podrÃ­a fluir como en los ocÃ©anos terrestres.</p>
+                                <p class="zone-info habitable">ðŸŒ± <strong>"Zona Habitable:"</strong> Este planeta reside en la región donde el agua líquida podría fluir como en los océanos terrestres.</p>
                             {% endif %}
                             {% if prediction_result.input_data.koi_prad < 2.0 %}
-                                <p class="size-info terrestrial">ðŸŒ <strong>"Planeta Rocoso:"</strong> Un mundo terrestre forjado en el corazÃ³n estelar, similar a la Tierra primitiva.</p>
+                                <p class="size-info terrestrial">ðŸŒ <strong>"Planeta Rocoso:"</strong> Un mundo terrestre forjado en el corazón estelar, similar a la Tierra primitiva.</p>
                             {% elif prediction_result.input_data.koi_prad > 4.0 %}
-                                <p class="size-info gas-giant"> <strong>"Gigante Gaseoso:"</strong> Un coloso de los vientos, dominando su sistema solar como JÃºpiter.</p>
+                                <p class="size-info gas-giant"> <strong>"Gigante Gaseoso:"</strong> Un coloso de los vientos, dominando su sistema solar como Júpiter.</p>
                             {% else %}
                                 <p class="size-info super-earth">ðŸŒŽ <strong>"Super-Tierra:"</strong> Un mundo rocoso magnificado, con mayor gravedad superficial.</p>
                             {% endif %}
                         {% else %}
                             <p class="interpretation-text warning">
-                                âš ï¸ <strong>analisis Negativo:</strong> Las caracterÃ­sticas analizadas presentan inconsistencias tÃ­picas de falsos positivos. 
-                                Esto podrÃ­a deberse a contaminaciÃ³n estelar, variabilidad intrÃ­nseca de la estrella, o artefactos instrumentales.
+                                âš ï¸ <strong>Análisis Negativo:</strong> Las características analizadas presentan inconsistencias típicas de falsos positivos. 
+                                Esto podría deberse a contaminación estelar, variabilidad intrínseca de la estrella, o artefactos instrumentales.
                             </p>
                             <p class="recommendation">
-                                ðŸ” <strong>RecomendaciÃ³n:</strong> Se requieren observaciones de seguimiento con espectrometrÃ­a de velocidad radial 
-                                o fotometrÃ­a de transito adicional para confirmar la naturaleza de esta seÃ±al.
+                                ðŸ” <strong>Recomendación:</strong> Se requieren observaciones de seguimiento con espectrometría de velocidad radial 
+                                o fotometría de tránsito adicional para confirmar la naturaleza de esta seÃ±al.
                             </p>
                         {% endif %}
                     </div>
@@ -266,7 +266,7 @@
                                  Renderizado Procedural
                             </h3>
                             <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1rem;">
-                                RepresentaciÃ³n visual del planeta basada en temperatura, radio y zona habitable
+                                Representación visual del planeta basada en temperatura, radio y zona habitable
                             </p>
                             <canvas id="planetCanvas" width="300" height="300" style="width: 100%; max-width: 300px; margin: 0 auto; display: block; border-radius: 10px; background: #000;"></canvas>
                             <div id="planetInfo" style="margin-top: 1rem; font-size: 0.85rem; text-align: center;"></div>
@@ -278,13 +278,13 @@
                                 ðŸ§¬ Earth Similarity Index (ESI)
                             </h3>
                             <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1rem;">
-                                Ãndice de similitud con la Tierra (0 = ninguna, 1 = idÃ©ntica)
+                                Ãndice de similitud con la Tierra (0 = ninguna, 1 = idéntica)
                             </p>
                             <div id="esiMeter" style="position: relative; width: 200px; height: 200px; margin: 0 auto;">
                                 <svg width="200" height="200" viewBox="0 0 200 200">
-                                    <!-- Fondo del cÃ­rculo -->
+                                    <!-- Fondo del círculo -->
                                     <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="15"/>
-                                    <!-- CÃ­rculo de progreso ESI -->
+                                    <!-- Círculo de progreso ESI -->
                                     <circle id="esiCircle" cx="100" cy="100" r="80" fill="none" stroke="#00d4ff" stroke-width="15"
                                             stroke-dasharray="502.4" stroke-dashoffset="502.4"
                                             transform="rotate(-90 100 100)" stroke-linecap="round"
@@ -303,31 +303,31 @@
                     <!-- 3. CURVA DE LUZ (TRÃNSITO) -->
                     <div class="viz-card-full" style="background: rgba(0, 0, 0, 0.4); border: 2px solid #ffd700; border-radius: 15px; padding: 1.5rem; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);">
                         <h3 style="color: #ffd700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-                            ðŸ“‰ Curva de Luz del transito
+                            ðŸ“‰ Curva de Luz del tránsito
                         </h3>
                         <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1rem;">
-                            SimulaciÃ³n de cÃ³mo el brillo de la estrella disminuye cuando el planeta pasa frente a ella (mÃ©todo de transito)
+                            Simulación de cómo el brillo de la estrella disminuye cuando el planeta pasa frente a ella (método de tránsito)
                         </p>
                         <canvas id="lightCurveCanvas" width="800" height="300" style="width: 100%; max-width: 800px; margin: 0 auto; display: block; border-radius: 10px; background: rgba(0, 0, 0, 0.6);"></canvas>
                         <div style="margin-top: 1rem; font-size: 0.85rem; text-align: center; opacity: 0.8;">
-                            <p>La profundidad del transito indica el tamaÃ±o del planeta relativo a la estrella</p>
-                            <p>Periodo: {{ prediction_result.input_data.koi_period }} dÃ­as | Profundidad estimada: <span id="transitDepth"></span>%</p>
+                            <p>La profundidad del tránsito indica el tamaño del planeta relativo a la estrella</p>
+                            <p>Periodo: {{ prediction_result.input_data.koi_period }} días | Profundidad estimada: <span id="transitDepth"></span>%</p>
                         </div>
                     </div>
                 </div>
                 {% endif %}
                 
-                <!-- Metadatos del analisis -->
+                <!-- Metadatos del Análisis -->
                 <div class="analysis-metadata">
-                    <p><strong>â° analisis realizado:</strong> {{ prediction_result.analysis_timestamp[:19] }}</p>
-                    <p><strong>ðŸ¤– Modelo:</strong> Random Forest Classifier (AztlÃ¡n IA)</p>
-                    <p><strong>ðŸ“Š Dataset base:</strong> SimulaciÃ³n NASA Exoplanet Archive</p>
+                    <p><strong>â° Análisis realizado:</strong> {{ prediction_result.analysis_timestamp[:19] }}</p>
+                    <p><strong>ðŸ¤– Modelo:</strong> Random Forest Classifier (Aztlán IA)</p>
+                    <p><strong>ðŸ“Š Dataset base:</strong> Simulación NASA Exoplanet Archive</p>
                 </div>
                 
                 <!-- Acciones -->
                 <div class="result-actions">
                     <a href="{{ url_for('astronomy') }}" class="btn-cyber">
-                        ðŸ”„ Nuevo analisis
+                        ðŸ”„ Nuevo Análisis
                     </a>
                     <button onclick="shareResults()" class="btn-cyber btn-secondary">
                         ðŸ“¤ Compartir Resultados
@@ -620,7 +620,7 @@
     font-size: 1.1rem;
 }
 
-/* InterpretaciÃ³n cientÃ­fica */
+/* Interpretación científica */
 .interpretation {
     background: rgba(0, 243, 255, 0.1);
     border: 1px solid var(--turquesa-neon);
@@ -756,8 +756,8 @@ const aztecMessages = [
     "½ Navegando por las nebulosas de datos...",
     "âœ¨ Analizando constelaciones estelares...",
     "ðŸ”­ Escaneando la VÃ­a LÃ¡ctea digital...",
-    "ðŸŒ  Procesando seÃ±ales de Kepler y TESS...",
-    "ðŸŒŠ Calculando transitos planetarios...",
+    "ðŸŒ  Procesando señales de Kepler y TESS...",
+    "ðŸŒŠ Calculando tránsitos planetarios...",
     "ðŸ”¥ Midiendo temperaturas estelares...",
     "ðŸ”­ Buscando zonas habitables...",
     "â­ Comparando con sistemas conocidos...",
@@ -793,7 +793,7 @@ function showAztecLoading(event) {
     ritualPre.textContent = aztecGlyphs[0];
     messagesDiv.innerHTML = `<div class="aztec-glyph">${aztecMessages[0]}</div>`;
     
-    // Enviar formulario despuÃ©s de 6 segundos (suficiente para ver la animaciÃ³n)
+    // Enviar formulario despuÃ©s de 6 segúndos (suficiente para ver la animaciÃ³n)
     setTimeout(() => {
         clearInterval(glyphInterval);
         clearInterval(messageInterval);
@@ -853,7 +853,7 @@ function shareResults() {
     // Funcionalidad para compartir resultados
     if (navigator.share) {
         navigator.share({
-            title: 'AztlÃ¡n Decode - analisis de Exoplaneta',
+            title: 'Aztlán Decode - Análisis de Exoplaneta',
             text: 'He analizado una seÃ±al astronÃ³mica con IA',
             url: window.location.href
         });
@@ -920,7 +920,7 @@ document.addEventListener('DOMContentLoaded', function() {
             glowColor = 'rgba(255, 69, 0, 0.6)';
             planetType = 'ðŸ”¥ Planeta Caliente (Lava)';
         } else if (planetData.radius > 4) {
-            // Gigante gaseoso (tipo JÃºpiter)
+            // Gigante gaseoso (tipo Júpiter)
             planetColor = ['#daa520', '#cd853f', '#d2691e'];
             glowColor = 'rgba(218, 165, 32, 0.4)';
             planetType = ' Gigante Gaseoso';
@@ -1001,10 +1001,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Similitud de temperatura
         const tempSimilarity = 1 - Math.abs(planetTemp - earthTemp) / (planetTemp + earthTemp);
         
-        // ESI combinado (simplificado, versiÃ³n real usa mÃ¡s parÃ¡metros)
+        // ESI combinado (simplificado, versiÃ³n real usa mÃ¡s parámetros)
         const esi = Math.pow(radiusSimilarity * Math.max(0, tempSimilarity), 0.5);
         
-        // Animar el cÃ­rculo ESI
+        // Animar el círculo ESI
         const circle = document.getElementById('esiCircle');
         const circumference = 2 * Math.PI * 80; // radio = 80
         const offset = circumference - (esi * circumference);
@@ -1025,7 +1025,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             valueElement.textContent = current.toFixed(2);
             
-            // Cambiar color segun ESI
+            // Cambiar color según ESI
             if (esi > 0.8) {
                 circle.style.stroke = '#00ff00';
                 valueElement.style.color = '#00ff00';
@@ -1038,12 +1038,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }, 40);
         
-        // InterpretaciÃ³n
+        // Interpretación
         let interpretation = '';
         if (esi > 0.8) {
-            interpretation = 'ðŸŒŸ <strong>Altamente Similar a la Tierra!</strong> Este planeta tiene caracterÃ­sticas muy similares a nuestro hogar.';
+            interpretation = 'ðŸŒŸ <strong>Altamente Similar a la Tierra!</strong> Este planeta tiene características muy similares a nuestro hogar.';
         } else if (esi > 0.6) {
-            interpretation = 'âœ¨ <strong>Moderadamente Similar</strong> - Presenta algunas caracterÃ­sticas terrestres interesantes.';
+            interpretation = 'âœ¨ <strong>Moderadamente Similar</strong> - Presenta algunas características terrestres interesantes.';
         } else if (esi > 0.4) {
             interpretation = 'âš ï¸ <strong>Baja Similitud</strong> - Condiciones significativamente diferentes a la Tierra.';
         } else {
@@ -1066,7 +1066,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Limpiar canvas
         ctx.clearRect(0, 0, width, height);
         
-        // Calcular profundidad del transito
+        // Calcular profundidad del tránsito
         // Profundidad = (Radio_planeta / Radio_estrella)^2
         const transitDepth = Math.pow(planetData.radius / (planetData.stellarRadius * 109), 2) * 100; // en porcentaje
         document.getElementById('transitDepth').textContent = transitDepth.toFixed(4);
@@ -1085,7 +1085,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Agregar ruido realista
             y += (Math.random() - 0.5) * 0.002;
             
-            // Simular el transito (curva gaussiana invertida)
+            // Simular el tránsito (curva gaussiana invertida)
             if (x >= transitStart && x <= transitEnd) {
                 const normalizedX = (x - transitMid) / (transitEnd - transitStart);
                 const transitEffect = Math.exp(-50 * normalizedX * normalizedX);
@@ -1142,7 +1142,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         ctx.stroke();
         
-        // Resaltar la zona de transito
+        // Resaltar la zona de tránsito
         ctx.fillStyle = 'rgba(255, 215, 0, 0.1)';
         ctx.fillRect(
             padding + transitStart * (width - 2 * padding),
@@ -1151,10 +1151,10 @@ document.addEventListener('DOMContentLoaded', function() {
             height - 2 * padding
         );
         
-        // Etiqueta de transito
+        // Etiqueta de tránsito
         ctx.fillStyle = '#ffd700';
         ctx.font = 'bold 14px Arial';
-        ctx.fillText('â† transito â†’', padding + transitMid * (width - 2 * padding) - 40, padding + 10);
+        ctx.fillText('â† tránsito â†’', padding + transitMid * (width - 2 * padding) - 40, padding + 10);
     }
     
     // Ejecutar todas las visualizaciones
