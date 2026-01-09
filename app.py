@@ -82,15 +82,27 @@ def track_visitor():
         # Inicializar analytics si no existe
         global visitor_analytics
         if visitor_analytics is None:
-            from utils.visitor_analytics import get_analytics
-            visitor_analytics = get_analytics()
+            try:
+                from utils.visitor_analytics import get_analytics
+                visitor_analytics = get_analytics()
+            except Exception as e:
+                # Si falla, simplemente no trackear
+                logger.debug(f"Analytics no disponible: {e}")
+                return None
         
         # Solo trackear páginas HTML (no assets estáticos)
         if not request.path.startswith('/static/') and not request.path.startswith('/api/'):
-            page_title = request.endpoint or 'Unknown'
-            visitor_analytics.track_visit(request.path, page_title)
+            try:
+                page_title = request.endpoint or 'Unknown'
+                visitor_analytics.track_visit(request.path, page_title)
+            except Exception as e:
+                # No bloquear la request si falla el tracking
+                logger.debug(f"Error tracking: {e}")
+                pass
     except Exception as e:
-        logger.error(f"Error tracking visitor: {e}")
+        # No bloquear la aplicación si falla completamente
+        logger.debug(f"Error en tracking middleware: {e}")
+        pass
 
 # Decorador para proteger rutas con contraseña
 def require_analytics_password(f):
