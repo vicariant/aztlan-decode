@@ -167,29 +167,49 @@ def load_enterprise_systems():
         minor_protection = MinorProtectionSystem()
         print("[OK] Sistema de protección de menores activo (UK/CA/USA/EU)")
         
-        # 3. EXPORTACIÓN PDF/EXCEL
-        from utils.export_manager import ReportExporter
-        export_manager = ReportExporter()
-        print("[OK] Sistema de exportación PDF/Excel cargado")
+        # 3. EXPORTACIÓN PDF/EXCEL - Opcional (carga lenta por pandas)
+        try:
+            from utils.export_manager import ReportExporter
+            export_manager = ReportExporter()
+            print("[OK] Sistema de exportación PDF/Excel cargado")
+        except Exception as e:
+            print(f"[ADVERTENCIA] Export Manager no disponible: {str(e)[:80]}")
+            export_manager = None
         
-        # 4. DASHBOARD AVANZADO
-        from utils.dashboard_manager import AdvancedDashboard
-        dashboard_manager = AdvancedDashboard(db_manager)
-        print("[OK] Dashboard avanzado con estadísticas globales")
+        # 4. DASHBOARD AVANZADO - Opcional
+        try:
+            from utils.dashboard_manager import AdvancedDashboard
+            dashboard_manager = AdvancedDashboard(db_manager)
+            print("[OK] Dashboard avanzado con estadísticas globales")
+        except Exception as e:
+            print(f"[ADVERTENCIA] Dashboard Manager no disponible: {str(e)[:80]}")
+            dashboard_manager = None
         
-        # 5. MATCH ORACLE (Simulador de Partidos)
-        from utils.match_oracle import oracle
-        match_oracle = oracle
-        print("[OK] Match Oracle cargado - Simulaciones de partidos disponibles")
+        # 5. MATCH ORACLE (Simulador de Partidos) - Opcional
+        try:
+            from utils.match_oracle import oracle
+            match_oracle = oracle
+            print("[OK] Match Oracle cargado - Simulaciones de partidos disponibles")
+        except Exception as e:
+            print(f"[ADVERTENCIA] Match Oracle no disponible: {str(e)[:80]}")
+            match_oracle = None
         
-        # 6. SPIDER CHARTS (Gráficas Radar)
-        from utils.spider_charts import spider_charts
-        print("[OK] Spider Charts cargado - Visualizaciones radar disponibles")
+        # 6. SPIDER CHARTS (Gráficas Radar) - Opcional
+        try:
+            from utils.spider_charts import spider_charts
+            print("[OK] Spider Charts cargado - Visualizaciones radar disponibles")
+        except Exception as e:
+            print(f"[ADVERTENCIA] Spider Charts no disponible: {str(e)[:80]}")
+            spider_charts = None
         
-        # 7. ADVANCED EXPORTER (PDF/Excel Profesional)
-        from utils.advanced_exporter import exporter
-        advanced_exporter = exporter
-        print("[OK] Advanced Exporter cargado - Exportación PDF/Excel profesional")
+        # 7. ADVANCED EXPORTER (PDF/Excel Profesional) - Opcional
+        try:
+            from utils.advanced_exporter import exporter
+            advanced_exporter = exporter
+            print("[OK] Advanced Exporter cargado - Exportación PDF/Excel profesional")
+        except Exception as e:
+            print(f"[ADVERTENCIA] Advanced Exporter no disponible: {str(e)[:80]}")
+            advanced_exporter = None
         
         # 8. QUETZAL BOT (Chatbot RAG) - Opcional
         try:
