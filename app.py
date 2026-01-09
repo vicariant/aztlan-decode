@@ -294,19 +294,17 @@ def test_animations():
 def astronomy():
     try:
         if request.method == 'GET':
-            if model is None:
-                return render_template('astronomy.html',
-                                     page_title="AstronomIA",
-                                     current_page="astronomy",
-                                     system_error=model_error)
-            
             return render_template('astronomy.html',
                                  page_title="AstronomIA",
-                                 current_page="astronomy")
+                                 current_page="astronomy",
+                                 system_error=model_error if model is None else None)
         
         if model is None:
-            flash(model_error or 'Sistema IA no disponible', 'error')
-            return redirect(url_for('astronomy'))
+            return render_template('astronomy.html',
+                                 page_title="AstronomIA",
+                                 current_page="astronomy",
+                                 system_error=model_error or 'Sistema IA no disponible',
+                                 show_results=False)
         
         try:
             koi_prad = float(request.form.get('koi_prad', 0))
@@ -342,19 +340,17 @@ def astronomy():
 def scouting():
     try:
         if request.method == 'GET':
-            if trident is None:
-                return render_template('scouting.html',
-                                     page_title="Scouting FTC",
-                                     current_page="scouting",
-                                     system_error=trident_error)
-            
             return render_template('scouting.html',
                                  page_title="Scouting FTC",
-                                 current_page="scouting")
+                                 current_page="scouting",
+                                 system_error=trident_error if trident is None else None)
         
         if trident is None:
-            flash(trident_error or 'Sistema TRIDENT no disponible', 'error')
-            return redirect(url_for('scouting'))
+            return render_template('scouting.html',
+                                 page_title="Scouting FTC",
+                                 current_page="scouting",
+                                 system_error=trident_error or 'Sistema TRIDENT no disponible',
+                                 show_results=False)
         
         team_number = request.form.get('team_number', '').strip()
         
