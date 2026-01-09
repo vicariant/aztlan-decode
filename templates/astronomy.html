@@ -930,7 +930,7 @@ document.addEventListener('DOMContentLoaded', function() {
             glowColor = 'rgba(30, 144, 255, 0.6)';
             planetType = 'ðŸŒ Zona Habitable (Tipo Tierra)';
         } else {
-            // Planeta rocoso genÃ©rico
+            // Planeta rocoso genérico
             planetColor = ['#8b7355', '#a0522d', '#cd853f'];
             glowColor = 'rgba(139, 115, 85, 0.4)';
             planetType = 'ðŸŒ‘ Planeta Rocoso';
@@ -975,7 +975,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         ctx.globalAlpha = 1.0;
         
-        // InformaciÃ³n del planeta
+        // Información del planeta
         document.getElementById('planetInfo').innerHTML = `
             <strong>${planetType}</strong><br>
             Radio: ${planetData.radius.toFixed(2)} RâŠ•<br>
@@ -985,7 +985,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 2. CALCULADORA ESI (Earth Similarity Index)
     function calculateESI() {
-        // FÃ³rmula ESI simplificada
+        // Fórmula ESI simplificada
         // ESI = producto de similitudes de radio, densidad, velocidad de escape y temperatura
         
         const earthRadius = 1.0;
@@ -994,14 +994,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Similitud de radio
         const radiusSimilarity = 1 - Math.abs(planetData.radius - earthRadius) / (planetData.radius + earthRadius);
         
-        // Estimar temperatura del planeta (aproximaciÃ³n simple)
+        // Estimar temperatura del planeta (aproximación simple)
         const au = Math.pow(planetData.period / 365.25, 2/3); // Tercera ley de Kepler
         const planetTemp = planetData.stellarTemp * Math.sqrt(planetData.stellarRadius / (2 * au));
         
         // Similitud de temperatura
         const tempSimilarity = 1 - Math.abs(planetTemp - earthTemp) / (planetTemp + earthTemp);
         
-        // ESI combinado (simplificado, versiÃ³n real usa mÃ¡s parámetros)
+        // ESI combinado (simplificado, versiÃ³n real usa más parámetros)
         const esi = Math.pow(radiusSimilarity * Math.max(0, tempSimilarity), 0.5);
         
         // Animar el círculo ESI
@@ -1013,7 +1013,7 @@ document.addEventListener('DOMContentLoaded', function() {
             circle.style.strokeDashoffset = offset;
         }, 500);
         
-        // Animar el valor numÃ©rico
+        // Animar el valor numérico
         const valueElement = document.getElementById('esiValue');
         let current = 0;
         const increment = esi / 50;
@@ -1115,7 +1115,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ctx.fillText('Brillo Relativo', 0, 0);
         ctx.restore();
         
-        // Dibujar lÃ­nea base
+        // Dibujar línea base
         ctx.strokeStyle = 'rgba(0, 212, 255, 0.3)';
         ctx.setLineDash([5, 5]);
         ctx.beginPath();
